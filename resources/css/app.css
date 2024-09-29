@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    @font-face {
+        font-family: 'anton';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url(../../public/fonts/anton-regular-webfont.woff2) format('woff2');
+    }
+
+    @font-face {
+        font-family: 'notoSansJP';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url(../../public/fonts/notosansjp-regular-webfont.woff2) format('woff2');
+    }
+
+    @font-face {
+        font-family: 'poppinsSemiBold';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url(../../public/fonts/poppins-semibold-webfont.woff2) format('woff2');
+    }
+
+    @font-face {
+        font-family: 'poppins';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url(../../public/fonts/poppins-regular-webfont.woff2) format('woff2');
+    }
+}
