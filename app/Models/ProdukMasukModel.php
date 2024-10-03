@@ -13,7 +13,6 @@ class ProdukMasukModel extends Model
     protected $table = 'produk_masuk';
 
     protected $fillable = [
-        'waktu',
         'id_gudang',
         'id_produk',
         'jumlah',

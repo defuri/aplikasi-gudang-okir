@@ -136,10 +136,6 @@
                     </button>
                     <ul id="menuGudang" class="hidden py-2 space-y-2">
                         <li>
-                            <a href="/owner/gudang"
-                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Gudang</a>
-                        </li>
-                        <li>
                             <a href="/owner/stok"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Stok
                                 Produk</a>
@@ -151,6 +147,10 @@
                         <li>
                             <a href="/owner/ProdukKeluar"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Produk Keluar</a>
+                        </li>
+                        <li>
+                            <a href="/owner/gudang"
+                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Gudang</a>
                         </li>
                     </ul>
                 </li>
@@ -224,13 +224,13 @@
                     </button>
                     <ul id="menuAkun" class="hidden py-2 space-y-2">
                         <li>
+                            <a href="/owner/akun"
+                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Akun</a>
+                        </li>
+                        <li>
                             <a href="/owner/hak"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Hak
                                 Akses</a>
-                        </li>
-                        <li>
-                            <a href="/owner/akun"
-                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Akun</a>
                         </li>
                     </ul>
                 </li>

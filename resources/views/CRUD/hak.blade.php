@@ -219,14 +219,6 @@
                                     </button>
                                     <div id="dropDownAksi{{ $loop->iteration }}"
                                         class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                                            aria-labelledby="apple-imac-27-dropdown-button">
-                                            <li data-modal-target="updateProductModal{{ $loop->iteration }}"
-                                                data-modal-toggle="updateProductModal{{ $loop->iteration }}">
-                                                <a href="#"
-                                                    class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ubah</a>
-                                            </li>
-                                        </ul>
                                         <div class="py-1">
                                             <a href="#" data-modal-target="popup-modal{{ $loop->iteration }}"
                                                 data-modal-toggle="popup-modal{{ $loop->iteration }}"

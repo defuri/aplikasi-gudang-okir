@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class satuanModel extends Model
 {
-    use HasFactory;
+    use HasFactory, AuthorizesRequests;
 
     protected $table = 'satuan';
     protected $fillable = [

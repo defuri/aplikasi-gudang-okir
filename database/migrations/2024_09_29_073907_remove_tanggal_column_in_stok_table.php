@@ -23,8 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('stok', function (Blueprint $table) {
-            //
-            $table->date('tanggal');
+            $table->date('tanggal')->default(now()); // Set a valid default date
         });
     }
 };

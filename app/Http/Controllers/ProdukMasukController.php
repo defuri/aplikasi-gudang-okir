@@ -17,7 +17,7 @@ class ProdukMasukController extends Controller
     {
         //
 
-        $ProdukMasuk = ProdukMasukModel::orderBy('id')->paginate(10);
+        $ProdukMasuk = ProdukMasukModel::orderBy('id', 'desc')->paginate(10);
         $gudang = gudangModel::all();
         $produk = produkModel::all();
 
@@ -108,9 +108,25 @@ class ProdukMasukController extends Controller
                 'jumlah' => ['required', 'integer'],
             ]);
 
-
+            // * cari data yang mau diedit
             $data = ProdukMasukModel::findOrFail($id);
 
+            // * kurangi data sekarang dengan data yang mau diedit
+            StokModel::where('id_gudang', $request->id_gudang)
+                ->where('id_produk', $request->id_produk)
+                ->decrement('stok', $data->jumlah);
+
+            // * tambahkan data sesuai dengan data terbaru yang diinputkan
+            StokModel::where('id_gudang', $request->id_gudang)
+                ->where('id_produk', $request->id_produk)
+                ->increment('stok', $request->jumlah);
+
+            // * update data updated_at di tabel stok
+            StokModel::where('id_gudang', $request->id_gudang)
+                ->where('id_produk', $request->id_produk)
+                ->update(['updated_at' => now()]);
+
+            // * update semua data
             $data->update([
                 'id_gudang' => $request->id_gudang,
                 'id_produk' => $request->id_produk,
@@ -133,6 +149,17 @@ class ProdukMasukController extends Controller
         try {
             $data = ProdukMasukModel::findOrFail($id);
 
+            // * kurangi data dengan data yang mau dihapus
+            StokModel::where('id_gudang', $data->id_gudang)
+                ->where('id_produk', $data->id_produk)
+                ->decrement('stok', $data->jumlah);
+
+            // * update data updated_at di tabel stok
+            StokModel::where('id_gudang', $data->id_gudang)
+                ->where('id_produk', $data->id_produk)
+                ->update(['updated_at' => now()]);
+
+            // * hapus data
             $data->delete();
 
             return to_route('ProdukMasuk.index')->with('success', 'Data berhasil dihapus!');

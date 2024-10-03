@@ -64,6 +64,8 @@ Route::get('/gudang', function () {
 
 Route::resource('/gudang/info', gudangController::class);
 Route::resource('/gudang/stok', stokController::class);
+Route::resource('/gudang/ProdukMasuk', ProdukMasukController::class);
+Route::resource('/gudang/ProdukKeluar', ProdukKeluarController::class);
 
 Route::get('/produksi', function () {
     return view('produksi.index');

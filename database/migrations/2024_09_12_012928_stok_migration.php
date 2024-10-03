@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         // membuat tabel detail gudang
-        Schema::create('stok', function(Blueprint $table) {
+        Schema::create('stok', function (Blueprint $table) {
             $table->id();
-            $table->date('tanggal');
+            $table->date('tanggal')->default(now()); // Set a valid default date
             $table->unsignedBigInteger('id_gudang');
             $table->unsignedBigInteger('id_produk');
             $table->integer('stok');
@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreign('id_gudang')->references('id')->on('gudang')->onDelete('cascade');
             $table->foreign('id_produk')->references('id')->on('produk')->onDelete('cascade');
         });
+
     }
 
     /**

@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
             penggajian::class,
             ProdukMasukSeeder::class,
             ProdukKeluarSeeder::class,
+            PelangganSeeder::class,
         ]);
     }
 }

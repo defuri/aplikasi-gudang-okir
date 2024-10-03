@@ -17,7 +17,7 @@ class ProdukKeluarController extends Controller
     {
         //
 
-        $ProdukKeluar = ProdukKeluarModel::orderBy('id')->paginate(10);
+        $ProdukKeluar = ProdukKeluarModel::orderBy('id', 'desc')->paginate(10);
         $gudang = gudangModel::all();
         $produk = produkModel::all();
 
@@ -127,6 +127,21 @@ class ProdukKeluarController extends Controller
 
             $data = ProdukKeluarModel::findOrFail($id);
 
+            // * tambahkan dulu dengan jumlah data keluar
+            StokModel::where('id_gudang', $data->id_gudang)
+                ->where('id_produk', $data->id_produk)
+                ->increment('stok', $data->jumlah);
+
+            // * kurangi dengan data baru
+            StokModel::where('id_gudang', $request->id_gudang)
+                ->where('id_produk', $request->id_produk)
+                ->decrement('stok', $request->jumlah);
+
+            // * update data updated_at di tabel stok
+            StokModel::where('id_gudang', $request->id_gudang)
+                ->where('id_produk', $request->id_produk)
+                ->update(['updated_at' => now()]);
+
             $data->update([
                 'id_gudang' => $request->id_gudang,
                 'id_produk' => $request->id_produk,
@@ -148,6 +163,16 @@ class ProdukKeluarController extends Controller
         //
         try {
             $data = ProdukKeluarModel::findOrFail($id);
+
+            // * tambah dengan data yang mau dihapus
+            StokModel::where('id_gudang', $data->id_gudang)
+                ->where('id_produk', $data->id_produk)
+                ->increment('stok', $data->jumlah);
+
+            // * update kolom updated_at
+            StokModel::where('id_gudang', $data->id_gudang)
+                ->where('id_produk', $data->id_produk)
+                ->update(['updated_at' => now()]);
 
             $data->delete();
 

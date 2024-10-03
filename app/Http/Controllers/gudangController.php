@@ -17,13 +17,7 @@ class gudangController extends Controller
         //
         $gudang = gudangModel::orderBy('id', 'asc')->paginate(10);
 
-        $user = Auth::user();
-
-        if ($user->id_hak == 1) {
             return view('owner.gudang', compact('gudang'));
-        } else {
-            return view('gudang.infoGudang', compact('gudang'));
-        }
     }
 
     /**
@@ -40,23 +34,6 @@ class gudangController extends Controller
     public function store(Request $request)
     {
         //
-        try {
-            $request->validate([
-                'nama' => 'string|required|max:40',
-                'alamat' => 'string|required',
-            ]);
-
-            gudangModel::create([
-                'nama' => $request->nama,
-                'alamat' => $request->alamat,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]);
-
-            return to_route('gudang.index')->with('success', 'data berhasil disimpan!');
-        } catch (\Throwable $th) {
-            return to_route('gudang.index')->with('error', 'Error, terjadi kesalahan: ' . $th->getMessage());
-        }
     }
 
     /**

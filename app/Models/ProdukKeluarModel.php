@@ -13,7 +13,6 @@ class ProdukKeluarModel extends Model
     protected $table = 'produk_keluar';
 
     protected $fillable = [
-        'waktu',
         'id_gudang',
         'id_produk',
         'jumlah',

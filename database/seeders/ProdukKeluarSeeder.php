@@ -15,7 +15,6 @@ class ProdukKeluarSeeder extends Seeder
      */
     public function run(): void
     {
-        //
         ProdukKeluarModel::truncate();
 
         DB::table('produk_keluar')->insert([
@@ -23,32 +22,30 @@ class ProdukKeluarSeeder extends Seeder
                 'id_gudang' => 1,
                 'id_produk' => 1,
                 'jumlah' => 10,
-                'created_at' =>now(),
+                'waktu' => now(), // Provide a value for 'waktu'
+                'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'id_gudang' => 1,
                 'id_produk' => 2,
                 'jumlah' => 10,
-                'created_at' =>now(),
+                'waktu' => now(), // Provide a value for 'waktu'
+                'created_at' => now(),
                 'updated_at' => now(),
             ],
         ]);
 
-        StokModel::where('id_gudang', 1)
-            ->where('id_produk', 1)
-            ->decrement('stok', 10);
+        // Decrement stock as before
+        StokModel::where('id_gudang', 1)->where('id_produk', 1)->decrement('stok', 10);
+        StokModel::where('id_gudang', 1)->where('id_produk', 2)->decrement('stok', 10);
 
-        StokModel::where('id_gudang', 1)
-            ->where('id_produk', 2)
-            ->decrement('stok', 10);
-
+        // Update timestamps
         StokModel::where(function ($query) {
-            $query->where('id_gudang', 1)
-                ->where('id_produk', 1);
+            $query->where('id_gudang', 1)->where('id_produk', 1);
         })->orWhere(function ($query) {
-            $query->where('id_gudang', 1)
-                ->where('id_produk', 2);
+            $query->where('id_gudang', 1)->where('id_produk', 2);
         })->update(['updated_at' => now()]);
     }
+
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\suplier;
+use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use App\Models\bahanBakuModel;
 use Illuminate\Support\Facades\Auth;
@@ -13,9 +15,14 @@ class bahanBakuController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+     use AuthorizesRequests;
+
     public function index()
     {
         //
+        $this->authorize('viewany', bahanBakuModel::class);
+
         $bahanBaku = bahanBakuModel::with('suplier')->orderBy('id', 'asc')->paginate(10);
         $totalBaris = $bahanBaku->total();
         $suppliers = suplier::get();
@@ -36,7 +43,6 @@ class bahanBakuController extends Controller
     public function create()
     {
         //
-        return view('owner.bahanBaku');
     }
 
     /**
@@ -44,6 +50,8 @@ class bahanBakuController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('store', bahanBakuModel::class);
+
         try {
             $request->validate([
                 'nama' => 'required|string|max:50',

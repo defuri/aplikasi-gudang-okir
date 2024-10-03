@@ -20,7 +20,7 @@ class loginController extends Controller
     {
         try {
             $credentials = $request->validate([
-                'username' => ['required'],
+                'username' => ['required', 'max:20'],
                 'password' => ['required'],
             ]);
 
@@ -41,19 +41,20 @@ class loginController extends Controller
                     case '5';
                         return redirect()->intented('/administrasi');
                     default:
-                        return back()->with('error', 'Error username atau password salah ');
+                        return back()->with('error', 'Error: Username atau password salah ');
                 }
             } else {
-                return back()->with('error', 'Error username atau password salah ');
+                return back()->with('error', 'Error: Username atau password salah ');
             }
         } catch (\Throwable $th) {
-            return redirect('/login')->with('error', 'Error, terjadi kesalahan: ' . $th->getMessage());
+            return redirect('/login')->with('error', 'Error: Terjadi kesalahan: ' . $th->getMessage());
         }
     }
 
     function logout()
     {
         Auth::logout();
+
         return redirect('/');
     }
 }

@@ -72,23 +72,6 @@ class hakController extends Controller
     public function update(Request $request, string $id)
     {
         //
-        try {
-            $request->validate([
-                'nama' => 'required|string|max:20|unique:satuan,nama,' . $id
-            ]);
-
-            $data = hakModel::findOrFail($id);
-
-            $data->update([
-                'nama' => $request->nama,
-                'updated_at' => Carbon::now(),
-            ]);
-
-            return redirect()->route('hak.index')->with('success', 'Data berhasil dirubah!');
-
-        } catch (\Throwable $th) {
-            return redirect()->route('hak.index')->with('error', 'Data gagal dirubah: '.$th->getMessage());
-        }
     }
 
     /**

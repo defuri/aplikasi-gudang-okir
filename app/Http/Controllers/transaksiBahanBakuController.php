@@ -17,7 +17,7 @@ class transaksiBahanBakuController extends Controller
     public function index()
     {
         //
-        $transaksiBahanBaku = transaksiBahanBakuModel::orderBy('id', 'asc')->paginate(10);
+        $transaksiBahanBaku = transaksiBahanBakuModel::orderBy('id', 'desc')->paginate(10);
         $total = $transaksiBahanBaku->total();
         $bahanBaku = bahanBakuModel::all();
         $satuan = satuanModel::all();

@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('produk_masuk', function (Blueprint $table) {
-            //
-            $table->dropColumn('waktu');
+        Schema::create('pelanggan', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama', 40);
+            $table->string('no_tlp', '20');
+            $table->text('alamat');
+            $table->timestamps();
         });
     }
 
@@ -22,9 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('produk_masuk', function (Blueprint $table) {
-            //
-            $table->timestamp('waktu');
-        });
+        Schema::dropIfExists('pelanggan');
     }
 };
