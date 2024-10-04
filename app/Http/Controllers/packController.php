@@ -22,11 +22,7 @@ class packController extends Controller
 
         $user = Auth::user();
 
-        if ($user->id_hak == 1) {
-            return view('owner.pack', compact('pack', 'satuan'));
-        } else {
-            return view('produksi.pack', compact('pack', 'satuan'));
-        }
+        return view('owner.pack', compact('pack', 'satuan'));
     }
 
     /**

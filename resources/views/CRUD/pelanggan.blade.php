@@ -12,7 +12,7 @@
                     <div
                         class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                            Tambah Rasa
+                            Tambah Data
                         </h3>
                         <button type="button"
                             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -27,15 +27,32 @@
                         </button>
                     </div>
                     <!-- Modal body -->
-                    <form action="{{ route('rasa.store') }}" method="POST">
+                    <form action="{{ route('pelanggan.store') }}" method="POST">
                         @csrf
-                        <div class="grid gap-4 mb-4 sm:grid-cols-1">
+                        <div class="grid gap-4 mb-4 sm:grid-cols-2">
                             <div>
                                 <label for="name"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama:</label>
                                 <input type="text" name="nama" id="name"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     placeholder="Masukan nama" required="" required>
+                            </div>
+                            <div>
+                                <label for="no_tlp"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">No
+                                    Telepon:</label>
+                                <input type="text" name="no_tlp" id="no_tlp"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Masukan no telepon" required="" required>
+                            </div>
+                        </div>
+                        <div class="grid gap-4 mb-4 sm:grid-cols-1">
+                            <div>
+                                <label for="alamat"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat:</label>
+                                <input type="text" name="alamat" id="alamat"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Masukan alamat" required="" required>
                             </div>
                         </div>
                         <button type="submit"
@@ -90,7 +107,7 @@
                                     <path clip-rule="evenodd" fill-rule="evenodd"
                                         d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                                 </svg>
-                                Tambah data
+                                Tambah Data
                             </button>
                         </div>
                     </div>
@@ -102,6 +119,8 @@
                                     <th scope="col" class="px-4 py-3">#</th>
                                     <th scope="col" class="px-4 py-3">id</th>
                                     <th scope="col" class="px-4 py-3">nama</th>
+                                    <th scope="col" class="px-4 py-3">no tlp</th>
+                                    <th scope="col" class="px-4 py-3">alamat</th>
                                     <th scope="col" class="px-4 py-3">created at</th>
                                     <th scope="col" class="px-4 py-3">updated at</th>
                                     <th scope="col" class="px-4 py-3">
@@ -110,13 +129,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($rasa as $data)
+                                @foreach ($pelanggan as $data)
                                     <tr class="border-b dark:border-gray-700">
                                         <th scope="row"
                                             class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {{ $loop->iteration }}</th>
                                         <td class="px-4 py-3">{{ $data->id }}</td>
                                         <td class="px-4 py-3">{{ $data->nama }}</td>
+                                        <td class="px-4 py-3">{{ $data->no_tlp }}</td>
+                                        <td class="px-4 py-3">{{ $data->alamat }}</td>
                                         <td class="px-4 py-3">{{ $data->created_at }}</td>
                                         <td class="px-4 py-3">{{ $data->updated_at }}</td>
                                         <td class="px-4 py-3 flex items-center justify-end">
@@ -162,7 +183,7 @@
                                                 <div
                                                     class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                                                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                                        Perbarui Data
+                                                        Update data
                                                     </h3>
                                                     <button type="button"
                                                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -177,22 +198,43 @@
                                                     </button>
                                                 </div>
 
-                                                <form action="{{ route('rasa.update', $data->id) }}" method="POST">
+                                                <form action="{{ route('pelanggan.update', $data->id) }}"
+                                                    method="POST">
                                                     @csrf
                                                     @method('PUT')
-                                                    <div class="grid gap-4 mb-4 sm:grid-cols-1">
+                                                    <div class="grid gap-4 mb-4 sm:grid-cols-2">
                                                         <div>
                                                             <label for="name"
-                                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama:</label>
                                                             <input type="text" name="nama" id="name"
                                                                 value="{{ $data->nama }}"
                                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                                placeholder="Masukan nama">
+                                                                placeholder="Masukan nama" required="" required>
+                                                        </div>
+                                                        <div>
+                                                            <label for="no_tlp"
+                                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">No
+                                                                Telepon:</label>
+                                                            <input type="text" name="no_tlp" id="no_tlp"
+                                                                value="{{ $data->no_tlp }}"
+                                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                                placeholder="Masukan no telepon" required=""
+                                                                required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="grid gap-4 mb-4 sm:grid-cols-1">
+                                                        <div>
+                                                            <label for="alamat"
+                                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat:</label>
+                                                            <input type="text" name="alamat" id="alamat"
+                                                                value="{{ $data->alamat }}"
+                                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                                placeholder="Masukan alamat" required="" required>
                                                         </div>
                                                     </div>
                                                     <div class="flex items-center space-x-4">
                                                         <button type="submit"
-                                                            class="flex items-center text-gray-900 justify-center bg-primary-700 border-gray-200 dark:border-gray-600 border-2 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                                                            class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                                             Perbarui Data
                                                         </button>
                                                     </div>
@@ -230,7 +272,7 @@
                                                         class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                                                         Apa
                                                         anda yakin ingin menghapus data ini?</h3>
-                                                    <form action="{{ route('rasa.destroy', $data->id) }}"
+                                                    <form action="{{ route('pelanggan.destroy', $data->id) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')
@@ -259,11 +301,11 @@
                             Menampilkan
                             <span class="font-semibold text-gray-900 dark:text-white">1-10</span>
                             dari
-                            <span class="font-semibold text-gray-900 dark:text-white">{{ $rasa->total() }}</span>
+                            <span class="font-semibold text-gray-900 dark:text-white">{{ $pelanggan->count() }}</span>
                         </span>
                         <ul class="inline-flex items-stretch -space-x-px">
                             <li>
-                                {{ $rasa->links() }}
+                                {{ $pelanggan->links() }}
                             </li>
                         </ul>
                     </nav>

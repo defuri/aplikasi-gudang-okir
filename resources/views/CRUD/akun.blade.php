@@ -42,9 +42,8 @@
                         <tr>
                             <th scope="col" class="px-4 py-3">#</th>
                             <th scope="col" class="px-4 py-3">id</th>
-                            <th scope="col" class="px-4 py-3">hak</th>
                             <th scope="col" class="px-4 py-3">username</th>
-                            <th scope="col" class="px-4 py-3">password</th>
+                            <th scope="col" class="px-4 py-3">hak</th>
                             <th scope="col" class="px-4 py-3">created at</th>
                             <th scope="col" class="px-4 py-3">updated at</th>
                             <th scope="col" class="px-4 py-3">
@@ -64,7 +63,7 @@
                                         <div
                                             class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                                Tambah user
+                                                Tambah Akun
                                             </h3>
                                             <button type="button"
                                                 class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -123,14 +122,14 @@
                                                 </div>
                                             </div>
                                             <button type="submit"
-                                                class="text-gray-900 dark:text-gray-400 inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                                class="flex items-center text-gray-900 justify-center bg-primary-700 border-gray-200 dark:border-gray-600 border-2 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                                                 <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor"
                                                     viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                                     <path fill-rule="evenodd"
                                                         d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                                         clip-rule="evenodd"></path>
                                                 </svg>
-                                                Tambah data
+                                                Tambah Akun
                                             </button>
                                         </form>
                                     </div>
@@ -148,7 +147,7 @@
                                         <div
                                             class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                                Update akun
+                                                Perbarui Akun
                                             </h3>
                                             <button type="button"
                                                 class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -171,7 +170,7 @@
                                                     <label for="username"
                                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username:</label>
                                                     <input type="text" name="username" id="username" required
-                                                    value="{{ $data->username }}"
+                                                        value="{{ $data->username }}"
                                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                         placeholder="Masukan username" required="">
                                                 </div>
@@ -190,28 +189,31 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                                                <div>
+                                            {{-- * konfirmasi password lama dan baru --}}
+                                            <div class="grid gap-4 mb-4 sm:grid-cols-1">
+                                                {{-- <div>
                                                     <label for="passwordLama"
-                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password lama:</label>
-                                                    <input type="password" name="passwordLama" id="passwordLama" required
+                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password
+                                                        lama:</label>
+                                                    <input type="password" name="passwordLama" id="passwordLama"
+                                                        required
                                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                         placeholder="Masukan password lama" required="">
-                                                </div>
+                                                </div> --}}
                                                 <div>
                                                     <label for="passwordBaru"
                                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password
                                                         baru:</label>
-                                                    <input type="password" name="passwordBaru"
-                                                        id="passwordBaru" required
+                                                    <input type="password" name="passwordBaru" id="passwordBaru"
+                                                        required
                                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                         placeholder="Masukan password baru" required="">
                                                 </div>
                                             </div>
                                             <div class="flex items-center space-x-4">
                                                 <button type="submit"
-                                                    class="text-gray-900 dark:text-gray-400 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                                                    Perbarui divisi
+                                                    class="flex items-center text-gray-900 justify-center bg-primary-700 border-gray-200 dark:border-gray-600 border-2 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                                                    Perbarui Akun
                                                 </button>
                                             </div>
                                         </form>
@@ -269,9 +271,8 @@
                                     class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {{ $loop->iteration }}</th>
                                 <td class="px-4 py-3">{{ $data->id }}</td>
-                                <td class="px-4 py-3">{{ $data->hak->nama }}</td>
                                 <td class="px-4 py-3">{{ $data->username }}</td>
-                                <td class="px-4 py-3">{{ Str::limit($data->password, 13, '...') }}</td>
+                                <td class="px-4 py-3">{{ $data->hak->nama }}</td>
                                 <td class="px-4 py-3">{{ $data->created_at }}</td>
                                 <td class="px-4 py-3">{{ $data->updated_at }}</td>
                                 <td class="px-4 py-3 flex items-center justify-end">

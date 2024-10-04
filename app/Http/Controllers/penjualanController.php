@@ -23,11 +23,7 @@ class penjualanController extends Controller
 
         $user = Auth::user();
 
-        if ($user->id_hak == 1) {
             return view('owner.penjualan', compact('penjualan', 'produk'));
-        } else {
-            return view('lapangan.index', compact('penjualan', 'produk'));
-        }
     }
 
     /**

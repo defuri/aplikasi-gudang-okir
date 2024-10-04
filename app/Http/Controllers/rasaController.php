@@ -21,11 +21,7 @@ class rasaController extends Controller
 
         $user = Auth::user();
 
-        if ($user->id_hak == 1) {
             return view('owner.rasa', compact('rasa'));
-        } else {
-            return view('produksi.rasa', compact('rasa'));
-        }
     }
 
     /**

@@ -11,13 +11,4 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 
 class AppServiceProvider extends ServiceProvider
 {
-    protected $policies = [
-        satuanModel::class => SatuanPolicy::class,
-        bahanBakuModel::class => bahanBakuPolicy::class,
-    ];
-
-    public function boot(): void
-    {
-        $this->registerPolicies();
-    }
 }

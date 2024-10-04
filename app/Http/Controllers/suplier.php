@@ -22,11 +22,7 @@ class suplier extends Controller
 
         $user = Auth::user();
 
-        if ($user->id_hak == 1) {
             return view('owner.suplier', compact('suplier'));
-        } else {
-            return view('produksi.suplier', compact('suplier'));
-        }
     }
 
     /**

@@ -18,6 +18,7 @@ use App\Http\Controllers\jabatanController;
 use App\Http\Controllers\karyawanController;
 use App\Http\Controllers\kategoriController;
 use App\Http\Controllers\bahanBakuController;
+use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\penjualanController;
 use App\Http\Controllers\penggajianController;
 use App\Http\Controllers\ProdukKeluarController;
@@ -57,6 +58,7 @@ Route::resource('/owner/hak', hakController::class);
 Route::resource('/owner/akun', akunController::class);
 Route::resource('/owner/ProdukMasuk', ProdukMasukController::class);
 Route::resource('/owner/ProdukKeluar', ProdukKeluarController::class);
+Route::resource('/owner/pelanggan', PelangganController::class);
 
 Route::get('/gudang', function () {
     return view('gudang.index');

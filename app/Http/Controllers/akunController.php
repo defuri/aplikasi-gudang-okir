@@ -15,7 +15,7 @@ class akunController extends Controller
     public function index()
     {
         //
-        $akun = akunModel::orderBy('id')->paginate(10);
+        $akun = akunModel::orderBy('id', 'desc')->paginate(10);
         $hak = hakModel::all();
 
         return view('owner.akun', compact('akun', 'hak'));
@@ -94,26 +94,27 @@ class akunController extends Controller
                 'id_hak' => 'integer|required',
                 'username' => 'string|required|unique:users,username,' . $id,
                 'passwordBaru' => 'string|required',
-                'passwordLama' => 'string|required',
+                // 'passwordLama' => 'string|required',
             ]);
 
             $akun = akunModel::findOrFail($id);
-            $dataPasswordLama = $akun->password;
-            $inputPasswordLama = $request->passwordLama;
+            // $dataPasswordLama = $akun->password;
+            // $inputPasswordLama = $request->passwordLama;
 
-            if ($dataPasswordLama === $inputPasswordLama) {
+            $akun->update([
+                'username' => $request->username,
+                'id_hak' => $request->id_hak,
+                'password' => bcrypt($request->passwordBaru),
+                'updated_at' => Carbon::now(),
+            ]);
+            return redirect()->route('akun.index')->with('success', 'Data berhasil dirubah!');
 
-                $akun->update([
-                    'username' => $request->username,
-                    'id_hak' => $request->id_hak,
-                    'password' => bcrypt($request->passwordBaru),
-                    'updated_at' => Carbon::now(),
-                ]);
-                return redirect()->route('akun.index')->with('success', 'Data berhasil dirubah!');
+            // * logika konfirmasi password
+            // if ($dataPasswordLama === $inputPasswordLama) {
 
-            } else {
-                return redirect()->route('akun.index')->with('error', 'Data gagal disimpan: Old password input is not the same as in the database');
-            }
+            // } else {
+            //     return redirect()->route('akun.index')->with('error', 'Data gagal disimpan: Old password input is not the same as in the database');
+            // }
 
         } catch (\Throwable $th) {
             return redirect()->route('akun.index')->with('error', 'Data gagal disimpan: ' . $th->getMessage());

@@ -26,11 +26,7 @@ class produkController extends Controller
 
         $user = Auth::user();
 
-        if ($user->id_hak == 1) {
-            return view('owner.produk', compact('rasa', 'kategori', 'pack', 'produk'));
-        } else {
-        return view('produksi.produk', compact('rasa', 'kategori', 'pack', 'produk'));
-        }
+        return view('owner.produk', compact('rasa', 'kategori', 'pack', 'produk'));
     }
 
     /**

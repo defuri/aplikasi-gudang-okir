@@ -67,7 +67,7 @@
                                         <div
                                             class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                                Tambah Transaksi Baru
+                                                Tambah Data
                                             </h3>
                                             <button type="button"
                                                 class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -116,7 +116,8 @@
                                                         <option value="" disabled selected>Pilih karyawan
                                                         </option>
                                                         @foreach ($karyawan as $dataKaryawan)
-                                                            <option value="{{ $dataKaryawan->id }}">{{ $dataKaryawan->nama }}
+                                                            <option value="{{ $dataKaryawan->id }}">
+                                                                {{ $dataKaryawan->nama }}
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -127,13 +128,12 @@
                                                     <input type="number" name="lembur" id="lembur"
                                                         min="0"
                                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                        placeholder="Masukan lembur" required=""
-                                                        value="0"
+                                                        placeholder="Masukan lembur" required="" value="0"
                                                         oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                                 </div>
                                             </div>
                                             <button type="submit"
-                                                class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                                class="flex items-center text-gray-900 justify-center bg-primary-700 border-gray-200 dark:border-gray-600 border-2 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                                                 <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor"
                                                     viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                                     <path fill-rule="evenodd"
@@ -147,7 +147,7 @@
                                 </div>
                             </div>
 
-                            {{-- * update data --}}
+                            {{-- * Perbarui Data --}}
                             <div id="modalUpdate{{ $loop->iteration }}" tabindex="-1" aria-hidden="true"
                                 class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
                                 <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
@@ -172,8 +172,7 @@
                                             </button>
                                         </div>
                                         <!-- Modal body -->
-                                        <form action="{{ route('penggajian.update', $data->id) }}"
-                                            method="POST">
+                                        <form action="{{ route('penggajian.update', $data->id) }}" method="POST">
                                             @csrf
                                             @method('PUT')
                                             <div class="grid gap-4 mb-4 sm:grid-cols-2">
@@ -203,7 +202,8 @@
                                                 </div>
                                                 <div>
                                                     <label for="id_karyawan"
-                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih karyawan</label>
+                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
+                                                        karyawan</label>
                                                     <select id="id_karyawan" name="id_karyawan" required
                                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                         @foreach ($karyawan as $dataKaryawan)
@@ -225,14 +225,14 @@
                                                 </div>
                                             </div>
                                             <button type="submit"
-                                                class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                                class="flex items-center text-gray-900 justify-center bg-primary-700 border-gray-200 dark:border-gray-600 border-2 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                                                 <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor"
                                                     viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                                     <path fill-rule="evenodd"
                                                         d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                                         clip-rule="evenodd"></path>
                                                 </svg>
-                                                Update data
+                                                Perbarui Data
                                             </button>
                                         </form>
                                     </div>
@@ -334,11 +334,9 @@
                 aria-label="Table navigation">
                 <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
                     Menampilkan
-                    <span
-                        class="font-semibold text-gray-900 dark:text-white">1-{{ $penggajian->perPage() }}</span>
+                    <span class="font-semibold text-gray-900 dark:text-white">1-{{ $penggajian->perPage() }}</span>
                     dari
-                    <span
-                        class="font-semibold text-gray-900 dark:text-white">{{ $penggajian->total() }}</span>
+                    <span class="font-semibold text-gray-900 dark:text-white">{{ $penggajian->total() }}</span>
                 </span>
                 <ul class="inline-flex items-stretch -space-x-px">
                     <li>
@@ -356,8 +354,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         const datepickerEl = document.getElementById('default-datepicker');
         if (datepickerEl) {
-            new Datepicker(datepickerEl, {
-            });
+            new Datepicker(datepickerEl, {});
         }
     });
 </script>

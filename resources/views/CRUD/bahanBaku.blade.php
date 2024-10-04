@@ -50,11 +50,9 @@
                 </div>
                 <button type="submit"
                     class="text-gray-900 inline-flex items-center bg-primary-700 border-[1px] border-gray-300 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white dark:bg-primary-600 dark:border-gray-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                    Tambah Bahan Baku Baru
+                    Tambah Data
                 </button>
             </form>
-
-
         </div>
     </div>
 </div>
@@ -100,7 +98,7 @@
                                 <path clip-rule="evenodd" fill-rule="evenodd"
                                     d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                             </svg>
-                            Tambah bahan baku
+                            Tambah Data
                         </button>
                     </div>
                 </div>
@@ -121,8 +119,7 @@
                             <tr class="border-b dark:border-gray-700">
                                 @forelse ($bahanBaku as $data)
                                     {{-- ! ui update data --}}
-                                    <div id="updateBahanBakuModal{{ $data->id }}" tabindex="-1"
-                                        aria-hidden="true"
+                                    <div id="updateBahanBakuModal{{ $data->id }}" tabindex="-1" aria-hidden="true"
                                         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
                                         <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
                                             <!-- Modal content -->
@@ -132,7 +129,7 @@
                                                 <div
                                                     class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                                                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                                        Update bahan baku
+                                                        Perbarui Data
                                                     </h3>
                                                     <button type="button"
                                                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -179,7 +176,7 @@
                                                     <div class="flex items-center space-x-4">
                                                         <button type="submit"
                                                             class="text-gray-600 border-2 border-gray-300 dark:border-gray-600 dark:text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                                                            Update bahan baku
+                                                            Perbarui Data
                                                         </button>
                                                     </div>
                                                 </form>

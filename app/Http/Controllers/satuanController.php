@@ -4,33 +4,22 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\satuanModel;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class satuanController extends Controller
 {
-    use AuthorizesRequests;
-
     public function index()
     {
-        $this->authorize('viewAny', satuanModel::class);
-
         $dataSatuan = satuanModel::orderBy('id', 'asc')->paginate(10);
         $jumlahData = $dataSatuan->total();
 
         $user = Auth::user();
-        if ($user->id_hak == 1) {
-            return view('owner.satuan', compact('dataSatuan', 'jumlahData'));
-        } else {
-            return view('produksi.satuan', compact('dataSatuan', 'jumlahData'));
-        }
+        return view('owner.satuan', compact('dataSatuan', 'jumlahData'));
     }
 
     public function store(Request $request)
     {
-        $this->authorize('store', satuanModel::class);
-
         try {
             $request->validate([
                 'nama' => 'required|string|max:20|unique:satuan,nama'
@@ -51,7 +40,6 @@ class satuanController extends Controller
     public function update(Request $request, string $id)
     {
         $satuan = satuanModel::findOrFail($id);
-        $this->authorize('update', $satuan);
 
         try {
             $request->validate([
@@ -72,7 +60,6 @@ class satuanController extends Controller
     public function destroy(string $id)
     {
         $satuan = satuanModel::findOrFail($id);
-        $this->authorize('delete', $satuan);
 
         try {
             $satuan->delete();

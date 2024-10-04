@@ -34,28 +34,24 @@
                                 <label for="default-datepicker"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal:</label>
                                 <div class="relative max-w-sm">
-                                    <div
-                                        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                            fill="currentColor" viewBox="0 0 20 20">
+                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                             <path
                                                 d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                                         </svg>
                                     </div>
-                                    <input datepicker datepicker-autohide type="text"
-                                        required
-                                        name="tanggal" id="default-datepicker"
-                                        value=""
+                                    <input datepicker datepicker-autohide type="text" required name="tanggal"
+                                        id="default-datepicker" value=""
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="Pilih tanggal">
                                 </div>
                             </div>
                             <div>
                                 <label for="id_produk"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih produk:</label>
-                                <select id="id_produk" name="id_produk"
-                                    required
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
+                                    produk:</label>
+                                <select id="id_produk" name="id_produk" required
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option value="" disabled selected>Pilih produk
                                     </option>
@@ -68,16 +64,14 @@
                             <div>
                                 <label for="jumlah"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah:</label>
-                                <input type="number" name="jumlah" id="jumlah"
-                                    min="1"
-                                    required
+                                <input type="number" name="jumlah" id="jumlah" min="1" required
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     placeholder="Masukan jumlah" required="" required
                                     oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                             </div>
                         </div>
                         <button type="submit"
-                            class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                            class="flex items-center text-gray-900 justify-center bg-primary-700 border-gray-200 dark:border-gray-600 border-2 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                             <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd"
@@ -107,8 +101,7 @@
                                 <div class="relative w-full">
                                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                         <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400"
-                                            fill="currentColor" viewbox="0 0 20 20"
-                                            xmlns="http://www.w3.org/2000/svg">
+                                            fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                             <path fill-rule="evenodd"
                                                 d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
                                                 clip-rule="evenodd" />
@@ -123,7 +116,7 @@
                         <div
                             class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                             <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal"
-                                class="flex items-center justify-center text-gray-900 dark:text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                                class="flex items-center text-gray-900 justify-center bg-primary-700 border-gray-200 dark:border-gray-600 border-2 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                                 <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                     <path clip-rule="evenodd" fill-rule="evenodd"
@@ -207,7 +200,7 @@
                                                 <div
                                                     class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                                                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                                        Update data
+                                                        Perbarui Data
                                                     </h3>
                                                     <button type="button"
                                                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -222,26 +215,29 @@
                                                     </button>
                                                 </div>
 
-                                                <form action="{{ route('penjualan.update', $data->id) }}" method="POST">
+                                                <form action="{{ route('penjualan.update', $data->id) }}"
+                                                    method="POST">
                                                     @csrf
                                                     @method('PUT')
                                                     <div class="grid gap-4 mb-4 sm:grid-cols-2">
                                                         <div>
-                                                            <label for="default-datepickerUpdate{{ $loop->iteration }}"
+                                                            <label
+                                                                for="default-datepickerUpdate{{ $loop->iteration }}"
                                                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal</label>
 
                                                             <div class="relative max-w-sm">
                                                                 <div
                                                                     class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                                                     <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                                                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                                        aria-hidden="true"
+                                                                        xmlns="http://www.w3.org/2000/svg"
                                                                         fill="currentColor" viewBox="0 0 20 20">
                                                                         <path
                                                                             d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                                                                     </svg>
                                                                 </div>
-                                                                <input datepicker datepicker-autohide type="text" required
-                                                                    name="tanggal"
+                                                                <input datepicker datepicker-autohide type="text"
+                                                                    required name="tanggal"
                                                                     id="default-datepickerUpdate{{ $loop->iteration }}"
                                                                     value="{{ date('d-m-Y', strtotime($data->tanggal)) }}"
                                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -274,8 +270,8 @@
                                                     </div>
                                                     <div class="flex items-center space-x-4">
                                                         <button type="submit"
-                                                            class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                                                            Update data
+                                                            class="flex items-center text-gray-900 justify-center bg-primary-700 border-gray-200 dark:border-gray-600 border-2 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                                                            Perbarui Data
                                                         </button>
                                                     </div>
                                                 </form>

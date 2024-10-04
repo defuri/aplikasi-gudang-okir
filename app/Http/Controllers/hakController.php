@@ -73,20 +73,4 @@ class hakController extends Controller
     {
         //
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-        try {
-            $data = hakModel::findOrFail($id);
-            $data->delete();
-
-            return redirect()->route('hak.index')->with('success', 'Data berhasil dihapus!');
-        } catch (\Throwable $th) {
-            return redirect()->route('hak.index')->with('error', 'Data gagal dihapus: '.$th->getMessage());
-        }
-    }
 }

@@ -86,7 +86,7 @@
                             </div>
                         </div>
                         <button type="submit"
-                            class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                            class="flex items-center text-gray-900 justify-center bg-primary-700 border-gray-200 dark:border-gray-600 border-2 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                             <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd"
@@ -131,7 +131,7 @@
                         <div
                             class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                             <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal"
-                                class="flex items-center justify-center text-gray-900 dark:text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                                class="flex items-center text-gray-900 justify-center bg-primary-700 border-gray-200 dark:border-gray-600 border-2 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                                 <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                     <path clip-rule="evenodd" fill-rule="evenodd"
@@ -217,7 +217,7 @@
                                                 <div
                                                     class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                                                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                                        Update data
+                                                        Perbarui Data
                                                     </h3>
                                                     <button type="button"
                                                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -247,7 +247,8 @@
                                                         </div>
                                                         <div>
                                                             <label for="rasa"
-                                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih rasa:</label>
+                                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
+                                                                rasa:</label>
                                                             <select id="rasa" name="id_rasa" required
                                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                                 @foreach ($rasa as $data_rasa)
@@ -260,7 +261,8 @@
                                                         </div>
                                                         <div>
                                                             <label for="kategori"
-                                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih kategori:</label>
+                                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
+                                                                kategori:</label>
                                                             <select id="kategori" name="id_kategori" required
                                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                                 @foreach ($kategori as $data_kategori)
@@ -273,7 +275,8 @@
                                                         </div>
                                                         <div>
                                                             <label for="pack"
-                                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih pack:</label>
+                                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
+                                                                pack:</label>
                                                             <select id="pack" name="id_pack" required
                                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                                 @foreach ($pack as $data_pack)
@@ -287,8 +290,8 @@
                                                         <div>
                                                             <label for="harga"
                                                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Harga:</label>
-                                                            <input type="number" name="harga" id="harga" value="{{ $data->harga }}"
-                                                                min="1"
+                                                            <input type="number" name="harga" id="harga"
+                                                                value="{{ $data->harga }}" min="1"
                                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                                 placeholder="Masukan harga" required=""
                                                                 oninput="this.value = this.value.replace(/[^0-9]/g, '')">
@@ -296,8 +299,8 @@
                                                     </div>
                                                     <div class="flex items-center space-x-4">
                                                         <button type="submit"
-                                                            class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                                                            Update data
+                                                            class="flex items-center text-gray-900 justify-center bg-primary-700 border-gray-200 dark:border-gray-600 border-2 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                                                            Perbarui Data
                                                         </button>
                                                     </div>
                                                 </form>

@@ -24,11 +24,7 @@ class transaksiBahanBakuController extends Controller
 
         $user = Auth::user();
 
-        if ($user->id_hak == 1) {
             return view('owner.transaksiBahanBaku', compact('transaksiBahanBaku', 'total', 'bahanBaku', 'satuan'));
-        } else {
-            return view('produksi.transaksiBahanBaku', compact('transaksiBahanBaku', 'total', 'bahanBaku', 'satuan'));
-        }
     }
 
     /**

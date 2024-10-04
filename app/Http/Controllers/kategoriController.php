@@ -20,11 +20,7 @@ class kategoriController extends Controller
 
         $user = Auth::user();
 
-        if ($user->id_hak == 1) {
             return view('owner.kategori', compact('kategori'));
-        } else {
-            return view('produksi.kategori', compact('kategori'));
-        }
     }
 
     /**

@@ -8,7 +8,7 @@
             <!-- Modal header -->
             <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    Tambah Suplier
+                    Tambah Data
                 </h3>
                 <button type="button"
                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -42,7 +42,7 @@
                             d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                             clip-rule="evenodd"></path>
                     </svg>
-                    Tambah Suplier Baru
+                    Tambah Data
                 </button>
             </form>
         </div>
@@ -89,7 +89,7 @@
                                 <path clip-rule="evenodd" fill-rule="evenodd"
                                     d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                             </svg>
-                            Tambah suplier
+                            Tambah Data
                         </button>
                         {{-- ! fitur masa depan --}}
                         {{-- <div class="flex items-center space-x-3 w-full md:w-auto">
@@ -205,7 +205,7 @@
                                                 <div
                                                     class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                                                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                                        Update suplier
+                                                        Perbarui Data
                                                     </h3>
                                                     <button type="button"
                                                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -237,7 +237,7 @@
                                                     <div class="flex items-center space-x-4">
                                                         <button type="submit"
                                                             class="text-gray-600 border-2 border-gray-300 dark:border-gray-600 dark:text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                                                            Update suplier
+                                                            Perbarui Data
                                                         </button>
                                                     </div>
                                                 </form>
