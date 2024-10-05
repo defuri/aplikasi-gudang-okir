@@ -3,8 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\pelanggan;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class PelangganSeeder extends Seeder
 {
@@ -14,7 +15,9 @@ class PelangganSeeder extends Seeder
     public function run(): void
     {
         //
+        Schema::disableForeignKeyConstraints();
         pelanggan::truncate();
+        Schema::enableForeignKeyConstraints();
         pelanggan::factory()->count(5)->create();
     }
 }

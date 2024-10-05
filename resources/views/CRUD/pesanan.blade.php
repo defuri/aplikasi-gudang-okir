@@ -44,7 +44,7 @@
                         <tr>
                             <th scope="col" class="px-4 py-3">#</th>
                             <th scope="col" class="px-4 py-3">id</th>
-                            <th scope="col" class="px-4 py-3">nama</th>
+                            <th scope="col" class="px-4 py-3">pelanggan</th>
                             <th scope="col" class="px-4 py-3">created at</th>
                             <th scope="col" class="px-4 py-3">updated at</th>
                             <th scope="col" class="px-4 py-3">
@@ -53,7 +53,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($dataSatuan as $data)
+                        @forelse ($pesanan as $data)
                             {{-- * ================================================================================================================================ --}}
 
                             {{-- ! modal tambah data --}}
@@ -61,7 +61,7 @@
                                 class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
                                 <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
                                     <!-- Modal content -->
-                                    <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+                                    <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 max-h-[450px] overflow-y-auto">
                                         <!-- Modal header -->
                                         <div
                                             class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
@@ -81,16 +81,60 @@
                                             </button>
                                         </div>
                                         <!-- Modal body -->
-                                        <form action="{{ route('satuan.store') }}" method="POST">
+                                        <form action="{{ route('pesanan.store') }}" method="POST">
                                             @csrf
                                             <div class="grid gap-4 mb-4 sm:grid-cols-1">
                                                 <div>
-                                                    <label for="name"
-                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
-                                                    <input type="text" name="nama" id="name" required
-                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                        placeholder="Masukan nama satuan" required="">
+                                                    <label for="id_pelanggan"
+                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
+                                                        pelanggan:</label>
+                                                    <select id="id_pelanggan" name="id_pelanggan" required
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                        @foreach ($pelanggan as $DataPelanggan)
+                                                            <option value="{{ $DataPelanggan->id }}"
+                                                                @if ($DataPelanggan->id == $data->id_pelanggan) selected @endif>
+                                                                {{ $DataPelanggan->nama }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
+                                            </div>
+                                            {{-- * 2 input --}}
+                                            <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                                                {{-- * input id produk --}}
+                                                <div>
+                                                    <label for="id_produk"
+                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
+                                                        produk:</label>
+                                                    <select id="id_produk" name="id_produk" required
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                        @foreach ($produk as $dataProduk)
+                                                            <option value="{{ $dataProduk->id }}"
+                                                                @if ($dataProduk->id == $data->id_produk) selected @endif>
+                                                                {{ $dataProduk->nama }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                {{-- * input jumlah yang dibeli --}}
+                                                <div class="grid gap-4 sm:grid-cols-1">
+                                                    <div>
+                                                        <label for="jumlah"
+                                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah:</label>
+                                                        <input type="number" name="jumlah" id="jumlah"
+                                                            min="1" value="{{ $data->jumlah }}"
+                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                            placeholder="Masukan jumlah" required="" required
+                                                            oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {{-- * tempat untuk menambahkan inputan --}}
+                                            <div id="TempatProduk">
+                                            </div>
+                                            {{-- * paragraf jang nga nambahan inputan produk deui --}}
+                                            <div>
+                                                <p id="TambahProduk" class="text-sm cursor-pointer text-right mb-4 text-gray-900 dark:text-white">Tambah Produk</p>
                                             </div>
                                             <button type="submit"
                                                 class="flex items-center border-2 border-gray-200 dark:border-gray-600 justify-center text-gray-900 dark:text-gray-300 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
@@ -192,7 +236,8 @@
                                                     Ya, saya yakin
                                                 </button>
                                             </form>
-                                            <button data-modal-hide="popup-modal{{ $loop->iteration }}" type="button"
+                                            <button data-modal-hide="popup-modal{{ $loop->iteration }}"
+                                                type="button"
                                                 class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Tidak,
                                                 batalkan</button>
                                         </div>
@@ -208,7 +253,7 @@
                                     class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {{ $loop->iteration }}</th>
                                 <td class="px-4 py-3">{{ $data->id }}</td>
-                                <td class="px-4 py-3">{{ $data->nama }}</td>
+                                <td class="px-4 py-3">{{ $data->pelanggan->nama }}</td>
                                 <td class="px-4 py-3">{{ $data->created_at }}</td>
                                 <td class="px-4 py-3">{{ $data->updated_at }}</td>
                                 <td class="px-4 py-3 flex items-center justify-end">
@@ -251,14 +296,19 @@
                     Menampilkan
                     <span class="font-semibold text-gray-900 dark:text-white">1-10</span>
                     dari
-                    <span class="font-semibold text-gray-900 dark:text-white">{{ $jumlahData }}</span>
+                    <span class="font-semibold text-gray-900 dark:text-white">{{ count($pesanan) }}</span>
                 </span>
                 <ul class="inline-flex items-stretch -space-x-px">
                     <li>
-                        {{ $dataSatuan->links() }}
+                        {{ $pesanan->links() }}
                     </li>
                 </ul>
             </nav>
         </div>
     </div>
 </section>
+
+<script src="{{ asset('js/pesanan.js') }}"></script>
+<script>
+    const produk = @json($produk);
+</script>

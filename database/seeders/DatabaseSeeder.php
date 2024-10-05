@@ -38,6 +38,8 @@ class DatabaseSeeder extends Seeder
             ProdukMasukSeeder::class,
             ProdukKeluarSeeder::class,
             PelangganSeeder::class,
+            PesananSeeder::class,
+            DetailPesananSeeder::class,
         ]);
     }
 }

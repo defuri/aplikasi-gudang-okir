@@ -176,8 +176,8 @@
                     </button>
                     <ul id="MenuPemesanan" class="hidden py-2 space-y-2">
                         <li>
-                            <a href="/owner/stok"
-                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pemesanan</a>
+                            <a href="/owner/pesanan"
+                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pesanan</a>
                         </li>
                         <li>
                             <a href="/owner/ProdukMasuk"
@@ -187,10 +187,6 @@
                         <li>
                             <a href="/owner/pelanggan"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pelanggan</a>
-                        </li>
-                        <li>
-                            <a href="/owner/gudang"
-                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Gudang</a>
                         </li>
                     </ul>
                 </li>

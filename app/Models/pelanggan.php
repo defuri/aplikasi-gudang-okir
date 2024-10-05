@@ -26,6 +26,6 @@ class pelanggan extends Model
      */
     public function pelanggan(): HasMany
     {
-        return $this->hasMany(pelanggan::class, 'id_pelanggan', 'id');
+        return $this->hasMany(pelanggan::class, 'id_pelanggan');
     }
 }

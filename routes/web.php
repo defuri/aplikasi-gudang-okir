@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PesananController;
 use App\Http\Middleware\isAdmin;
 use App\Http\Controllers\suplier;
 use Illuminate\Support\Facades\Auth;
@@ -59,6 +60,7 @@ Route::resource('/owner/akun', akunController::class);
 Route::resource('/owner/ProdukMasuk', ProdukMasukController::class);
 Route::resource('/owner/ProdukKeluar', ProdukKeluarController::class);
 Route::resource('/owner/pelanggan', PelangganController::class);
+Route::resource('/owner/pesanan', PesananController::class);
 
 Route::get('/gudang', function () {
     return view('gudang.index');
