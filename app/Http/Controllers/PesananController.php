@@ -36,33 +36,52 @@ class PesananController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        try {
-            dd($request->all());
+        dd($request->input('jumlah'));
 
-            $request->validate([
-                'id_pelanggan' => ['required', 'integer'],
-                'id_produk' => ['required', 'integer'],
-                'jumlah' => ['required', 'integer'],
-            ]);
+        // try {
+        //     $request->validate([
+        //         'id_pelanggan' => ['required', 'integer'],
+        //         'id_produk' => ['required', 'array'],
+        //         'id_produk.*' => ['required', 'integer'],
+        //         'jumlah' => ['required', 'array'],
+        //         'jumlah.*' => ['required', 'integer'],
+        //     ]);
 
-            $harga = produkModel::find($request->id_produk)->harga;
+        //     // Simpan pesanan
+        //     $pesanan = new Pesanan;
+        //     $pesanan->pelanggan_id = $request->id_pelanggan;
+        //     $pesanan->created_at = now();
+        //     $pesanan->updated_at = now();
+        //     $pesanan->save();
 
-            $pesanan = new Pesanan;
-            $pesanan->id_pelanggan = $request->id_pelanggan;
-            $pesanan->created_at = now();
-            $pesanan->updated_at = now();
-            $pesanan->save();
+        //     // Ambil ID pesanan terbaru
+        //     $IDPesanan = $pesanan->id;
 
-            $DetailPesanan = new DetailPesanan;
+        //     // Loop melalui produk dan jumlah
+        //     foreach ($request->id_produk as $index => $produk) {
+        //         // Ambil harga berdasarkan ID produk
+        //         $harga = produkModel::where('id', $produk)->value('harga');
 
-            DetailPesanan::create();
+        //         // Ambil jumlah yang sesuai dengan indeks produk
+        //         $jumlah = $request->jumlah[$index];
 
-            return redirect()->route('pesanan.index')->with('success', 'Data berhasil disimpan');
-        } catch (\Throwable $th) {
-            return redirect()->route('pesanan.index')->with('error', 'Data gagal disimpan: ' . $th->getMessage());
-        }
+        //         // Simpan detail pesanan
+        //         $detail_pesanan = new DetailPesanan;
+        //         $detail_pesanan->pesanan_id = $IDPesanan;
+        //         $detail_pesanan->produk_id = $produk;
+        //         $detail_pesanan->jumlah = $jumlah;
+        //         $detail_pesanan->total = $harga * $jumlah;
+        //         $detail_pesanan->created_at = now();
+        //         $detail_pesanan->updated_at = now();
+        //         $detail_pesanan->save();
+        //     }
+
+        //     return redirect()->route('pesanan.index')->with('success', 'Data berhasil disimpan');
+        // } catch (\Throwable $th) {
+        //     return redirect()->route('pesanan.index')->with('error', 'Data gagal disimpan: ' . $th->getMessage());
+        // }
     }
+
 
     /**
      * Display the specified resource.
