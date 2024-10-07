@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DetailPesanan;
 use App\Models\pelanggan;
 use App\Models\Pesanan;
 use App\Models\produkModel;
@@ -16,12 +15,33 @@ class PesananController extends Controller
     public function index()
     {
         //
+        $count = 1;
         $pesanan = Pesanan::orderBy('id', 'desc')->paginate(10);
         $pelanggan = pelanggan::all();
         $produk = produkModel::all();
 
-        return view('owner.pesanan', compact('pesanan', 'pelanggan', 'produk'));
+        return view('owner.pesanan', compact('pesanan', 'pelanggan', 'produk', 'count'));
     }
+
+    public function tambahProduk(Request $request)
+    {
+        // Ambil jumlah produk saat ini
+        $count = $request->count;
+
+        // Tambah 1 pada count
+        $count++;
+
+        // Ambil produk dari database
+        $produk = produkModel::all();
+
+        // Render ulang view dengan data baru
+        return response()->json([
+            'view' => view('partials.produk', compact('count', 'produk'))->render(),
+            'count' => $count
+        ]);
+    }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -36,7 +56,7 @@ class PesananController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->input('jumlah'));
+        dd($request->all());
 
         // try {
         //     $request->validate([

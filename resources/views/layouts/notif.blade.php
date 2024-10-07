@@ -21,7 +21,6 @@
     </button>
 </div>
 
-{{-- ! notif terjadi kesalahan --}}
 <div class="{{ session('error') ? 'flex' : 'hidden' }}  items-center p-4 mb-4 text-sm text-red-500 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
     role="alert" id="notifGalat">
     <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"

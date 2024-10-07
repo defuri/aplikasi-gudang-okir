@@ -161,7 +161,7 @@
                                                 <span class="sr-only">Close modal</span>
                                             </button>
                                         </div>
-                                        <!-- Modal body -->
+                                        {{-- * update data --}}
                                         <form action="{{ route('akun.update', $data->id) }}" method="POST">
                                             @csrf
                                             @method('PUT')
@@ -190,24 +190,22 @@
                                                 </div>
                                             </div>
                                             {{-- * konfirmasi password lama dan baru --}}
-                                            <div class="grid gap-4 mb-4 sm:grid-cols-1">
-                                                {{-- <div>
-                                                    <label for="passwordLama"
-                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password
-                                                        lama:</label>
-                                                    <input type="password" name="passwordLama" id="passwordLama"
-                                                        required
-                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                        placeholder="Masukan password lama" required="">
-                                                </div> --}}
+                                            <div class="grid gap-4 mb-4 sm:grid-cols-2">
                                                 <div>
                                                     <label for="passwordBaru"
                                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password
                                                         baru:</label>
                                                     <input type="password" name="passwordBaru" id="passwordBaru"
-                                                        required
                                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                        placeholder="Masukan password baru" required="">
+                                                        placeholder="Konfirmasi password baru">
+                                                </div>
+                                                <div>
+                                                    <label for="konfirmasiPasswordBaru"
+                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Konfirmasi password
+                                                        baru:</label>
+                                                    <input type="password" name="konfirmasiPasswordBaru" id="konfirmasiPasswordBaru"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                        placeholder="Konfirmasi password baru">
                                                 </div>
                                             </div>
                                             <div class="flex items-center space-x-4">

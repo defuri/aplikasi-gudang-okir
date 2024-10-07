@@ -61,6 +61,7 @@ Route::resource('/owner/ProdukMasuk', ProdukMasukController::class);
 Route::resource('/owner/ProdukKeluar', ProdukKeluarController::class);
 Route::resource('/owner/pelanggan', PelangganController::class);
 Route::resource('/owner/pesanan', PesananController::class);
+Route::post('/count', [PesananController::class, 'tambahProduk'])->name('count');
 
 Route::get('/gudang', function () {
     return view('gudang.index');

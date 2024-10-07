@@ -3,8 +3,6 @@
 
         @include('layouts.notif')
 
-        {{-- * =========================================================================================================================================== --}}
-
         <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
             <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                 <div class="w-full md:w-1/2">
@@ -87,49 +85,51 @@
                                         <div class="max-h-[350px] overflow-y-auto pr-5">
                                             <form action="{{ route('pesanan.store') }}" method="POST" id="pesananForm">
                                                 @csrf
-                                                <div id="produkContainer">
-                                                    <div class="mb-4">
-                                                        <label
-                                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
-                                                            pelanggan:</label>
-                                                        <select name="pelanggan_id[]" required
-                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                            <option value="" disabled selected>Pilih pelanggan
+                                                <div class="mb-4">
+                                                    <label
+                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
+                                                        pelanggan:</label>
+                                                    <select name="pelanggan_id" required
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                        <option value="" disabled selected>Pilih pelanggan
+                                                        </option>
+                                                        @foreach ($pelanggan as $DataPelanggan)
+                                                            <option value="{{ $DataPelanggan->id }}">
+                                                                {{ $DataPelanggan->nama }}
                                                             </option>
-                                                            @foreach ($pelanggan as $DataPelanggan)
-                                                                <option value="{{ $DataPelanggan->id }}">
-                                                                    {{ $DataPelanggan->nama }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                                                        <div>
-                                                            <label
-                                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
-                                                                produk:</label>
-                                                            <select name="produk_id[]" required
-                                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                                <option value="" disabled selected>Pilih produk
-                                                                </option>
-                                                                @foreach ($produk as $DataProduk)
-                                                                    <option value="{{ $DataProduk->id }}">
-                                                                        {{ $DataProduk->nama }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div>
-                                                            <label
-                                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah:</label>
-                                                            <input type="number" name="jumlah[]" min="1"
-                                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                                placeholder="Masukan jumlah" required="" required
-                                                                oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                                                        </div>
-                                                    </div>
-                                                    <div id="tambahan"></div>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
+                                                <div id="produk">
+                                                    @for ($i = 0; $i < $count; $i++)
+                                                        <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                                                            <div>
+                                                                <label
+                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
+                                                                    produk:</label>
+                                                                <select name="produk_id[]" required
+                                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                                    <option value="" disabled selected>Pilih
+                                                                        produk</option>
+                                                                    @foreach ($produk as $DataProduk)
+                                                                        <option value="{{ $DataProduk->id }}">
+                                                                            {{ $DataProduk->nama }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                            <div>
+                                                                <label
+                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah:</label>
+                                                                <input type="number" name="jumlah[]" min="1"
+                                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                                    placeholder="Masukan jumlah" required
+                                                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                                            </div>
+                                                        </div>
+                                                    @endfor
+                                                </div>
+                                                <input type="hidden" id="count" name="count"
+                                                    value="{{ $count }}">
                                                 <p id="TambahProduk"
                                                     class="text-sm cursor-pointer text-right mt-4 text-gray-900 dark:text-white">
                                                     Tambah Produk</p>
@@ -185,16 +185,14 @@
                                                     Ya, saya yakin
                                                 </button>
                                             </form>
-                                            <button data-modal-hide="popup-modal{{ $loop->iteration }}" type="button"
+                                            <button data-modal-hide="popup-modal{{ $loop->iteration }}"
+                                                type="button"
                                                 class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Tidak,
                                                 batalkan</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-
-                            {{-- * ================================================================================================================================ --}}
 
                             <tr class="border-b dark:border-gray-700">
                                 <th scope="row"
@@ -219,8 +217,7 @@
                                         class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
                                             aria-labelledby="apple-imac-27-dropdown-button">
-                                            <li data-modal-target="updateProductModal{{ $loop->iteration }}"
-                                                data-modal-toggle="updateProductModal{{ $loop->iteration }}">
+                                            <li data-modal-target="" data-modal-toggle="">
                                                 <a href="#"
                                                     class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ubah</a>
                                             </li>
@@ -256,7 +253,5 @@
     </div>
 </section>
 
+<script src="{{ asset('js/jquery.js') }}"></script>
 <script src="{{ asset('js/pesanan.js') }}"></script>
-<script>
-    const produk = @json($produk);
-</script>

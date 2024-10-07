@@ -24,7 +24,7 @@ class hakSeeder extends Seeder
 
         DB::table('hak')->insert([
             [
-                'nama' => 'owner',
+                'nama' => 'super admin',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
