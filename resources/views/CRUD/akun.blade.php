@@ -3,7 +3,8 @@
 
         @include('layouts.notif')
 
-        <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+        <div
+            class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
             <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                 <div class="w-full md:w-1/2">
                     <form class="flex items-center">
@@ -201,9 +202,11 @@
                                                 </div>
                                                 <div>
                                                     <label for="konfirmasiPasswordBaru"
-                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Konfirmasi password
+                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Konfirmasi
+                                                        password
                                                         baru:</label>
-                                                    <input type="password" name="konfirmasiPasswordBaru" id="konfirmasiPasswordBaru"
+                                                    <input type="password" name="konfirmasiPasswordBaru"
+                                                        id="konfirmasiPasswordBaru"
                                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                         placeholder="Konfirmasi password baru">
                                                 </div>

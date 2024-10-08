@@ -1,7 +1,7 @@
 @extends("layouts.owner")
 @section("namaHalaman", "Produk")
 @section("namaOperator", "Owner")
-@section("judul", "Data produk")
+@section("judul", "Data Produk")
 
 @section("content")
     @include("layouts.breadcrumb")

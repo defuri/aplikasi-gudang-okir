@@ -3,7 +3,8 @@
 
         @include('layouts.notif')
 
-        <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+        <div
+            class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
             <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                 <div class="w-full md:w-1/2">
                     <form class="flex items-center">
@@ -52,8 +53,6 @@
                     </thead>
                     <tbody>
                         @forelse ($pesanan as $data)
-                            {{-- * ================================================================================================================================ --}}
-
                             {{-- ! modal tambah data --}}
                             <div id="defaultModal" tabindex="-1" aria-hidden="true"
                                 class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
