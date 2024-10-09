@@ -37,6 +37,108 @@
                     </button>
                 </div>
             </div>
+
+            {{-- ! modal tambah data --}}
+            <div id="defaultModal" tabindex="-1" aria-hidden="true"
+                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
+                <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+                    <!-- Modal content -->
+                    <div
+                        class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 max-h-[450px] overflow-hidden">
+                        <!-- Modal header -->
+                        <div class="sticky top-0 z-10 bg-white dark:bg-gray-800 border-b sm:mb-5 dark:border-gray-600">
+                            <div class="flex justify-between items-center pb-4">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                    Tambah Data
+                                </h3>
+                                <button type="button"
+                                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                    data-modal-toggle="defaultModal">
+                                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span class="sr-only">Close modal</span>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="max-h-[350px] overflow-y-auto pr-5">
+                            <form action="{{ route('pesanan.store') }}" method="POST" id="pesananForm">
+                                @csrf
+                                <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                                    <div>
+                                        <label
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
+                                            pelanggan:</label>
+                                        <select name="pelanggan_id" required
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                            <option value="" disabled selected>Pilih pelanggan
+                                            </option>
+                                            @foreach ($pelanggan as $DataPelanggan)
+                                                <option value="{{ $DataPelanggan->id }}">
+                                                    {{ $DataPelanggan->nama }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="tanggal"
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal</label>
+
+                                        <div class="relative max-w-sm">
+                                            <div
+                                                class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                                </svg>
+                                            </div>
+                                            <input datepicker datepicker-autohide type="text" required name="tanggal"
+                                                id="tanggal"
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                placeholder="Pilih tanggal">
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-900 dark:text-white mb-2">Pilih Produk:</p>
+                                {{-- * input produk dan jumlahnya --}}
+                                @foreach ($produk as $DataProduk)
+                                    <div class="ml-2">
+                                        <div class="flex items-center mb-3 select-none">
+                                            <input id="CheckboxProduk{{ $DataProduk->id }}" type="checkbox"
+                                                value=""
+                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                            <label for="CheckboxProduk{{ $DataProduk->id }}"
+                                                class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $DataProduk->nama }}</label>
+                                        </div>
+                                        <input type="number" name="jumlah[{{ $DataProduk->id }}]"
+                                            id="JumlahProduk{{ $DataProduk->id }}" min="1"
+                                            class="hidden mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                            placeholder="Masukan jumlah" required=""
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                    </div>
+                                @endforeach
+                                <button type="submit"
+                                    class="flex items-center text-gray-900 justify-center bg-primary-700 border-gray-200 dark:border-gray-600 border-2 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                                    <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    Tambah data
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -44,6 +146,7 @@
                             <th scope="col" class="px-4 py-3">#</th>
                             <th scope="col" class="px-4 py-3">id</th>
                             <th scope="col" class="px-4 py-3">pelanggan</th>
+                            <th scope="col" class="px-4 py-3">tanggal</th>
                             <th scope="col" class="px-4 py-3">created at</th>
                             <th scope="col" class="px-4 py-3">updated at</th>
                             <th scope="col" class="px-4 py-3">
@@ -53,101 +156,6 @@
                     </thead>
                     <tbody>
                         @forelse ($pesanan as $data)
-                            {{-- ! modal tambah data --}}
-                            <div id="defaultModal" tabindex="-1" aria-hidden="true"
-                                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
-                                <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-                                    <!-- Modal content -->
-                                    <div
-                                        class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 max-h-[450px] overflow-hidden">
-                                        <!-- Modal header -->
-                                        <div
-                                            class="sticky top-0 z-10 bg-white dark:bg-gray-800 border-b sm:mb-5 dark:border-gray-600">
-                                            <div class="flex justify-between items-center pb-4">
-                                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                                    Tambah Data
-                                                </h3>
-                                                <button type="button"
-                                                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                                    data-modal-toggle="defaultModal">
-                                                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor"
-                                                        viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fill-rule="evenodd"
-                                                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                                            clip-rule="evenodd"></path>
-                                                    </svg>
-                                                    <span class="sr-only">Close modal</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <!-- Modal body -->
-                                        <div class="max-h-[350px] overflow-y-auto pr-5">
-                                            <form action="{{ route('pesanan.store') }}" method="POST" id="pesananForm">
-                                                @csrf
-                                                <div class="mb-4">
-                                                    <label
-                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
-                                                        pelanggan:</label>
-                                                    <select name="pelanggan_id" required
-                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                        <option value="" disabled selected>Pilih pelanggan
-                                                        </option>
-                                                        @foreach ($pelanggan as $DataPelanggan)
-                                                            <option value="{{ $DataPelanggan->id }}">
-                                                                {{ $DataPelanggan->nama }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div id="produk">
-                                                    @for ($i = 0; $i < $count; $i++)
-                                                        <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                                                            <div>
-                                                                <label
-                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
-                                                                    produk:</label>
-                                                                <select name="produk_id[]" required
-                                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                                    <option value="" disabled selected>Pilih
-                                                                        produk</option>
-                                                                    @foreach ($produk as $DataProduk)
-                                                                        <option value="{{ $DataProduk->id }}">
-                                                                            {{ $DataProduk->nama }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                            <div>
-                                                                <label
-                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah:</label>
-                                                                <input type="number" name="jumlah[]" min="1"
-                                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                                    placeholder="Masukan jumlah" required
-                                                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                                                            </div>
-                                                        </div>
-                                                    @endfor
-                                                </div>
-                                                <input type="hidden" id="count" name="count"
-                                                    value="{{ $count }}">
-                                                <p id="TambahProduk"
-                                                    class="text-sm cursor-pointer text-right mt-4 text-gray-900 dark:text-white">
-                                                    Tambah Produk</p>
-                                                <button type="submit"
-                                                    class="flex items-center text-gray-900 justify-center bg-primary-700 border-gray-200 dark:border-gray-600 border-2 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
-                                                    <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor"
-                                                        viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fill-rule="evenodd"
-                                                            d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                                            clip-rule="evenodd"></path>
-                                                    </svg>
-                                                    Tambah data
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                             {{-- ! modal delete --}}
                             <div id="popup-modal{{ $loop->iteration }}" tabindex="-1"
                                 class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -175,7 +183,7 @@
                                             </svg>
                                             <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Apa
                                                 anda yakin ingin menghapus data ini?</h3>
-                                            <form action="{{ route('satuan.destroy', $data->id) }}" method="post">
+                                            <form action="{{ route('pesanan.destroy', $data->id) }}" method="post">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button data-modal-hide="popup-modal{{ $loop->iteration }}"
@@ -199,6 +207,7 @@
                                     {{ $loop->iteration }}</th>
                                 <td class="px-4 py-3">{{ $data->id }}</td>
                                 <td class="px-4 py-3">{{ $data->pelanggan->nama }}</td>
+                                <td class="px-4 py-3">{{ $data->tanggal }}</td>
                                 <td class="px-4 py-3">{{ $data->created_at }}</td>
                                 <td class="px-4 py-3">{{ $data->updated_at }}</td>
                                 <td class="px-4 py-3 flex items-center justify-end">
@@ -218,7 +227,7 @@
                                             aria-labelledby="apple-imac-27-dropdown-button">
                                             <li data-modal-target="" data-modal-toggle="">
                                                 <a href="#"
-                                                    class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ubah</a>
+                                                    class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Tampil</a>
                                             </li>
                                         </ul>
                                         <div class="py-1">
@@ -252,5 +261,14 @@
     </div>
 </section>
 
+<script src="{{ asset('js/dateTimePicker.js') }}"></script>
 <script src="{{ asset('js/jquery.js') }}"></script>
 <script src="{{ asset('js/pesanan.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const datepickerEl = document.getElementById('tanggal');
+        if (datepickerEl) {
+            new Datepicker(datepickerEl, {});
+        }
+    });
+</script>

@@ -1,56 +1,49 @@
 $(document).ready(function () {
-    $('#TambahProduk').click(function (e) {
-        e.preventDefault();
+    let productsArray = [];
 
-        // Ambil nilai count saat ini
-        var count = $('#count').val();
+    $.ajax({
+        url: '/get-products',
+        type: 'GET',
+        success: function (data) {
+            productsArray = data;
 
-        // Kirim request Ajax ke server
-        $.ajax({
-            url: '{{ route("count") }}',
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}',
-                count: count
-            },
-            success: function (response) {
-                // Update div produk dengan view baru
-                $('#produk').html(response.view);
+            let checkboxes = productsArray.map(product => document.querySelector(`#CheckboxProduk${product.id}`));
+            let jumlahs = productsArray.map(product => document.querySelector(`#JumlahProduk${product.id}`));
 
-                // Update count
-                $('#count').val(response.count);
-            },
-            error: function (xhr) {
-                console.log(xhr.responseText);
-            }
-        });
+            const updateJumlahVisibility = () => {
+                checkboxes.forEach((checkbox, index) => {
+                    if (checkbox.checked) {
+                        jumlahs[index].classList.remove('hidden');
+                        jumlahs[index].required = true;
+                    } else {
+                        jumlahs[index].classList.add('hidden');
+                        jumlahs[index].required = false;
+                    }
+                });
+            };
+
+            setInterval(updateJumlahVisibility, 100);
+        },
+        error: function (xhr, status, error) {
+            console.log('Terjadi kesalahan: ' + error);
+        }
     });
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('defaultModal');
+    const closeButton = modal.querySelector('[data-modal-toggle="defaultModal"]');
+    const form = document.getElementById('pesananForm');
 
-// * bagian untuk membersihkan isi modal
-
-const modal = document.getElementById('defaultModal');
-const closeButton = document.querySelector('[data-modal-toggle="defaultModal"]');
-const form = modal.querySelector('form');
-const productContainer = document.getElementById('tambahan');
-
-function resetModal() {
-    form.reset();
-
-    productContainer.innerHTML = '';
-}
-
-closeButton.addEventListener('click', resetModal);
-
-window.addEventListener('click', function (event) {
-    if (event.target === modal) {
+    closeButton.addEventListener('click', () => {
+        modal.classList.add('hidden');
         form.reset();
-    }
-});
+    });
 
-document.addEventListener('keydown', function (event) {
-    if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
-        resetModal();
-    }
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.classList.add('hidden');
+            form.reset();
+        }
+    });
 });

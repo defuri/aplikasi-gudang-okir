@@ -88,3 +88,6 @@ Route::resource('/produksi/produk', produkController::class);
 Route::get('/lapangan', function () {
     return view('lapangan.index');
 });
+
+// * ajax
+Route::get('/get-products', [produkController::class, 'getProducts']);

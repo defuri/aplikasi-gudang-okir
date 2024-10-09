@@ -15,6 +15,12 @@ class produkController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function getProducts()
+    {
+        $products = produkModel::all();
+        return response()->json($products);
+    }
+
     public function index()
     {
         //
