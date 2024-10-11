@@ -64,7 +64,7 @@
                                 </button>
                             </div>
                         </div>
-                        <!-- Modal body -->
+                        {{-- * Modal Input Data --}}
                         <div class="max-h-[350px] overflow-y-auto pr-5">
                             <form action="{{ route('pesanan.store') }}" method="POST" id="pesananForm">
                                 @csrf
@@ -155,15 +155,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($pesanan as $data)
-                            {{-- ! modal delete --}}
-                            <div id="popup-modal{{ $loop->iteration }}" tabindex="-1"
+                        @foreach ($pesanan as $data)
+                            {{-- * popup untuk menghapus data --}}
+                            <div id="ModalKonfirmasiHapus{{ $loop->iteration }}" tabindex="-1"
                                 class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                 <div class="relative p-4 w-full max-w-md max-h-full">
                                     <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                                         <button type="button"
                                             class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                            data-modal-hide="popup-modal{{ $loop->iteration }}">
+                                            data-modal-hide="ModalKonfirmasiHapus{{ $loop->iteration }}">
                                             <svg class="w-3 h-3" aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg" fill="none"
                                                 viewBox="0 0 14 14">
@@ -186,16 +186,120 @@
                                             <form action="{{ route('pesanan.destroy', $data->id) }}" method="post">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button data-modal-hide="popup-modal{{ $loop->iteration }}"
+                                                <button data-modal-hide="ModalKonfirmasiHapus{{ $loop->iteration }}"
                                                     type="submit"
                                                     class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                                                     Ya, saya yakin
                                                 </button>
                                             </form>
-                                            <button data-modal-hide="popup-modal{{ $loop->iteration }}"
+                                            <button data-modal-hide="ModalKonfirmasiHapus{{ $loop->iteration }}"
                                                 type="button"
                                                 class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Tidak,
                                                 batalkan</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- * popup untuk menampilkan detail pesanan --}}
+                            <div id="ModalTampilData{{ $loop->iteration }}" tabindex="-1" aria-hidden="true"
+                                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
+                                <div class="relative p-4 w-full max-w-xl h-full md:h-auto">
+                                    <!-- Modal content -->
+                                    <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+                                        <!-- Modal header -->
+                                        <div class="flex justify-between mb-4 rounded-t sm:mb-5">
+                                            <div class="text-lg text-gray-900 md:text-xl dark:text-white">
+                                                <h3 class="font-semibold ">
+                                                    {{ $data->pelanggan->nama }}
+                                                </h3>
+                                            </div>
+                                            <div>
+                                                <button type="button"
+                                                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 inline-flex dark:hover:bg-gray-600 dark:hover:text-white"
+                                                    data-modal-toggle="ModalTampilData{{ $loop->iteration }}">
+                                                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor"
+                                                        viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd"
+                                                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                            clip-rule="evenodd"></path>
+                                                    </svg>
+                                                    <span class="sr-only">Close modal</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
+                                        <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                                            {{-- * date picker --}}
+                                            <div>
+                                                <label for="default-datepickerUpdate{{ $loop->iteration }}"
+                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal</label>
+
+                                                <div class="relative max-w-sm">
+                                                    <div
+                                                        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            fill="currentColor" viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                                        </svg>
+                                                    </div>
+                                                    <input datepicker type="text" required name="tanggal"
+                                                        id="default-datepickerUpdate{{ $loop->iteration }}"
+                                                        value="{{ date('d-m-Y', strtotime($data->tanggal)) }}"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                        placeholder="Pilih tanggal">
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label for="id_produk"
+                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Produk:</label>
+                                                <select id="id_produk" name="id_produk" required
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                    @foreach ($produk as $data_produk)
+                                                        <option value="{{ $data_produk->id }}"
+                                                            @if ($data_produk->id == $data->produk_id) selected @endif>
+                                                            {{ $data_produk->nama }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <div class="flex items-center space-x-3 sm:space-x-4">
+                                                <button type="button"
+                                                    class="text-white inline-flex items-center bg-blue-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                                    <svg aria-hidden="true" class="mr-1 -ml-1 w-5 h-5"
+                                                        fill="currentColor" viewBox="0 0 20 20"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z">
+                                                        </path>
+                                                        <path fill-rule="evenodd"
+                                                            d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                                                            clip-rule="evenodd"></path>
+                                                    </svg>
+                                                    Ubah
+                                                </button>
+                                            </div>
+                                            <form action="{{ route('pesanan.destroy', $data->id) }}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    data-modal-target="ModalTampilData{{ $loop->iteration }}"
+                                                    data-modal-toggle="ModalTampilData{{ $loop->iteration }}"
+                                                    class="inline-flex items-center text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
+                                                    <svg aria-hidden="true" class="w-5 h-5 mr-1.5 -ml-1"
+                                                        fill="currentColor" viewBox="0 0 20 20"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd"
+                                                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                                            clip-rule="evenodd"></path>
+                                                    </svg>
+                                                    Hapus
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -210,6 +314,7 @@
                                 <td class="px-4 py-3">{{ $data->tanggal }}</td>
                                 <td class="px-4 py-3">{{ $data->created_at }}</td>
                                 <td class="px-4 py-3">{{ $data->updated_at }}</td>
+                                {{-- * baris untuk tombol aksi --}}
                                 <td class="px-4 py-3 flex items-center justify-end">
                                     <button id="apple-imac-27-dropdown-button"
                                         data-dropdown-toggle="dropDownAksi{{ $loop->iteration }}"
@@ -225,21 +330,22 @@
                                         class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
                                             aria-labelledby="apple-imac-27-dropdown-button">
-                                            <li data-modal-target="" data-modal-toggle="">
+                                            <li data-modal-target="ModalTampilData{{ $loop->iteration }}"
+                                                data-modal-toggle="ModalTampilData{{ $loop->iteration }}">
                                                 <a href="#"
                                                     class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Tampil</a>
                                             </li>
                                         </ul>
                                         <div class="py-1">
-                                            <a href="#" data-modal-target="popup-modal{{ $loop->iteration }}"
-                                                data-modal-toggle="popup-modal{{ $loop->iteration }}"
+                                            <a href="#"
+                                                data-modal-target="ModalKonfirmasiHapus{{ $loop->iteration }}"
+                                                data-modal-toggle="ModalKonfirmasiHapus{{ $loop->iteration }}"
                                                 class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Hapus</a>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
-                        @empty
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -261,14 +367,6 @@
     </div>
 </section>
 
-<script src="{{ asset('js/dateTimePicker.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/datepicker.min.js"></script>
 <script src="{{ asset('js/jquery.js') }}"></script>
 <script src="{{ asset('js/pesanan.js') }}"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const datepickerEl = document.getElementById('tanggal');
-        if (datepickerEl) {
-            new Datepicker(datepickerEl, {});
-        }
-    });
-</script>

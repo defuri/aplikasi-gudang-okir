@@ -21,8 +21,9 @@ class PesananController extends Controller
         $pesanan = Pesanan::orderBy('id', 'desc')->paginate(10);
         $pelanggan = pelanggan::all();
         $produk = produkModel::all();
+        $DetailPesanan = DetailPesanan::all();
 
-        return view('owner.pesanan', compact('pesanan', 'pelanggan', 'produk'));
+        return view('owner.pesanan', compact('pesanan', 'pelanggan', 'produk', 'DetailPesanan'));
     }
 
     /**

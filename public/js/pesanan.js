@@ -46,4 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
             form.reset();
         }
     });
+
+        const datepickers = document.querySelectorAll('[datepicker]');
+        datepickers.forEach(function(el) {
+            new Datepicker(el, {
+                autohide: true,
+                format: 'dd-mm-yyyy'
+            });
+        });
 });
