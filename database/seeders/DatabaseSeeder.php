@@ -40,6 +40,7 @@ class DatabaseSeeder extends Seeder
             PelangganSeeder::class,
             PesananSeeder::class,
             DetailPesananSeeder::class,
+            PengirimanSeeder::class,
         ]);
     }
 }

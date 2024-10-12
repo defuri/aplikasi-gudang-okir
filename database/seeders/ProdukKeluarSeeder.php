@@ -22,7 +22,6 @@ class ProdukKeluarSeeder extends Seeder
                 'id_gudang' => 1,
                 'id_produk' => 1,
                 'jumlah' => 10,
-                'waktu' => now(), // Provide a value for 'waktu'
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -30,7 +29,6 @@ class ProdukKeluarSeeder extends Seeder
                 'id_gudang' => 1,
                 'id_produk' => 2,
                 'jumlah' => 10,
-                'waktu' => now(), // Provide a value for 'waktu'
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

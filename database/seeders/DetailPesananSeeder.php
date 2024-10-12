@@ -50,6 +50,22 @@ class DetailPesananSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'pesanan_id' => 3,
+                'produk_id' => 1,
+                'jumlah' => 1,
+                'total' => 7500,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'pesanan_id' => 4,
+                'produk_id' => 2,
+                'jumlah' => 2,
+                'total' => 17000,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

@@ -1,9 +1,7 @@
 <?php
 
 use App\Http\Controllers\PesananController;
-use App\Http\Middleware\isAdmin;
 use App\Http\Controllers\suplier;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\hakController;
 use App\Http\Controllers\akunController;
@@ -22,6 +20,7 @@ use App\Http\Controllers\bahanBakuController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\penjualanController;
 use App\Http\Controllers\penggajianController;
+use App\Http\Controllers\PengirimanController;
 use App\Http\Controllers\ProdukKeluarController;
 use App\Http\Controllers\ProdukMasukController;
 use App\Http\Controllers\transaksiBahanBakuController;
@@ -61,7 +60,7 @@ Route::resource('/owner/ProdukMasuk', ProdukMasukController::class);
 Route::resource('/owner/ProdukKeluar', ProdukKeluarController::class);
 Route::resource('/owner/pelanggan', PelangganController::class);
 Route::resource('/owner/pesanan', PesananController::class);
-Route::post('/count', [PesananController::class, 'tambahProduk'])->name('count');
+Route::resource('/owner/pengiriman', PengirimanController::class);
 
 Route::get('/gudang', function () {
     return view('gudang.index');

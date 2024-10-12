@@ -8,7 +8,7 @@ use App\Models\Pesanan;
 use App\Models\pelanggan;
 use App\Models\produkModel;
 use Illuminate\Http\Request;
-use LengthException;
+use Illuminate\Support\Facades\Validator;
 
 class PesananController extends Controller
 {
@@ -18,10 +18,10 @@ class PesananController extends Controller
     public function index()
     {
         //
-        $pesanan = Pesanan::orderBy('id', 'desc')->paginate(10);
-        $pelanggan = pelanggan::all();
+        $pesanan = Pesanan::with('pelanggan')->get();
         $produk = produkModel::all();
-        $DetailPesanan = DetailPesanan::all();
+        $DetailPesanan = DetailPesanan::orderBy('pesanan_id', 'desc')->paginate(10);
+        $pelanggan = pelanggan::all();
 
         return view('owner.pesanan', compact('pesanan', 'pelanggan', 'produk', 'DetailPesanan'));
     }
@@ -91,10 +91,6 @@ class PesananController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -102,6 +98,35 @@ class PesananController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        try {
+            $request->validate([
+                'pesanan_id' => 'integer|required', // * id pesanan $data->pesanan_id
+                'pelanggan_id' => 'integer|required',
+                'tanggal' => 'date| required',
+                'id' => 'integer|required', // * id detail $data->id
+                'produk_id' => 'integer|required',
+                'jumlah' => 'integer|required',
+            ]);
+
+            $pesanan = Pesanan::find($request->pesanan_id);
+            $pesanan->pelanggan_id = $request->pelanggan_id;
+            $tanggal = Carbon::createFromFormat('m/d/Y', $request->tanggal)->format('Y-m-d');
+            $pesanan->tanggal = $tanggal;
+            $pesanan->updated_at = now();
+            $pesanan->save();
+
+            $DetailPesanan = DetailPesanan::find($id);
+            $DetailPesanan->produk_id = $request->produk_id;
+            $HargaProduk = produkModel::find($request->produk_id)->harga; // * menghitung harga
+            $DetailPesanan->jumlah = $request->jumlah;
+            $DetailPesanan->total = $request->jumlah * $HargaProduk;
+            $DetailPesanan->updated_at = now();
+            $DetailPesanan->save();
+
+            return redirect()->route('pesanan.index')->with('success', 'Data berhasil dirubah!');
+        } catch (\Throwable $th) {
+            return redirect()->route('pesanan.index')->with('error', 'Data gagal dirubah: ' . $th->getMessage());
+        }
     }
 
     /**

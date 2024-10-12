@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -20,11 +19,11 @@ class Pesanan extends Model
         'updated_at',
     ];
 
-    public function DetailPesanan(): HasMany {
-        return $this->hasMany(DetailPesanan::class, 'pesanan_id');
+    public function pesanan() {
+        return $this->hasMany(Pesanan::class, 'pesanan_id');
     }
 
     public function pelanggan(): BelongsTo {
-        return $this->belongsTo(pelanggan::class);
+        return $this->belongsTo(pelanggan::class, 'pelanggan_id');
     }
 }

@@ -11,7 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::table('produk_keluar', function (Blueprint $table) {
+            //
+            $table->dropColumn('waktu');
+        });
     }
 
     /**
@@ -19,6 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('produk_keluar', function (Blueprint $table) {
+            //
+            $table->timestamp('waktu');
+        });
     }
 };

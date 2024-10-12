@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class produkModel extends Model
 {
@@ -25,6 +26,12 @@ class produkModel extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+
+    public function produk(): HasMany
+    {
+        return $this->hasMany(produkModel::class, 'produk_id');
+    }
+
     public function rasa(): BelongsTo
     {
         return $this->belongsTo(rasaModel::class, 'id_rasa');

@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\Pesanan;
+use App\Models\Pengiriman;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\Schema;
 
-class PesananSeeder extends Seeder
+class PengirimanSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,27 +17,19 @@ class PesananSeeder extends Seeder
     {
         //
         Schema::disableForeignKeyConstraints();
-        Pesanan::truncate();
+        Pengiriman::truncate();
         Schema::enableForeignKeyConstraints();
 
-        DB::table('pesanan')->insert([
+        DB::table('pengiriman')->insert([
             [
-                'pelanggan_id' => 1,
+                'pesanan_id' => 3,
+                'tanggal' => date(now()),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'pelanggan_id' => 2,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'pelanggan_id' => 3,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'pelanggan_id' => 4,
+                'pesanan_id' => 4,
+                'tanggal' => date(now()),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
