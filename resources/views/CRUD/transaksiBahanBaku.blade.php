@@ -399,16 +399,3 @@
         </div>
     </div>
 </section>
-
-<script src="{{ asset('js/dateTimePicker.js') }}"></script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const datepickerEl = document.getElementById('default-datepicker');
-        if (datepickerEl) {
-            new Datepicker(datepickerEl, {
-                // Opsi konfigurasi di sini
-            });
-        }
-    });
-</script>

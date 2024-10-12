@@ -23,6 +23,7 @@ use App\Http\Controllers\penggajianController;
 use App\Http\Controllers\PengirimanController;
 use App\Http\Controllers\ProdukKeluarController;
 use App\Http\Controllers\ProdukMasukController;
+use App\Http\Controllers\RiwayatPengirimanController;
 use App\Http\Controllers\transaksiBahanBakuController;
 
 Route::get('/', function () {
@@ -61,6 +62,8 @@ Route::resource('/owner/ProdukKeluar', ProdukKeluarController::class);
 Route::resource('/owner/pelanggan', PelangganController::class);
 Route::resource('/owner/pesanan', PesananController::class);
 Route::resource('/owner/pengiriman', PengirimanController::class);
+Route::resource('/owner/riwayat-pengiriman', RiwayatPengirimanController::class);
+Route::post('/owner/riwayat-pengiriman/{id}/selesai', [RiwayatPengirimanController::class, 'selesai']);
 
 Route::get('/gudang', function () {
     return view('gudang.index');

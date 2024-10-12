@@ -161,35 +161,6 @@
                 <li>
                     <button type="button"
                         class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                        aria-controls="dropdown-example" data-collapse-toggle="MenuPemesanan">
-                        <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                            viewBox="0 0 24 24">
-                            <path fill-rule="evenodd"
-                                d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Pesanan</span>
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2" d="m1 1 4 4 4-4" />
-                        </svg>
-                    </button>
-                    <ul id="MenuPemesanan" class="hidden py-2 space-y-2">
-                        <li>
-                            <a href="/owner/pesanan"
-                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pesanan</a>
-                        </li>
-                        <li>
-                            <a href="/owner/pelanggan"
-                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pelanggan</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <button type="button"
-                        class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                         aria-controls="dropdown-example" data-collapse-toggle="LapanganMenu">
                         <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
@@ -207,6 +178,14 @@
                     </button>
                     <ul id="LapanganMenu" class="hidden py-2 space-y-2">
                         <li>
+                            <a href="/owner/pesanan"
+                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pesanan</a>
+                        </li>
+                        <li>
+                            <a href="/owner/pelanggan"
+                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pelanggan</a>
+                        </li>
+                        <li>
                             <a href="/owner/penjualan"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Penjualan</a>
                         </li>
@@ -215,7 +194,7 @@
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pengiriman</a>
                         </li>
                         <li>
-                            <a href="/owner/riwayatPengiriman"
+                            <a href="/owner/riwayat-pengiriman"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Riwayat
                                 Pengiriman</a>
                         </li>

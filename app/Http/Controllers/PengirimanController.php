@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RiwayatPengiriman;
 use Carbon\Carbon;
 use App\Models\Pesanan;
 use App\Models\Pengiriman;
