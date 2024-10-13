@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use App\Models\satuanModel;
 use Illuminate\Http\Request;
 use App\Models\bahanBakuModel;
-use Illuminate\Support\Facades\Auth;
 use App\Models\transaksiBahanBakuModel;
 
 class transaksiBahanBakuController extends Controller
@@ -22,9 +21,7 @@ class transaksiBahanBakuController extends Controller
         $bahanBaku = bahanBakuModel::all();
         $satuan = satuanModel::all();
 
-        $user = Auth::user();
-
-            return view('owner.transaksiBahanBaku', compact('transaksiBahanBaku', 'total', 'bahanBaku', 'satuan'));
+        return view('owner.transaksiBahanBaku', compact('transaksiBahanBaku', 'total', 'bahanBaku', 'satuan'));
     }
 
     /**
@@ -114,11 +111,9 @@ class transaksiBahanBakuController extends Controller
             ]);
 
             return redirect()->route('transaksiBahanBaku.index')->with(['success' => 'Data Berhasil Diubah!']);
-
         } catch (\Exception $e) {
             return redirect()->route('transaksiBahanBaku.index')->with('error', 'Data gagal dirubah: ' . $e->getMessage());
         }
-
     }
 
     /**
@@ -133,7 +128,6 @@ class transaksiBahanBakuController extends Controller
             $data->delete();
 
             return redirect()->route('transaksiBahanBaku.index')->with(['success' => 'Data Berhasil dihapus!']);
-
         } catch (\Throwable $th) {
             return redirect()->route('transaksiBahanBaku.index')->with('error', 'Data gagal dihapus: ' . $th->getMessage());
         }

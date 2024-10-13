@@ -16,14 +16,10 @@ class penjualanController extends Controller
     public function index()
     {
         //
-        $penjualan = penjualanModel::orderBy('id', 'asc')->paginate(10);
+        $penjualan = penjualanModel::orderBy('id', 'desc')->paginate(10);
         $produk = produkModel::all();
 
-
-
-        $user = Auth::user();
-
-            return view('owner.penjualan', compact('penjualan', 'produk'));
+        return view('owner.penjualan', compact('penjualan', 'produk'));
     }
 
     /**

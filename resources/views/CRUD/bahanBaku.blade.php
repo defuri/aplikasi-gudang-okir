@@ -71,7 +71,9 @@
                 <div
                     class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                     <div class="w-full md:w-1/2">
-                        <form class="flex items-center">
+                        <form class="flex items-center focus-within:ring-1 focus-within:ring-blue-700 rounded-lg"
+                            method="GET" action="{{ route('search') }}">
+                            @csrf
                             <label for="simple-search" class="sr-only">Search</label>
                             <div class="relative w-full">
                                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -82,10 +84,16 @@
                                             clip-rule="evenodd" />
                                     </svg>
                                 </div>
-                                <input type="text" id="simple-search"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Cari" required="">
+                                <input type="text" value="bahanBaku" name="tabel" id="" required
+                                    class="hidden">
+                                <input type="text" id="simple-search" name="cari" value="{{ $query ?? '' }}"
+                                    class="bg-gray-50 border border-gray-300 rounded-l-lg text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Cari">
                             </div>
+                            <button type="submit"
+                                class="bg-blue-700 text-white font-semibold text-sm border rounded-r-lg border-blue-700 py-2 px-5 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                Cari
+                            </button>
                         </form>
                     </div>
                     {{-- ! btn add data --}}
@@ -119,7 +127,8 @@
                             <tr class="border-b dark:border-gray-700">
                                 @forelse ($bahanBaku as $data)
                                     {{-- ! ui update data --}}
-                                    <div id="updateBahanBakuModal{{ $data->id }}" tabindex="-1" aria-hidden="true"
+                                    <div id="updateBahanBakuModal{{ $data->id }}" tabindex="-1"
+                                        aria-hidden="true"
                                         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
                                         <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
                                             <!-- Modal content -->

@@ -18,6 +18,10 @@ class satuanController extends Controller
         return view('owner.satuan', compact('dataSatuan', 'jumlahData'));
     }
 
+    public function search(Request $request)
+    {
+    }
+
     public function store(Request $request)
     {
         try {

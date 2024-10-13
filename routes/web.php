@@ -24,6 +24,7 @@ use App\Http\Controllers\PengirimanController;
 use App\Http\Controllers\ProdukKeluarController;
 use App\Http\Controllers\ProdukMasukController;
 use App\Http\Controllers\RiwayatPengirimanController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\transaksiBahanBakuController;
 
 Route::get('/', function () {
@@ -40,6 +41,7 @@ Route::get('/owner', function () {
     return view('owner.dashboard');
 });
 
+Route::get('/results', [SearchController::class, 'index'])->name('search');
 Route::resource('/admin/satuan', satuanController::class);
 Route::resource('/owner/suplier', suplier::class);
 Route::resource('/owner/bahanBaku', bahanBakuController::class);
