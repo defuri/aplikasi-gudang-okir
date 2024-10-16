@@ -120,7 +120,9 @@
                                 <th scope="col" class="px-4 py-3">Suplier</th>
                                 <th scope="col" class="px-4 py-3">created_at</th>
                                 <th scope="col" class="px-4 py-3">updated_at</th>
-                                <th scope="col" class="px-4 py-3">action</th>
+                                <th scope="col" class="px-4 py-3">
+                                    <span class="sr-only">Actions</span>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>

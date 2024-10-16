@@ -147,7 +147,7 @@ class SearchController extends Controller
                         $page = request()->get('page', 1); // Mendapatkan halaman saat ini, default halaman 1
                         $DetailPesananPaginated = $DetailPesanan->forPage($page, $perPage);
 
-                        $DetailPesanan = new \Illuminate\Pagination\LengthAwarePaginator(
+                        $DetailPesanan = new LengthAwarePaginator(
                             $DetailPesananPaginated,
                             $DetailPesanan->count(),
                             $perPage,
@@ -194,7 +194,7 @@ class SearchController extends Controller
                         $DetailPesananPaginated = $DetailPesanan->forPage($page, $perPage);
 
                         // Membuat LengthAwarePaginator untuk pagination manual
-                        $DetailPesanan = new \Illuminate\Pagination\LengthAwarePaginator(
+                        $DetailPesanan = new LengthAwarePaginator(
                             $DetailPesananPaginated,
                             $DetailPesanan->count(),
                             $perPage,

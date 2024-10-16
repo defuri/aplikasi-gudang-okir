@@ -218,7 +218,7 @@
                                     <button id="apple-imac-27-dropdown-button"
                                         data-dropdown-toggle="dropDownAksi{{ $loop->iteration }}"
                                         class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
-                                        type="button">
+                                        t   ype="button">
                                         <svg class="w-5 h-5" aria-hidden="true" fill="currentColor"
                                             viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -226,7 +226,7 @@
                                         </svg>
                                     </button>
                                     <div id="dropDownAksi{{ $loop->iteration }}"
-                                        class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                                        class="hidden z-10 w-44 bg-white rounded divide-y divide    -gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
                                             aria-labelledby="apple-imac-27-dropdown-button">
                                             <li data-modal-target="updateProductModal{{ $loop->iteration }}"

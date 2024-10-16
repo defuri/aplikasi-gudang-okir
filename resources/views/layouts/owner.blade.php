@@ -20,7 +20,7 @@
     </script>
 </head>
 
-<body class="dark:bg-gray-900">
+<body class="select-none dark:bg-gray-900">
     @include('layouts.nav')
 
     <aside id="logo-sidebar"
@@ -138,9 +138,8 @@
                     </button>
                     <ul id="menuGudang" class="hidden py-2 space-y-2">
                         <li>
-                            <a href="/owner/stok"
-                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Stok
-                                Produk</a>
+                            <a href="/owner/gudang"
+                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Gudang</a>
                         </li>
                         <li>
                             <a href="/owner/ProdukMasuk"
@@ -153,8 +152,9 @@
                                 Keluar</a>
                         </li>
                         <li>
-                            <a href="/owner/gudang"
-                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Gudang</a>
+                            <a href="/owner/stok"
+                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Stok
+                                Produk</a>
                         </li>
                     </ul>
                 </li>
@@ -178,16 +178,16 @@
                     </button>
                     <ul id="LapanganMenu" class="hidden py-2 space-y-2">
                         <li>
-                            <a href="/owner/pesanan"
-                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pesanan</a>
-                        </li>
-                        <li>
                             <a href="/owner/pelanggan"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pelanggan</a>
                         </li>
                         <li>
                             <a href="/owner/penjualan"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Penjualan</a>
+                        </li>
+                        <li>
+                            <a href="/owner/pesanan"
+                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pesanan</a>
                         </li>
                         <li>
                             <a href="/owner/pengiriman"
@@ -257,13 +257,13 @@
                     </button>
                     <ul id="menuAkun" class="hidden py-2 space-y-2">
                         <li>
-                            <a href="/owner/akun"
-                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Akun</a>
-                        </li>
-                        <li>
                             <a href="/owner/hak"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Hak
                                 Akses</a>
+                        </li>
+                        <li>
+                            <a href="/owner/akun"
+                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Akun</a>
                         </li>
                     </ul>
                 </li>

@@ -19,11 +19,17 @@ class Pesanan extends Model
         'updated_at',
     ];
 
-    public function pesanan() {
+    public function pesanan()
+    {
         return $this->hasMany(Pesanan::class, 'pesanan_id');
     }
 
-    public function pelanggan(): BelongsTo {
+    public function pelanggan(): BelongsTo
+    {
         return $this->belongsTo(pelanggan::class, 'pelanggan_id');
+    }
+
+    public function detailPesanan() {
+        return $this->hasMany(DetailPesanan::class, 'pesanan_id');
     }
 }
