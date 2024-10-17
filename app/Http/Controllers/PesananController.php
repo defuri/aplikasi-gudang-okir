@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Pesanan;
-use Mpdf\MpdfException;
 use App\Models\pelanggan;
 use App\Models\produkModel;
 use Illuminate\Http\Request;
 use App\Models\DetailPesanan;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PesananController extends Controller
 {
@@ -27,6 +27,7 @@ class PesananController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+
     public function create()
     {
         //

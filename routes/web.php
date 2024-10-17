@@ -17,6 +17,7 @@ use App\Http\Controllers\jabatanController;
 use App\Http\Controllers\karyawanController;
 use App\Http\Controllers\kategoriController;
 use App\Http\Controllers\bahanBakuController;
+use App\Http\Controllers\ngetes;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\penjualanController;
 use App\Http\Controllers\penggajianController;
@@ -46,6 +47,7 @@ Route::resource('/admin/satuan', satuanController::class);
 Route::resource('/owner/suplier', suplier::class);
 Route::resource('/owner/bahanBaku', bahanBakuController::class);
 Route::resource('/owner/transaksiBahanBaku', transaksiBahanBakuController::class);
+Route::post('/cetakTransaksiBahanBaku', [transaksiBahanBakuController::class, 'cetak']);
 Route::resource('/owner/rasa', rasaController::class);
 Route::resource('/owner/kategori', kategoriController::class);
 Route::resource('/owner/pack', packController::class);
@@ -95,3 +97,5 @@ Route::get('/lapangan', function () {
 
 // * ajax
 Route::get('/get-products', [produkController::class, 'getProducts']);
+
+Route::resource('/tes', ngetes::class);
