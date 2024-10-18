@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nama', 50);
             $table->unsignedBigInteger('id_jabatan');
             $table->unsignedBigInteger('id_divisi');
+            $table->enum('jenis_kelamin', ['laki-laki', 'perempuan']);
             $table->text('alamat');
             $table->string('no_tlp', 30)->unique();
             $table->timestamps();

@@ -14,6 +14,7 @@ class karyawanModel extends Model
         'nama',
         'id_jabatan',
         'id_divisi',
+        'jenis_kelamin',
         'alamat',
         'no_tlp',
         'created_at',

@@ -3,116 +3,6 @@
 
         @include('layouts.notif')
 
-        <!-- Start coding here -->
-
-        {{-- * popup tambah data baru --}}
-        <div id="defaultModal" tabindex="-1" aria-hidden="true"
-            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
-            <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-                <!-- Modal content -->
-                <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-                    <!-- Modal header -->
-                    <div
-                        class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                            Tambah Data
-                        </h3>
-                        <button type="button"
-                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                            data-modal-toggle="defaultModal">
-                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="sr-only">Close modal</span>
-                        </button>
-                    </div>
-                    <!-- Modal body -->
-                    <form action="{{ route('transaksiBahanBaku.store') }}" method="POST">
-                        @csrf
-                        <div class="grid gap-4 mb-4 sm:grid-cols-2">
-
-                            {{-- * date picker --}}
-                            <div>
-                                <label for="default-datepicker"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal</label>
-
-                                <div class="relative max-w-sm">
-                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                            <path
-                                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                        </svg>
-                                    </div>
-                                    <input datepicker datepicker-autohide type="text" required name="tanggal"
-                                        {{-- id="date" --}}
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Pilih tanggal">
-                                </div>
-                            </div>
-                            <div>
-                                <label for="idBahanBaku"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
-                                    bahan baku</label>
-                                <select id="idBahanBaku" name="idBahanBaku" required
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value="" disabled selected>Pilih bahan baku
-                                    </option>
-                                    @foreach ($bahanBaku as $data2)
-                                        <option value="{{ $data2->id }}">{{ $data2->nama }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div>
-                                <label for="jumlah"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah</label>
-                                <input type="number" name="jumlah" id="jumlah" min="1"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Masukan jumlah" required=""
-                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                            </div>
-                            <div>
-                                <label for="idSatuan"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
-                                    satuan</label>
-                                <select id="idSatuan" name="idSatuan" required
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value="" disabled selected>Pilih satuan
-                                    </option>
-                                    @foreach ($satuan as $data3)
-                                        <option value="{{ $data3->id }}">{{ $data3->nama }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div>
-                                <label for="harga"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Harga</label>
-                                <input type="number" name="harga" id="harga" min="1"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Masukan harga" required
-                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                            </div>
-                        </div>
-                        <button type="submit"
-                            class="flex items-center border-2 border-gray-200 dark:border-gray-600 justify-center text-gray-900 dark:text-gray-300 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
-                            <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                            Tambah Data
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
         {{-- * modal cetak --}}
         <div id="modalCetak" tabindex="-1" aria-hidden="true"
             class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -136,18 +26,18 @@
                         </button>
                     </div>
                     <!-- Modal body -->
-                    <form class="p-4 md:p-5">
+                    <form action="/cetakTransaksiBahanBaku" method="POST" class="p-4 md:p-5">
+                        @csrf
                         <div class="grid gap-4 mb-4 grid-cols-2">
                             <div class="col-span-1">
-                                <label for="name"
+                                <label for="default-datepicker"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
                                     tanggal</label>
 
                                 <div class="relative max-w-sm">
                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                         <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                            viewBox="0 0 20 20">
+                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                             <path
                                                 d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                                         </svg>
@@ -157,6 +47,16 @@
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="Pilih tanggal">
                                 </div>
+                            </div>
+                            <div>
+                                <label for="metodePembayaran"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Metode
+                                    pembayaram</label>
+                                <select id="metodePembayaran" name="metodePembayaran" required
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="Transfer" selected>Transfer</option>
+                                    <option value="Tunai">Tunai</option>
+                                </select>
                             </div>
                         </div>
                         <button type="submit"
@@ -177,10 +77,10 @@
                 </div>
             </div>
         </div>
+
         <div
             class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
-            <div
-                class="flex flex-col lg:flex-row items-center justify-between space-y-3 lg:space-y-0 lg:space-x-4 p-4">
+            <div class="flex flex-col lg:flex-row items-center justify-between space-y-3 lg:space-y-0 lg:space-x-4 p-4">
                 <div class="w-full lg:w-1/2">
                     <form class="flex items-center focus-within:ring-1 focus-within:ring-blue-700 rounded-lg"
                         method="GET" action="{{ route('search') }}">
@@ -220,15 +120,17 @@
                             </svg>
                             Cetak
                         </button>
-                        <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal"
-                            class="mt-3 lg:mt-0 flex w-full items-center justify-center text-gray-900 bg-primary-700 border-gray-200 dark:border-gray-600 border-2 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 whitespace-nowrap">
-                            <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path clip-rule="evenodd" fill-rule="evenodd"
-                                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                            </svg>
-                            Tambah Data
-                        </button>
+                        <a href="/owner/create-transaksi-bahan-baku">
+                            <button type="button"
+                                class="mt-3 lg:mt-0 flex w-full items-center justify-center text-gray-900 bg-primary-700 border-gray-200 dark:border-gray-600 border-2 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 whitespace-nowrap">
+                                <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path clip-rule="evenodd" fill-rule="evenodd"
+                                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                                </svg>
+                                Tambah Data
+                            </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -239,10 +141,6 @@
                             <th scope="col" class="px-4 py-3">#</th>
                             <th scope="col" class="px-4 py-3">id</th>
                             <th scope="col" class="px-4 py-3">tanggal</th>
-                            <th scope="col" class="px-4 py-3">bahan baku</th>
-                            <th scope="col" class="px-4 py-3">jumlah</th>
-                            <th scope="col" class="px-4 py-3">Satuan</th>
-                            <th scope="col" class="px-4 py-3">Harga</th>
                             <th scope="col" class="px-4 py-3">created_at</th>
                             <th scope="col" class="px-4 py-3">updated_at</th>
                             <th scope="col" class="px-4 py-3">
@@ -252,125 +150,7 @@
                     </thead>
                     <tbody>
                         @foreach ($transaksiBahanBaku as $data)
-                            {{-- * update data --}}
-                            <div id="modalUpdate{{ $loop->iteration }}" tabindex="-1" aria-hidden="true"
-                                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
-                                <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-                                    <!-- Modal content -->
-                                    <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-                                        <!-- Modal header -->
-                                        <div
-                                            class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-                                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                                Perbarui Data
-                                            </h3>
-                                            <button type="button"
-                                                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                                data-modal-toggle="modalUpdate{{ $loop->iteration }}">
-                                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor"
-                                                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd"
-                                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                                        clip-rule="evenodd"></path>
-                                                </svg>
-                                                <span class="sr-only">Close modal</span>
-                                            </button>
-                                        </div>
-                                        <!-- Modal body -->
-                                        <form action="{{ route('transaksiBahanBaku.update', $data->id) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <div class="grid gap-4 mb-4 sm:grid-cols-2">
-
-                                                {{-- * date picker --}}
-                                                <div>
-                                                    <label for="default-datepickerUpdate{{ $loop->iteration }}"
-                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal</label>
-
-                                                    <div class="relative max-w-sm">
-                                                        <div
-                                                            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                                                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                                fill="currentColor" viewBox="0 0 20 20">
-                                                                <path
-                                                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                                            </svg>
-                                                        </div>
-                                                        <input datepicker datepicker-autohide type="text" required
-                                                            name="tanggal"
-                                                            id="default-datepickerUpdate{{ $loop->iteration }}"
-                                                            value="{{ date('m-d-Y', strtotime($data->tanggal)) }}"
-                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                            placeholder="Pilih tanggal">
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <label for="idBahanBaku"
-                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
-                                                        bahan baku</label>
-                                                    <select id="idBahanBaku" name="idBahanBaku" required
-                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                        @foreach ($bahanBaku as $data3)
-                                                            <option value="{{ $data3->id }}"
-                                                                @if ($data3->id == $data->idBahanBaku) selected @endif>
-                                                                {{ $data3->nama }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <label for="jumlah"
-                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah</label>
-                                                    <input type="number" name="jumlah" id="jumlah"
-                                                        min="1" value="{{ $data->jumlah }}"
-                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                        placeholder="Masukan jumlah" required=""
-                                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                                                </div>
-                                                <div>
-                                                    <label for="idSatuan"
-                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
-                                                        satuan</label>
-                                                    <select id="idSatuan" name="idSatuan" required
-                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                        @foreach ($satuan as $dataSatuan)
-                                                            <option value="{{ $dataSatuan->id }}"
-                                                                @if ($dataSatuan->id == $data->idSatuan) selected @endif>
-                                                                {{ $dataSatuan->nama }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-                                                <div>
-                                                    <label for="harga"
-                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Harga</label>
-                                                    <input type="number" name="harga" id="harga"
-                                                        min="1"
-                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                        placeholder="Masukan harga" required
-                                                        value="{{ $data->harga }}"
-                                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                                                </div>
-                                            </div>
-                                            <button type="submit"
-                                                class="flex items-center border-2 border-gray-200 dark:border-gray-600 justify-center text-gray-900 dark:text-gray-300 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
-                                                <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor"
-                                                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd"
-                                                        d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                                        clip-rule="evenodd"></path>
-                                                </svg>
-                                                Perbarui Data
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {{-- ! modal delete --}}
+                            {{-- * modal hapus --}}
                             <div id="popup-modal{{ $loop->iteration }}" tabindex="-1"
                                 class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                 <div class="relative p-4 w-full max-w-md max-h-full">
@@ -407,10 +187,85 @@
                                                     Ya, saya yakin
                                                 </button>
                                             </form>
-                                            <button data-modal-hide="popup-modal{{ $loop->iteration }}"
-                                                type="button"
+                                            <button data-modal-hide="popup-modal{{ $loop->iteration }}" type="button"
                                                 class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Tidak,
                                                 batalkan</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- * modal tampil --}}
+                            <div id="modalTampil{{ $loop->iteration }}" tabindex="-1" aria-hidden="true"
+                                class="hidden overflow-y-auto fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-full md:inset-0">
+                                <div class="relative p-4 w-full max-w-xl">
+                                    <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+                                        <!-- Modal Header -->
+                                        <div class="flex justify-between mb-4 rounded-t sm:mb-5">
+                                            <div class="text-lg text-gray-900 md:text-xl dark:text-white">
+                                                <h3 class="font-semibold text-xl">Transaksi no: {{ $data->id }}
+                                                </h3>
+                                                <p class="font-bold text-lg">{{ $data->tanggal }}</p>
+                                            </div>
+                                            <div>
+                                                <button type="button"
+                                                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 inline-flex dark:hover:bg-gray-600 dark:hover:text-white"
+                                                    data-modal-toggle="modalTampil{{ $loop->iteration }}">
+                                                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor"
+                                                        viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd"
+                                                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                            clip-rule="evenodd"></path>
+                                                    </svg>
+                                                    <span class="sr-only">Close modal</span>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Modal Content -->
+                                        <div class="mb-4">
+                                            <div
+                                                class="grid grid-cols-5 text-xs capitalize text-gray-700 bg-slate-50 dark:bg-gray-700 dark:text-gray-400 py-3">
+                                                <p class="font-bold pl-4 w-[150px]">Bahan Baku</p>
+                                                <p class="font-bold w-[100px]">Jumlah</p>
+                                                <p class="font-bold w-[100px]">Satuan</p>
+                                                <p class="font-bold w-[120px]">Harga</p>
+                                                <p class="font-bold w-[120px]">Total</p>
+                                            </div>
+                                            <div class="flex flex-col space-y-2 text-sm mt-2">
+                                                @foreach ($data->detailTransaksiBahanBaku as $currentDetail)
+                                                    <div
+                                                        class="grid grid-cols-5 border-b border-gray-200 dark:border-gray-700 pb-2">
+                                                        <p class="text-gray-500 dark:text-gray-400 pl-4 w-[150px]">
+                                                            {{ $currentDetail->bahanBaku->nama }}</p>
+                                                        <p class="text-gray-500 dark:text-gray-400 w-[100px]">
+                                                            {{ $currentDetail->jumlah }}</p>
+                                                        <p class="text-gray-500 dark:text-gray-400 w-[100px]">
+                                                            {{ $currentDetail->satuan->nama }}</p>
+                                                        <p class="text-gray-500 dark:text-gray-400 w-[120px]">
+                                                            {{ $currentDetail->harga }}</p>
+                                                        <p class="text-gray-500 dark:text-gray-400 w-[120px]">
+                                                            {{ $currentDetail->total }}</p>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+
+                                        <!-- Modal Footer -->
+                                        <div class="flex justify-between items-center mt-3">
+                                            <div class="flex items-center space-x-3">
+                                                <button type="button"
+                                                    class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                    <svg class="mr-1 -ml-1 w-5 h-5" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path fill-rule="evenodd"
+                                                            d="M8 3a2 2 0 0 0-2 2v3h12V5a2 2 0 0 0-2-2H8Zm-3 7a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h1v-4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v4h1a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2H5Zm4 11a1 1 0 0 1-1-1v-4h8v4a1 1 0 0 1-1 1H9Z"
+                                                            clip-rule="evenodd" />
+                                                    </svg>
+                                                    Cetak
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -422,10 +277,6 @@
                                     {{ $loop->iteration }}</th>
                                 <td class="px-4 py-3">{{ $data->id }}</td>
                                 <td class="px-4 py-3">{{ $data->tanggal }}</td>
-                                <td class="px-4 py-3">{{ $data->bahanBaku->nama }}</td>
-                                <td class="px-4 py-3">{{ $data->jumlah }}</td>
-                                <td class="px-4 py-3">{{ $data->satuan->nama }}</td>
-                                <td class="px-4 py-3">{{ $data->harga }}</td>
                                 <td class="px-4 py-3">{{ $data->created_at }}</td>
                                 <td class="px-4 py-3">{{ $data->updated_at }}</td>
                                 <td class="px-4 py-3 flex items-center justify-end">
@@ -441,14 +292,11 @@
                                     </button>
                                     <div id="dropDownAksi{{ $loop->iteration }}"
                                         class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                                            aria-labelledby="apple-imac-27-dropdown-button">
-                                            <li data-modal-target="modalUpdate{{ $loop->iteration }}"
-                                                data-modal-toggle="modalUpdate{{ $loop->iteration }}">
-                                                <a href="#"
-                                                    class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ubah</a>
-                                            </li>
-                                        </ul>
+                                        <div class="py-1">
+                                            <a href="#" data-modal-target="modalTampil{{ $loop->iteration }}"
+                                                data-modal-toggle="modalTampil{{ $loop->iteration }}"
+                                                class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Tampil</a>
+                                        </div>
                                         <div class="py-1">
                                             <a href="#" data-modal-target="popup-modal{{ $loop->iteration }}"
                                                 data-modal-toggle="popup-modal{{ $loop->iteration }}"

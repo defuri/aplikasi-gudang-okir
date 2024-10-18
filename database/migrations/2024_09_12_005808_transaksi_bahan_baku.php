@@ -15,13 +15,7 @@ return new class extends Migration
         Schema::create('transaksi_bahan_baku', function(Blueprint $table) {
             $table->id();
             $table->date('tanggal');
-            $table->unsignedBigInteger('id_bahan_baku');
-            $table->integer('jumlah');
-            $table->unsignedBigInteger('id_satuan');
-            $table->integer('harga');
             $table->timestamps();
-            $table->foreign('id_bahan_baku')->references('id')->on('bahan_baku')->onDelete('cascade');
-            $table->foreign('id_satuan')->references('id')->on('satuan')->onDelete('cascade');
         });
     }
 
@@ -30,10 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::disableForeignKeyConstraints();
-        // menghapus tabel transaksi bahan baku
         Schema::dropIfExists('transaksi_bahan_baku');
-
-        Schema::enableForeignKeyConstraints();
     }
 };

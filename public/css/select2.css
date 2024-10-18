@@ -1,0 +1,154 @@
+.select2-container--default .select2-selection--single {
+    background-color: rgb(249, 250, 251) !important;
+    /* Background color */
+    border: 1px solid rgb(209, 213, 219) !important;
+    /* Border color */
+    border-radius: 0.5rem !important;
+    /* Border radius */
+    height: 42px !important;
+    /* Height */
+    padding: 0.625rem !important;
+    /* Padding */
+    font-size: 0.875rem !important;
+    /* Font size */
+    line-height: 1.25rem !important;
+    /* Line height */
+    color: rgb(17, 24, 39) !important;
+    /* Text color */
+    font-weight: normal !important;
+    /* Remove bold font weight */
+}
+
+.select2-container--default
+    .select2-selection--single
+    .select2-selection__rendered {
+    line-height: 1.25 !important;
+    /* Line height */
+    padding-left: 0 !important;
+    /* Padding left */
+    color: rgb(17, 24, 39) !important;
+    /* Text color */
+    font-weight: normal !important;
+    /* Remove bold font weight */
+}
+
+.select2-container--default
+    .select2-selection--single
+    .select2-selection__arrow {
+    height: 40px !important;
+    /* Height */
+    right: 8px !important;
+    /* Right position */
+}
+
+/* Style untuk input pencarian */
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    border: 1px solid rgb(181, 181, 181) !important;
+    /* Border */
+    border-radius: 0.375rem !important;
+    /* Border radius */
+    padding: 0.5rem !important;
+    /* Padding */
+    outline: none !important;
+    /* Remove outline */
+}
+
+.select2-container--default
+    .select2-search--dropdown
+    .select2-search__field:focus {
+    border-color: rgb(156, 163, 175) !important;
+    /* Focus border color */
+    box-shadow: 0 0 0 1px rgb(156, 163, 175) !important;
+    /* Focus shadow */
+}
+
+.select2-dropdown {
+    border: 1px solid rgb(209, 213, 219) !important;
+    /* Dropdown border */
+    border-radius: 0.5rem !important;
+    /* Dropdown border radius */
+    background-color: rgb(249, 250, 251) !important;
+    /* Dropdown background color */
+}
+
+.select2-results__option {
+    padding: 0.5rem !important;
+    /* Option padding */
+    font-size: 0.875rem !important;
+    /* Option font size */
+}
+
+.select2-container--default
+    .select2-results__option--highlighted[aria-selected] {
+    background-color: rgb(25, 103, 210) !important;
+    /* Hover background color */
+    color: white !important;
+    /* Hover text color */
+}
+
+/* Background color for selected option */
+.select2-container--default
+    .select2-selection--single
+    .select2-selection__rendered:after {
+    content: "";
+    background-color: rgb(200, 200, 200) !important;
+    /* Selected background color */
+    color: white !important;
+    /* Selected text color */
+}
+
+/* Dark mode styles */
+.dark .select2-container--default .select2-selection--single {
+    background-color: rgb(55, 65, 81) !important;
+    /* Dark mode background color */
+    border-color: rgb(75, 85, 99) !important;
+    /* Dark mode border color */
+    color: rgb(255, 255, 255) !important;
+    /* Dark mode text color */
+    font-weight: normal !important;
+    /* Remove bold font weight in dark mode */
+}
+
+.dark
+    .select2-container--default
+    .select2-selection--single
+    .select2-selection__rendered {
+    color: rgb(255, 255, 255) !important;
+    /* Dark mode rendered text color */
+    font-weight: normal !important;
+    /* Remove bold font weight in dark mode */
+}
+
+.dark .select2-dropdown {
+    background-color: rgb(55, 65, 81) !important;
+    /* Dark mode dropdown background */
+    border-color: rgb(75, 85, 99) !important;
+    /* Dark mode dropdown border */
+}
+
+.dark
+    .select2-container--default
+    .select2-search--dropdown
+    .select2-search__field {
+    background-color: rgb(55, 65, 81) !important;
+    /* Dark mode search input background */
+    border-color: rgb(75, 85, 99) !important;
+    /* Dark mode search input border */
+    color: rgb(255, 255, 255) !important;
+    /* Dark mode search input text color */
+}
+
+.dark
+    .select2-container--default
+    .select2-search--dropdown
+    .select2-search__field:focus {
+    border-color: rgb(107, 114, 128) !important;
+    /* Dark mode focus border color */
+    box-shadow: 0 0 0 1px rgb(107, 114, 128) !important;
+    /* Dark mode focus shadow */
+}
+
+.dark .select2-container--default .select2-results__option {
+    color: rgb(255, 255, 255) !important;
+    /* Dark mode option text color */
+}

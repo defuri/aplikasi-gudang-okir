@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\DetailPesanan;
+use App\Models\DetailTransaksiBahanBaku;
 use Carbon\Carbon;
+use Date;
 use Dompdf\Dompdf;
 use App\Models\satuanModel;
 use Illuminate\Http\Request;
@@ -19,11 +21,11 @@ class transaksiBahanBakuController extends Controller
     {
         //
         $transaksiBahanBaku = transaksiBahanBakuModel::orderBy('id', 'desc')->paginate(10);
-        $total = $transaksiBahanBaku->total();
+        $detailTransaksiBahanBaku = DetailTransaksiBahanBaku::all();
         $bahanBaku = bahanBakuModel::all();
         $satuan = satuanModel::all();
 
-        return view('owner.transaksiBahanBaku', compact('transaksiBahanBaku', 'total', 'bahanBaku', 'satuan'));
+        return view('owner.transaksiBahanBaku', compact('transaksiBahanBaku', 'detailTransaksiBahanBaku', 'bahanBaku', 'satuan'));
     }
 
     /**
@@ -141,33 +143,82 @@ class transaksiBahanBakuController extends Controller
 
         $transaksi = transaksiBahanBakuModel::where('tanggal', $tanggal)->get();
 
-        dd($transaksi);
-
         $dompdf = new Dompdf();
 
         $tailwindCss = file_get_contents(public_path('css/tailwind-pdf.css'));
 
-        $imagePath = public_path('img/logo.webp');
-        $imageData = base64_encode(file_get_contents($imagePath));
-        $imageBase64 = 'data:image/webp;base64,' . $imageData;
+        $tanggalSekarang = Date(now());
 
         $html = '
         <html>
             <head>
                 <style>' . $tailwindCss . '</style>
             </head>
-            <body class="bg-gray-100 text-gray-900">
-                <div class="container mx-auto p-4">
-                    <h1 class="text-3xl font-bold text-center">Hello, World with Tailwind CSS!</h1>
-                    <p class="mt-4 text-lg">This is a sample PDF generated using Tailwind CSS and Dompdf.</p>
-                    <img src="' . $imageBase64 . '" alt="Logo" style="max-width: 150px;">
+            <body>
+                <p class="text-xs">' . $tanggalSekarang . '</p>
+
+                <h1 class="text-xl font-bold text-center mt-10">PT Original Kiripik</h1>
+                <h1 class="text-4xl font-bold text-center mt-3">Transaksi Bahan Baku</h1>
+
+                <hr class="h-px my-8 bg-gray-200 border-0 mt-4">
+
+                <table class="w-full text-xs mt-2">
+                    <tr class="font-bold">
+                        <td>Tanggal:</td>
+                        <td>'. $tanggal . '</td>
+                        <td>Departemen:</td>
+                        <td>Produksi</td>
+                        <td>Metode pembayaran:</td>
+                        <td>'. $request->metodePembayaran .'</td>
+                    </tr>
+                    <tr class="mt-2">
+                        <td>Admin:</td>
+                        <td>Nama Admin</td>
+                        <td>Merchant:</td>
+                        <td>Okir</td>
+                        <td>Mata Uang:</td>
+                        <td>Rupiah</td>
+                    </tr>
+                </table>
+
+                <table class="w-full text-xs text-left text-gray-500 mt-2 border border-gray-300 border-collapse">
+                    <thead class="text-gray-700 capitalize bg-gray-200">
+                        <tr>
+                            <td scope="col" class="px-3 py-1">#</td>
+                            <td scope="col" class="px-3 py-1">Bahan Baku</td>
+                            <td scope="col" class="px-3 py-1">Jumlah</td>
+                            <td scope="col" class="px-3 py-1">Satuan</td>
+                            <td scope="col" class="px-3 py-1">Harga</td>
+                        </tr>
+                    </thead>
+                    <tbody>';
+
+        foreach ($transaksi as $index => $item) {
+            $html .= '
+                        <tr class="border-b">
+                            <td class="px-4 py-1">' . ($index + 1) . '</td>
+                            <td class="px-4 py-1">' . $item->bahanBaku->nama . '</td>
+                            <td class="px-4 py-1">' . $item->jumlah . '</td>
+                            <td class="px-4 py-1">' . $item->satuan->nama . '</td>
+                            <td class="px-4 py-1">Rp ' . $item->harga . '</td>
+                        </tr>';
+        }
+
+        $html .= '
+                    </tbody>
+                </table>
+
+                <div class="text-right w-full mt-9">
+                <p style="margin-top: 130px;text-align: right; margin-right: 100px;" class="text-xs">Mengetahui </p>
                 </div>
+
             </body>
+
         </html>';
 
         $dompdf->loadHtml($html);
         $dompdf->render();
 
-        return $dompdf->stream('document.pdf', ['Attachment' => 0]);
+        return $dompdf->stream('Laporan Transaksi Bahan Baku.pdf', ['Attachment' => 0]);
     }
 }

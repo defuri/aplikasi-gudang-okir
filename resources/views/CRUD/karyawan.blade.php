@@ -20,7 +20,8 @@
                                         clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="text" value="karyawan" name="tabel" id="" required class="hidden">
+                            <input type="text" value="karyawan" name="tabel" id="" required
+                                class="hidden">
                             <input type="text" id="simple-search" name="cari" value="{{ $query ?? '' }}"
                                 class="bg-gray-50 border border-gray-300 rounded-l-lg text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="Cari">
@@ -53,6 +54,7 @@
                             <th scope="col" class="px-4 py-3">nama</th>
                             <th scope="col" class="px-4 py-3">jabatan</th>
                             <th scope="col" class="px-4 py-3">divisi</th>
+                            <th scope="col" class="px-4 py-3">jenis_kelamin</th>
                             <th scope="col" class="px-4 py-3">alamat</th>
                             <th scope="col" class="px-4 py-3">no telepon</th>
                             <th scope="col" class="px-4 py-3">created at</th>
@@ -131,6 +133,15 @@
                                                     </select>
                                                 </div>
                                                 <div>
+                                                    <label for="jenis_kelamin"
+                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis kelamin:</label>
+                                                    <select id="jenis_kelamin" name="jenis_kelamin" required
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                        <option value="laki-laki" selected>Laki-laki</option>
+                                                        <option value="perempuan">Perempuan</option>
+                                                    </select>
+                                                </div>
+                                                <div>
                                                     <label for="alamat"
                                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat:</label>
                                                     <input type="text" name="alamat" id="alamat" required
@@ -162,8 +173,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            {{-- ! modal update --}}
 
                             {{-- ! modal update --}}
                             <div id="updateProductModal{{ $loop->iteration }}" tabindex="-1" aria-hidden="true"
@@ -228,6 +237,21 @@
                                                                 {{ $dataDivisi->nama }}
                                                             </option>
                                                         @endforeach
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label for="jenis_kelamin"
+                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis kelamin:</label>
+                                                    <select id="jenis_kelamin" name="jenis_kelamin" required
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                        <option value="laki-laki"
+                                                            @if ($data->jenis_kelamin == 'laki-laki') selected @endif>
+                                                            Laki-laki
+                                                        </option>
+                                                        <option value="perempuan"
+                                                            @if ($data->jenis_kelamin == 'perempuan') selected @endif>
+                                                            Perempuan
+                                                        </option>
                                                     </select>
                                                 </div>
                                                 <div>
@@ -312,6 +336,7 @@
                                 <td class="px-4 py-3">{{ $data->nama }}</td>
                                 <td class="px-4 py-3">{{ $data->jabatan->nama }}</td>
                                 <td class="px-4 py-3">{{ $data->divisi->nama }}</td>
+                                <td class="px-4 py-3">{{ $data->jenis_kelamin }}</td>
                                 <td class="px-4 py-3">{{ $data->alamat }}</td>
                                 <td class="px-4 py-3">{{ $data->no_tlp }}</td>
                                 <td class="px-4 py-3">{{ $data->created_at }}</td>

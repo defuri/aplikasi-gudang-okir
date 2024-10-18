@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pelanggan', function (Blueprint $table) {
             $table->id();
-            $table->string('nama', 40);
+            $table->string('nama', 40)->unique();
             $table->string('no_tlp', '20');
             $table->text('alamat');
             $table->timestamps();

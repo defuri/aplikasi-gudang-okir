@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             PesananSeeder::class,
             DetailPesananSeeder::class,
             PengirimanSeeder::class,
+            DetailTransaksiBahanBakuSeeder::class,
         ]);
     }
 }
