@@ -21,22 +21,12 @@ class suplier extends Seeder
 
         DB::table('suplier')->insert([
             [
-                'nama' => 'Suplier A',
+                'nama' => 'Dadang',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'nama' => 'Suplier B',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'nama' => 'Suplier C',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'nama' => 'Suplier D',
+                'nama' => 'Ali',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

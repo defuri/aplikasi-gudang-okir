@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="{{ asset('css/select2.css') }}">
+
 {{-- ! popup untuk create data --}}
 <!-- Main modal -->
 <div id="defaultModal" tabindex="-1" aria-hidden="true"
@@ -39,7 +41,7 @@
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
                             suplier</label>
                         <select id="id_suplier" name="id_suplier" required
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            class="suplier bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="" disabled selected>Pilih Suplier</option>
                             <!-- Tambahkan opsi default -->
                             @foreach ($bahanBaku as $data)
@@ -127,7 +129,7 @@
                         </thead>
                         <tbody>
                             <tr class="border-b dark:border-gray-700">
-                                @forelse ($bahanBaku as $data)
+                                @foreach ($bahanBaku as $data)
                                     {{-- ! ui update data --}}
                                     <div id="updateBahanBakuModal{{ $data->id }}" tabindex="-1"
                                         aria-hidden="true"
@@ -293,9 +295,7 @@
                                     </div>
                                 </td>
                             </tr>
-                        @empty
-                            <p class="mb-3 ml-3 text-gray-500 dark:text-gray-400">Data tidak ada</p>
-                            @endforelse
+                            @endforeach
                             </tr>
                         </tbody>
                     </table>
@@ -318,3 +318,16 @@
         </div>
     </section>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        function initSelect2() {
+            $('.suplier').select2({
+                placeholder: "Pilih bahan baku",
+                allowClear: false,
+                width: '100%',
+                minimumResultsForSearch: Infinity
+            });
+        }
+    });
+</script>

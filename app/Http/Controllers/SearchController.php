@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Pesanan;
 use App\Models\suplier;
 use App\Models\hakModel;
@@ -27,6 +28,7 @@ use App\Models\ProdukMasukModel;
 use App\Models\ProdukKeluarModel;
 use App\Models\RiwayatPengiriman;
 use App\Models\transaksiBahanBakuModel;
+use App\Models\DetailTransaksiBahanBaku;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class SearchController extends Controller
@@ -61,18 +63,30 @@ class SearchController extends Controller
                     return view('owner.bahanBaku', compact('query', 'bahanBaku', 'suppliers'));
 
                 case 'transaksiBahanBaku':
-                    $IDbahanBaku = bahanBakuModel::where('nama', 'LIKE', "%{$query}%")->first()->id;
-                    $transaksiBahanBaku = transaksiBahanBakuModel::where('id_bahan_baku', $IDbahanBaku)->orderBy('id')->paginate(10);
-                    $total = $transaksiBahanBaku->total();
-                    $bahanBaku = bahanBakuModel::all();
+                    $tanggal = $request->input('tanggal', null);
+                    $query = $request->input('query', null);
+                    $inputan = $request->tanggal;
 
-                    if ($query == null) {
-                        $transaksiBahanBaku = transaksiBahanBakuModel::orderBy('id')->paginate(10);
-
-                        return view('owner.transaksiBahanBaku', compact('transaksiBahanBaku', 'total', 'bahanBaku', 'satuan'));
+                    if ($tanggal) {
+                        $tanggalFormatted = Carbon::createFromFormat('m/d/Y', $tanggal)->format('Y-m-d');
+                        $transaksiBahanBaku = transaksiBahanBakuModel::where('tanggal', $tanggalFormatted)
+                            ->orderBy('id', 'desc')
+                            ->paginate(10);
+                    } else if ($query) {
+                        // Tambahkan logika jika ada query pencarian yang ingin dicari
+                        $transaksiBahanBaku = transaksiBahanBakuModel::where('nama_bahan_baku', 'like', "%{$query}%")
+                            ->orderBy('id', 'desc')
+                            ->paginate(10);
+                    } else {
+                        // Default jika tidak ada tanggal atau query pencarian
+                        $transaksiBahanBaku = transaksiBahanBakuModel::orderBy('id', 'desc')->paginate(10);
                     }
 
-                    return view('owner.transaksiBahanBaku', compact('query', 'bahanBaku', 'transaksiBahanBaku', 'total', 'satuan'));
+                    $detailTransaksiBahanBaku = DetailTransaksiBahanBaku::all();
+                    $bahanBaku = bahanBakuModel::all();
+                    $satuan = satuanModel::all();
+
+                    return view('owner.transaksiBahanBaku', compact('transaksiBahanBaku', 'detailTransaksiBahanBaku', 'bahanBaku', 'satuan', 'inputan'));
 
                 case 'rasa':
                     $rasa = rasaModel::where('nama', 'LIKE', "%{$query}%")->orderBy('id')->paginate(10);

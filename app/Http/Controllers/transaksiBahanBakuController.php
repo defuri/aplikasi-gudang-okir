@@ -34,6 +34,10 @@ class transaksiBahanBakuController extends Controller
     public function create()
     {
         //
+        $bahanBaku = bahanBakuModel::all();
+        $satuan = satuanModel::all();
+
+        return view('owner.create-transaksi-bahan-baku', compact('bahanBaku', 'satuan'));
     }
 
     /**
@@ -42,30 +46,30 @@ class transaksiBahanBakuController extends Controller
     public function store(Request $request)
     {
         try {
-            $request->validate([
-                'tanggal' => 'required|string',
-                'idBahanBaku' => 'required|integer',
-                'jumlah' => 'integer|required',
-                'harga' => 'integer|required',
-                'idSatuan' => 'required|integer',
-            ]);
-
             $tanggal = Carbon::createFromFormat('m/d/Y', $request->tanggal)->format('Y-m-d');
 
-            transaksiBahanBakuModel::create([
-                'tanggal' => $tanggal,
-                'id_bahan_baku' => $request->idBahanBaku,
-                'jumlah' => $request->jumlah,
-                'id_satuan' => $request->idSatuan,
-                'harga' => $request->harga,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]);
+            $transaksiBahanBaku = new transaksiBahanBakuModel();
+            $transaksiBahanBaku->tanggal = $tanggal;
+            $transaksiBahanBaku->save();
+
+            $transaksiBahanBakuID = transaksiBahanBakuModel::latest()->first()->id;
+
+            for ($i = 0; $i < count($request->bahanBaku); $i++) {
+                $detailTransaksiBahanBaku = new DetailTransaksiBahanBaku();
+                $detailTransaksiBahanBaku->transaksi_bahan_baku_id = $transaksiBahanBakuID;
+                $detailTransaksiBahanBaku->bahan_baku_id = $request->bahanBaku[$i];
+                $detailTransaksiBahanBaku->jumlah = $request->jumlah[$i];
+                $detailTransaksiBahanBaku->satuan_id = $request->satuan[$i];
+                $detailTransaksiBahanBaku->harga = $request->harga[$i];
+                $detailTransaksiBahanBaku->total = $request->harga[$i] * $request->jumlah[$i];
+                $detailTransaksiBahanBaku->created_at = now();
+                $detailTransaksiBahanBaku->updated_at = now();
+                $detailTransaksiBahanBaku->save();
+            }
 
             return redirect()->route('transaksiBahanBaku.index')->with(['success' => 'Data berhasil disimpan!']);
-        } catch (\Exception $e) {
-            dd($e->getMessage());
-            return redirect()->route('transaksiBahanBaku.index')->with('error', 'Data gagal disimpan: ' . $e->getMessage());
+        } catch (\Throwable $th) {
+            return redirect()->route('transaksiBahanBaku.index')->with('error', 'Data gagal disimpan: ' . $th->getMessage());
         }
     }
 
@@ -85,6 +89,14 @@ class transaksiBahanBakuController extends Controller
     public function edit(string $id)
     {
         //
+        $transaksiBahanBaku = transaksiBahanBakuModel::find($id);
+        $detailTransaksiBahanBaku = DetailTransaksiBahanBaku::where('transaksi_bahan_baku_id', $transaksiBahanBaku->id)->get();
+        $bahanBaku = bahanBakuModel::all();
+        $satuan = satuanModel::all();
+
+        $tanggal = Carbon::createFromFormat('Y-m-d', $transaksiBahanBaku->tanggal)->format('d-m-Y');
+
+        return view('owner.edit-transaksi-bahan-baku', compact('transaksiBahanBaku', 'detailTransaksiBahanBaku', 'bahanBaku', 'satuan', 'tanggal'));
     }
 
     /**
@@ -93,26 +105,20 @@ class transaksiBahanBakuController extends Controller
     public function update(Request $request, string $id)
     {
         try {
+            $transaksiBahanBaku = transaksiBahanBakuModel::find($id);
+            $tanggal = Carbon::createFromFormat('m/d/Y', $request->tanggal)->format('Y-m-d');
+
             $request->validate([
-                'idBahanBaku' => 'required|integer',
-                'jumlah' => 'required|integer',
-                'idSatuan' => 'required|integer',
-                'harga' => 'required|integer',
-                'tanggal' => 'required|string',
+                'transaksi_bahan_baku_id' => 'integer|required',
+                'bahan_baku_id.*' => 'integer|required',
+                'jumlah.*' => 'integer|required',
+                'satuan_id.*' => 'integer|required',
+                'harga.*' => 'integer|required',
             ]);
 
-            $tanggal = Carbon::createFromFormat('d/m/Y', $request->tanggal)->format('Y-m-d');
-
-            $dataYangMauDiEdit = transaksiBahanBakuModel::findOrFail($id);
-
-            $dataYangMauDiEdit->update([
-                'id_bahan_baku' => $request->idBahanBaku,
-                'jumlah' => $request->jumlah,
-                'id_satuan' => $request->idSatuan,
-                'harga' => $request->harga,
-                'tanggal' => $tanggal,
-                'updated_at' => Carbon::now(),
-            ]);
+            $transaksiBahanBaku->tanggal = $tanggal;
+            $transaksiBahanBaku->updated_at = now();
+            $transaksiBahanBaku->save();
 
             return redirect()->route('transaksiBahanBaku.index')->with(['success' => 'Data Berhasil Diubah!']);
         } catch (\Exception $e) {
@@ -139,86 +145,92 @@ class transaksiBahanBakuController extends Controller
 
     public function cetak(Request $request)
     {
-        $tanggal = Carbon::createFromFormat('m/d/Y', $request->tanggal)->format('Y-m-d');
+        try {
+            $tanggal = Carbon::createFromFormat('m/d/Y', $request->tanggal)->format('Y-m-d');
 
-        $transaksi = transaksiBahanBakuModel::where('tanggal', $tanggal)->get();
+            $transaksiBahanBaku = transaksiBahanBakuModel::where('tanggal', $tanggal)->get();
+            $detailTransaksiBahanBaku = DetailTransaksiBahanBaku::where('transaksi_bahan_baku_id', $transaksiBahanBaku->id)->get();
 
-        $dompdf = new Dompdf();
+            $dompdf = new Dompdf();
 
-        $tailwindCss = file_get_contents(public_path('css/tailwind-pdf.css'));
+            $tailwindCss = file_get_contents(public_path('css/tailwind-pdf.css'));
 
-        $tanggalSekarang = Date(now());
+            $tanggalSekarang = Date(now());
 
-        $html = '
-        <html>
-            <head>
-                <style>' . $tailwindCss . '</style>
-            </head>
-            <body>
-                <p class="text-xs">' . $tanggalSekarang . '</p>
+            $html = '
+            <html>
+                <head>
+                    <style>' . $tailwindCss . '</style>
+                </head>
+                <body>
+                    <p class="text-xs">' . $tanggalSekarang . '</p>
 
-                <h1 class="text-xl font-bold text-center mt-10">PT Original Kiripik</h1>
-                <h1 class="text-4xl font-bold text-center mt-3">Transaksi Bahan Baku</h1>
+                    <h1 class="text-xl font-bold text-center mt-10">PT Original Kiripik</h1>
+                    <h1 class="text-4xl font-bold text-center mt-3">Transaksi Bahan Baku</h1>
 
-                <hr class="h-px my-8 bg-gray-200 border-0 mt-4">
+                    <hr class="h-px my-8 bg-gray-200 border-0 mt-4">
 
-                <table class="w-full text-xs mt-2">
-                    <tr class="font-bold">
-                        <td>Tanggal:</td>
-                        <td>'. $tanggal . '</td>
-                        <td>Departemen:</td>
-                        <td>Produksi</td>
-                        <td>Metode pembayaran:</td>
-                        <td>'. $request->metodePembayaran .'</td>
-                    </tr>
-                    <tr class="mt-2">
-                        <td>Admin:</td>
-                        <td>Nama Admin</td>
-                        <td>Merchant:</td>
-                        <td>Okir</td>
-                        <td>Mata Uang:</td>
-                        <td>Rupiah</td>
-                    </tr>
-                </table>
-
-                <table class="w-full text-xs text-left text-gray-500 mt-2 border border-gray-300 border-collapse">
-                    <thead class="text-gray-700 capitalize bg-gray-200">
-                        <tr>
-                            <td scope="col" class="px-3 py-1">#</td>
-                            <td scope="col" class="px-3 py-1">Bahan Baku</td>
-                            <td scope="col" class="px-3 py-1">Jumlah</td>
-                            <td scope="col" class="px-3 py-1">Satuan</td>
-                            <td scope="col" class="px-3 py-1">Harga</td>
+                    <table class="w-full text-xs mt-2">
+                        <tr class="font-bold">
+                            <td>Tanggal:</td>
+                            <td>' . $tanggal . '</td>
+                            <td>Departemen:</td>
+                            <td>Produksi</td>
+                            <td>No referensi:</td>
+                            <td>' . $transaksiBahanBaku->id . '</td>
                         </tr>
-                    </thead>
-                    <tbody>';
+                        <tr class="mt-2">
+                            <td>Admin:</td>
+                            <td>Nama Admin</td>
+                            <td>Merchant:</td>
+                            <td>Okir</td>
+                            <td>Mata Uang:</td>
+                            <td>Rupiah</td>
+                        </tr>
+                    </table>
 
-        foreach ($transaksi as $index => $item) {
+                    <table class="w-full text-xs text-left text-gray-500 mt-2 border border-gray-300 border-collapse">
+                        <thead class="text-gray-700 capitalize bg-gray-200">
+                            <tr>
+                                <td scope="col" class="px-3 py-1">#</td>
+                                <td scope="col" class="px-3 py-1">Bahan Baku</td>
+                                <td scope="col" class="px-3 py-1">Jumlah</td>
+                                <td scope="col" class="px-3 py-1">Satuan</td>
+                                <td scope="col" class="px-3 py-1">Harga</td>
+                                <td scope="col" class="px-3 py-1">Total</td>
+                            </tr>
+                        </thead>
+                        <tbody>';
+
+            for ($i=0; $i < count($detailTransaksiBahanBaku->bahan_baku_id); $i++) {
+                $html .= '
+                            <tr class="border-b">
+                                <td class="px-4 py-1">' . ($i + 1) . '</td>
+                                <td class="px-4 py-1">' . $detailTransaksiBahanBaku->bahanBaku->nama . '</td>
+                                <td class="px-4 py-1">' . $detailTransaksiBahanBaku->jumlah . '</td>
+                                <td class="px-4 py-1">' . $detailTransaksiBahanBaku->satuan->nama . '</td>
+                                <td class="px-4 py-1">Rp ' . $detailTransaksiBahanBaku->harga . '</td>
+                            </tr>';
+            }
+
             $html .= '
-                        <tr class="border-b">
-                            <td class="px-4 py-1">' . ($index + 1) . '</td>
-                            <td class="px-4 py-1">' . $item->bahanBaku->nama . '</td>
-                            <td class="px-4 py-1">' . $item->jumlah . '</td>
-                            <td class="px-4 py-1">' . $item->satuan->nama . '</td>
-                            <td class="px-4 py-1">Rp ' . $item->harga . '</td>
-                        </tr>';
+                        </tbody>
+                    </table>
+
+                    <div class="text-right w-full mt-9">
+                    <p style="margin-top: 130px;text-align: right; margin-right: 100px;" class="text-xs">Mengetahui </p>
+                    </div>
+
+                </body>
+
+            </html>';
+
+            $dompdf->loadHtml($html);
+            $dompdf->render();
+
+            return $dompdf->stream('Laporan Transaksi Bahan Baku.pdf', ['Attachment' => 0]);
+        } catch (\Throwable $th) {
+            //throw $th;
         }
-
-        $html .= '
-                    </tbody>
-                </table>
-
-                <div class="text-right w-full mt-9">
-                <p style="margin-top: 130px;text-align: right; margin-right: 100px;" class="text-xs">Mengetahui </p>
-                </div>
-
-            </body>
-
-        </html>';
-
-        $dompdf->loadHtml($html);
-        $dompdf->render();
-
-        return $dompdf->stream('Laporan Transaksi Bahan Baku.pdf', ['Attachment' => 0]);
     }
 }

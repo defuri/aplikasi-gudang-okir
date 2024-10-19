@@ -2,8 +2,8 @@
 
 <section class="-mt-14 bg-white dark:bg-gray-900">
     <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
-        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white mt-10">Tambah Data</h2>
-        <form action="{{ route('transaksiBahanBaku.store') }}" method="POST">
+        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white mt-10">Edit Data</h2>
+        <form action="{{ route('transaksiBahanBaku.update', $transaksiBahanBaku->id) }}" method="POST">
             @csrf
             {{-- date picker --}}
             <div class="grid gap-4 sm:grid-cols-1 sm:gap-6">
@@ -20,6 +20,7 @@
                             </svg>
                         </div>
                         <input datepicker datepicker-autohide type="text" required name="tanggal" id="tanggal"
+                        value="{{ $tanggal }}"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 mt-5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Pilih tanggal">
                     </div>
