@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             gudang::class,
             stok::class,
             penjualan::class,
+            DetailPenjualanSeeder::class,
             divisi::class,
             jabatan::class,
             karyawan::class,

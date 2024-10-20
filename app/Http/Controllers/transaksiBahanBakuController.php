@@ -48,12 +48,29 @@ class transaksiBahanBakuController extends Controller
         try {
             $tanggal = Carbon::createFromFormat('m/d/Y', $request->tanggal)->format('Y-m-d');
 
+            // Check if transaction for this date already exists
+            $transaksiBahanBaku = transaksiBahanBakuModel::where('tanggal', $tanggal)->first();
+            if ($transaksiBahanBaku !== null) {
+                return redirect()->route('transaksiBahanBaku.index')
+                    ->with('error', 'Data gagal disimpan: Data transaksi tanggal tersebut sudah ada');
+            }
+
+            // Check for duplicate bahan_baku_id in the request
+            $bahanBakuIds = $request->bahanBaku;
+            $duplicates = array_diff_assoc($bahanBakuIds, array_unique($bahanBakuIds));
+            if (!empty($duplicates)) {
+                return redirect()->route('transaksiBahanBaku.index')
+                    ->with('error', 'Data gagal disimpan: Terdapat bahan baku yang duplikat dalam transaksi');
+            }
+
+            // Create new transaksi
             $transaksiBahanBaku = new transaksiBahanBakuModel();
             $transaksiBahanBaku->tanggal = $tanggal;
             $transaksiBahanBaku->save();
 
             $transaksiBahanBakuID = transaksiBahanBakuModel::latest()->first()->id;
 
+            // Store detail transaksi
             for ($i = 0; $i < count($request->bahanBaku); $i++) {
                 $detailTransaksiBahanBaku = new DetailTransaksiBahanBaku();
                 $detailTransaksiBahanBaku->transaksi_bahan_baku_id = $transaksiBahanBakuID;
@@ -67,9 +84,11 @@ class transaksiBahanBakuController extends Controller
                 $detailTransaksiBahanBaku->save();
             }
 
-            return redirect()->route('transaksiBahanBaku.index')->with(['success' => 'Data berhasil disimpan!']);
+            return redirect()->route('transaksiBahanBaku.index')
+                ->with(['success' => 'Data berhasil disimpan!']);
         } catch (\Throwable $th) {
-            return redirect()->route('transaksiBahanBaku.index')->with('error', 'Data gagal disimpan: ' . $th->getMessage());
+            return redirect()->route('transaksiBahanBaku.index')
+                ->with('error', 'Data gagal disimpan: ' . $th->getMessage());
         }
     }
 
@@ -94,7 +113,7 @@ class transaksiBahanBakuController extends Controller
         $bahanBaku = bahanBakuModel::all();
         $satuan = satuanModel::all();
 
-        $tanggal = Carbon::createFromFormat('Y-m-d', $transaksiBahanBaku->tanggal)->format('d-m-Y');
+        $tanggal = Carbon::createFromFormat('Y-m-d', $transaksiBahanBaku->tanggal)->format('m-d-Y');
 
         return view('owner.edit-transaksi-bahan-baku', compact('transaksiBahanBaku', 'detailTransaksiBahanBaku', 'bahanBaku', 'satuan', 'tanggal'));
     }
@@ -105,26 +124,52 @@ class transaksiBahanBakuController extends Controller
     public function update(Request $request, string $id)
     {
         try {
-            $transaksiBahanBaku = transaksiBahanBakuModel::find($id);
+            // Cari transaksi bahan baku berdasarkan ID
+            $transaksiBahanBaku = transaksiBahanBakuModel::findOrFail($id);
             $tanggal = Carbon::createFromFormat('m/d/Y', $request->tanggal)->format('Y-m-d');
 
+            // Validasi input
             $request->validate([
-                'transaksi_bahan_baku_id' => 'integer|required',
                 'bahan_baku_id.*' => 'integer|required',
                 'jumlah.*' => 'integer|required',
                 'satuan_id.*' => 'integer|required',
                 'harga.*' => 'integer|required',
             ]);
 
+            // Cek apakah ada transaksi dengan tanggal yang sama selain yang sedang diedit
+            $cek = transaksiBahanBakuModel::where('tanggal', $tanggal)
+                ->where('id', '!=', $transaksiBahanBaku->id)
+                ->first();
+
+            // Jika ada transaksi dengan tanggal yang sama, berikan error
+            if ($cek) {
+                return redirect()->route('transaksiBahanBaku.index')->with('error', 'Data gagal dirubah: Data dengan tanggal tersebut sudah ada');
+            }
+
+            // Update transaksi bahan baku
             $transaksiBahanBaku->tanggal = $tanggal;
             $transaksiBahanBaku->updated_at = now();
             $transaksiBahanBaku->save();
+
+            $detailTransaksiBahanBaku = DetailTransaksiBahanBaku::where('transaksi_bahan_baku_id', $transaksiBahanBaku->id)->get();
+
+            foreach ($detailTransaksiBahanBaku as $currentDetail) {
+                $diedit = DetailTransaksiBahanBaku::find($currentDetail->id);
+
+                $diedit->jumlah = $request->jumlah[$currentDetail->id];
+                $diedit->satuan_id = $request->satuan[$currentDetail->id];
+                $diedit->harga = $request->harga[$currentDetail->id];
+                $diedit->total = $request->harga[$currentDetail->id] * $request->jumlah[$currentDetail->id];
+                $diedit->updated_at = now();
+                $diedit->save();
+            }
 
             return redirect()->route('transaksiBahanBaku.index')->with(['success' => 'Data Berhasil Diubah!']);
         } catch (\Exception $e) {
             return redirect()->route('transaksiBahanBaku.index')->with('error', 'Data gagal dirubah: ' . $e->getMessage());
         }
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -148,8 +193,10 @@ class transaksiBahanBakuController extends Controller
         try {
             $tanggal = Carbon::createFromFormat('m/d/Y', $request->tanggal)->format('Y-m-d');
 
-            $transaksiBahanBaku = transaksiBahanBakuModel::where('tanggal', $tanggal)->get();
+            $transaksiBahanBaku = transaksiBahanBakuModel::where('tanggal', $tanggal)->first();
             $detailTransaksiBahanBaku = DetailTransaksiBahanBaku::where('transaksi_bahan_baku_id', $transaksiBahanBaku->id)->get();
+
+            dd($detailTransaksiBahanBaku);
 
             $dompdf = new Dompdf();
 
@@ -202,7 +249,7 @@ class transaksiBahanBakuController extends Controller
                         </thead>
                         <tbody>';
 
-            for ($i=0; $i < count($detailTransaksiBahanBaku->bahan_baku_id); $i++) {
+            for ($i = 0; $i < count($detailTransaksiBahanBaku->bahan_baku_id); $i++) {
                 $html .= '
                             <tr class="border-b">
                                 <td class="px-4 py-1">' . ($i + 1) . '</td>

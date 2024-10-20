@@ -4,212 +4,227 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Dompdf\Dompdf;
-use App\Models\produkModel;
+use App\Models\Produk;
 use Illuminate\Http\Request;
+use App\Models\Penjualan;
+use App\Models\DetailPenjualan;
 use App\Models\penjualanModel;
-use Illuminate\Support\Facades\Auth;
+use App\Models\produkModel;
 
 class penjualanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
         $penjualan = penjualanModel::orderBy('id', 'desc')->paginate(10);
+        $detailPenjualan = DetailPenjualan::all();
         $produk = produkModel::all();
 
-        return view('owner.penjualan', compact('penjualan', 'produk'));
+        return view('owner.penjualan', compact('penjualan', 'detailPenjualan', 'produk'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $produk = produkModel::all();
+        return view('owner.create-penjualan', compact('produk'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
         try {
-            $request->validate([
-                'tanggal' => 'required|string|max:20',
-                'id_produk' => 'required|integer',
-                'jumlah' => 'integer|required',
-            ]);
+            $tanggal = Carbon::createFromFormat('m/d/Y', $request->tanggal)->format('Y-m-d');
 
-            penjualanModel::create([
-                'tanggal' => Carbon::createFromFormat('m/d/Y', $request->tanggal)->format('Y-m-d'),
-                'id_produk' => $request->id_produk,
-                'jumlah' => $request->jumlah,
-                'omzet' => produkModel::findOrFail($request->id_produk)->harga * $request->jumlah,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]);
+            // Check if transaction for this date already exists
+            $penjualan = penjualanModel::where('tanggal', $tanggal)->first();
+            if ($penjualan !== null) {
+                return redirect()->route('penjualan.index')
+                    ->with('error', 'Data gagal disimpan: Data penjualan tanggal tersebut sudah ada');
+            }
 
-            return redirect()->route('penjualan.index')->with(['success' => 'Data berhasil disimpan!']);
-        } catch (\Exception $e) {
-            return redirect()->route('penjualan.index')->with('error', 'Data gagal disimpan: ' . $e->getMessage());
+            // Check for duplicate produk_id in the request
+            $produkIds = $request->produk;
+            $duplicates = array_diff_assoc($produkIds, array_unique($produkIds));
+            if (!empty($duplicates)) {
+                return redirect()->route('penjualan.index')
+                    ->with('error', 'Data gagal disimpan: Terdapat produk yang duplikat dalam penjualan');
+            }
+
+            // Create new penjualan
+            $penjualan = new penjualanModel();
+            $penjualan->tanggal = $tanggal;
+            $penjualan->save();
+
+            $penjualanID = penjualanModel::latest()->first()->id;
+
+            // Store detail penjualan
+            for ($i = 0; $i < count($request->produk); $i++) {
+                $detailPenjualan = new DetailPenjualan();
+                $detailPenjualan->penjualan_id = $penjualanID;
+                $detailPenjualan->produk_id = $request->produk[$i];
+                $detailPenjualan->jumlah = $request->jumlah[$i];
+                $detailPenjualan->omzet = $request->jumlah[$i] * produkModel::find($request->produk[$i])->harga;
+                $detailPenjualan->created_at = now();
+                $detailPenjualan->updated_at = now();
+                $detailPenjualan->save();
+            }
+
+            return redirect()->route('penjualan.index')
+                ->with(['success' => 'Data berhasil disimpan!']);
+        } catch (\Throwable $th) {
+            return redirect()->route('penjualan.index')
+                ->with('error', 'Data gagal disimpan: ' . $th->getMessage());
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit($id)
     {
-        //
+        $penjualan = penjualanModel::where('id', $id)->first();
+        $detailPenjualan = DetailPenjualan::where('penjualan_id', $penjualan->id)->get();
+        $produk = produkModel::all();
+
+        $tanggal = Carbon::createFromFormat('Y-m-d', $penjualan->tanggal)->format('m-d-Y');
+
+        return view('owner.edit-penjualan', compact('penjualan', 'detailPenjualan', 'produk', 'tanggal'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        //
-        try {
-            $request->validate([
-                'tanggal' => 'required|string|max:20',
-                'id_produk' => 'required|integer',
-                'jumlah' => 'integer|required',
-            ]);
+        // try {
+        //     $penjualan = penjualanModel::findOrFail($id);
+        //     $tanggal = Carbon::createFromFormat('m/d/Y', $request->tanggal)->format('Y-m-d');
 
-            $data = penjualanModel::findOrFail($id);
+        //     // Validasi input
+        //     $request->validate([
+        //         'produk_id.*' => 'integer|required',
+        //         'jumlah.*' => 'integer|required',
+        //     ]);
 
-            $data->update([
-                'tanggal' => Carbon::createFromFormat('m/d/Y', $request->tanggal)->format('Y-m-d'),
-                'id_produk' => $request->id_produk,
-                'jumlah' => $request->jumlah,
-                'omzet' => produkModel::findOrFail($request->id_produk)->harga * $request->jumlah,
-                'updated_at' => Carbon::now(),
-            ]);
+        //     // Cek apakah ada penjualanModel dengan tanggal yang sama selain yang sedang diedit
+        //     $cek = penjualanModel::where('tanggal', $tanggal)
+        //         ->where('id', '!=', $penjualan->id)
+        //         ->first();
 
-            return redirect()->route('penjualan.index')->with(['success' => 'Data berhasil dirubah!']);
-        } catch (\Exception $e) {
-            return redirect()->route('penjualan.index')->with('error', 'Data gagal dirubah: ' . $e->getMessage());
-        }
+        //     if ($cek) {
+        //         return redirect()->route('penjualan.index')
+        //             ->with('error', 'Data gagal dirubah: Data dengan tanggal tersebut sudah ada');
+        //     }
+
+        //     // Update penjualan
+        //     $penjualan->tanggal = $tanggal;
+        //     $penjualan->updated_at = now();
+        //     $penjualan->save();
+
+        //     $detailPenjualan = DetailPenjualan::where('penjualan_id', $penjualan->id)->get();
+
+        //     foreach ($detailPenjualan as $currentDetail) {
+        //         $diedit = DetailPenjualan::find($currentDetail->id);
+        //         $diedit->jumlah = $request->jumlah[$currentDetail->id];
+        //         $diedit->omzet = $request->jumlah[$currentDetail->id] * produkModel::find($currentDetail->produk_id)->harga;
+        //         $diedit->updated_at = now();
+        //         $diedit->save();
+        //     }
+
+        //     return redirect()->route('penjualan.index')->with(['success' => 'Data Berhasil Diubah!']);
+        // } catch (\Exception $e) {
+        //     return redirect()->route('penjualan.index')
+        //         ->with('error', 'Data gagal dirubah: ' . $e->getMessage());
+        // }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
-        try {
-            $data = penjualanModel::findOrFail($id);
+        // try {
+        //     $data = penjualanModel::findOrFail($id);
+        //     $data->delete();
 
-            $data->delete();
-
-            return to_route('penjualan.index')->with('success', 'data berhasil dihapus!');
-        } catch (\Throwable $th) {
-            return to_route('penjualan.index')->with('error', 'Error, terjadi kesalahan: ' . $th->getMessage());
-        }
+        //     return redirect()->route('penjualan.index')->with(['success' => 'Data Berhasil dihapus!']);
+        // } catch (\Throwable $th) {
+        //     return redirect()->route('penjualan.index')
+        //         ->with('error', 'Data gagal dihapus: ' . $th->getMessage());
+        // }
     }
 
     public function cetak(Request $request)
     {
-        $tanggal = Carbon::createFromFormat('m/d/Y', $request->tanggal)->format('Y-m-d');
+        try {
+            $tanggal = Carbon::createFromFormat('m/d/Y', $request->tanggal)->format('Y-m-d');
 
-        $dataPenjualan = penjualanModel::where('tanggal', $tanggal)->get();
+            $penjualan = penjualanModel::where('tanggal', $tanggal)->first();
+            $detailPenjualan = DetailPenjualan::where('penjualan_id', $penjualan->id)->get();
 
-        $dompdf = new Dompdf();
+            $dompdf = new Dompdf();
+            $tailwindCss = file_get_contents(public_path('css/tailwind-pdf.css'));
+            $tanggalSekarang = Date(now());
 
-        $tailwindCss = file_get_contents(public_path('css/tailwind-pdf.css'));
+            $html = '
+            <html>
+                <head>
+                    <style>' . $tailwindCss . '</style>
+                </head>
+                <body>
+                    <p class="text-xs">' . $tanggalSekarang . '</p>
 
-        $tanggalSekarang = Date(now());
+                    <h1 class="text-xl font-bold text-center mt-10">PT Original Kiripik</h1>
+                    <h1 class="text-4xl font-bold text-center mt-3">Laporan Penjualan</h1>
 
-        $totalOmzet = 0;
+                    <hr class="h-px my-8 bg-gray-200 border-0 mt-4">
 
-        foreach ($dataPenjualan as $currentDataPenjualan) {
-            $totalOmzet += floatval($currentDataPenjualan->omzet);
-        }
-
-
-        $html = '
-        <html>
-            <head>
-                <style>' . $tailwindCss . '</style>
-            </head>
-            <body>
-                <p class="text-xs">' . $tanggalSekarang . '</p>
-
-                <h1 class="text-xl font-bold text-center mt-10">PT Original Kiripik</h1>
-                <h1 class="text-4xl font-bold text-center mt-3">Penjualan</h1>
-
-                <hr class="h-px my-8 bg-gray-200 border-0 mt-4">
-
-                <table class="w-full text-xs mt-2">
-                    <tr class="font-bold">
-                        <td>Tanggal:</td>
-                        <td>' . $tanggal . '</td>
-                        <td>Departemen:</td>
-                        <td>Lapangan</td>
-                        <td>Total omzet:</td>
-                        <td>' . $totalOmzet . '</td>
-                    </tr>
-                    <tr class="mt-2">
-                        <td>Admin:</td>
-                        <td>Nama Admin</td>
-                        <td>Merchant:</td>
-                        <td>Okir</td>
-                        <td>Mata Uang:</td>
-                        <td>Rupiah</td>
-                    </tr>
-                </table>
-
-                <table class="w-full text-xs text-left text-gray-500 mt-2 border border-gray-300 border-collapse">
-                    <thead class="text-gray-700 capitalize bg-gray-200">
-                        <tr>
-                            <td scope="col" class="px-3 py-1">#</td>
-                            <td scope="col" class="px-3 py-1">Tanggal</td>
-                            <td scope="col" class="px-3 py-1">Produk</td>
-                            <td scope="col" class="px-3 py-1">Jumlah</td>
-                            <td scope="col" class="px-3 py-1">Omzet</td>
+                    <table class="w-full text-xs mt-2">
+                        <tr class="font-bold">
+                            <td>Tanggal:</td>
+                            <td>' . $tanggal . '</td>
+                            <td>Departemen:</td>
+                            <td>Penjualan</td>
+                            <td>No referensi:</td>
+                            <td>' . $penjualan->id . '</td>
                         </tr>
-                    </thead>
-                    <tbody>';
+                        <tr class="mt-2">
+                            <td>Admin:</td>
+                            <td>Nama Admin</td>
+                            <td>Merchant:</td>
+                            <td>Okir</td>
+                            <td>Mata Uang:</td>
+                            <td>Rupiah</td>
+                        </tr>
+                    </table>
 
-        foreach ($dataPenjualan as $index => $item) {
+                    <table class="w-full text-xs text-left text-gray-500 mt-2 border border-gray-300 border-collapse">
+                        <thead class="text-gray-700 capitalize bg-gray-200">
+                            <tr>
+                                <td scope="col" class="px-3 py-1">#</td>
+                                <td scope="col" class="px-3 py-1">Produk</td>
+                                <td scope="col" class="px-3 py-1">Jumlah</td>
+                                <td scope="col" class="px-3 py-1">Omzet</td>
+                            </tr>
+                        </thead>
+                        <tbody>';
+
+            foreach ($detailPenjualan as $index => $item) {
+                $html .= '
+                            <tr class="border-b">
+                                <td class="px-4 py-1">' . ($index + 1) . '</td>
+                                <td class="px-4 py-1">' . $item->produk->nama . '</td>
+                                <td class="px-4 py-1">' . $item->jumlah . '</td>
+                                <td class="px-4 py-1">Rp ' . number_format($item->omzet, 0, ',', '.') . '</td>
+                            </tr>';
+            }
+
             $html .= '
-                        <tr class="border-b">
-                            <td class="px-4 py-1">' . ($index + 1) . '</td>
-                            <td class="px-4 py-1">' . Carbon::createFromFormat('m/d/Y', $item->tanggal)->format('d-m-Y') . '</td>
-                            <td class="px-4 py-1">' . $item->produk->nama . '</td>
-                            <td class="px-4 py-1">' . $item->jumlah . '</td>
-                            <td class="px-4 py-1">Rp ' . $item->omzet . '</td>
-                        </tr>';
+                        </tbody>
+                    </table>
+
+                    <div class="text-right w-full mt-9">
+                        <p style="margin-top: 130px;text-align: right; margin-right: 100px;" class="text-xs">Mengetahui </p>
+                    </div>
+                </body>
+            </html>';
+
+            $dompdf->loadHtml($html);
+            $dompdf->render();
+
+            return $dompdf->stream('Laporan Penjualan.pdf', ['Attachment' => 0]);
+        } catch (\Throwable $th) {
+            return redirect()->route('penjualan.index')
+                ->with('error', 'Gagal mencetak laporan: ' . $th->getMessage());
         }
-
-        $html .= '
-                    </tbody>
-                </table>
-
-                <div class="text-right w-full mt-9">
-                <p style="margin-top: 130px;text-align: right; margin-right: 100px;" class="text-xs">Mengetahui </p>
-                </div>
-
-            </body>
-
-        </html>';
-
-        $dompdf->loadHtml($html);
-        $dompdf->render();
-
-        return $dompdf->stream('Laporan Transaksi Bahan Baku.pdf', ['Attachment' => 0]);
     }
 }

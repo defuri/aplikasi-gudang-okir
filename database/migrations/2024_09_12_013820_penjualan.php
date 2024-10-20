@@ -15,11 +15,7 @@ return new class extends Migration
         Schema::create('penjualan', function(Blueprint $table) {
             $table->id();
             $table->date('tanggal');
-            $table->unsignedBigInteger('id_produk');
-            $table->integer('jumlah');
-            $table->unsignedInteger('omzet');
             $table->timestamps();
-            $table->foreign('id_produk')->references('id')->on('produk')->onDelete('cascade');
         });
     }
 

@@ -98,7 +98,7 @@ Route::get('/lapangan', function () {
     return view('lapangan.index');
 });
 
-// * ajax
+// * API
 Route::get('/get-products', [produkController::class, 'getProducts']);
-
+Route::get('/api/bahan-baku', [bahanBakuController::class, 'get']);
 Route::resource('/tes', ngetes::class);

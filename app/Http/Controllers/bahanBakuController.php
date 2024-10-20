@@ -128,4 +128,10 @@ class bahanBakuController extends Controller
             return redirect()->route('bahanBaku.index')->with('error', 'Data gagal dihapus: ' . $e->getMessage());
         }
     }
+
+    public function get()
+    {
+        $data = bahanBakuModel::all();
+        return response()->json($data);
+    }
 }

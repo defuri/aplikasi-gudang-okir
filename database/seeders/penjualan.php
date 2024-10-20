@@ -23,24 +23,15 @@ class penjualan extends Seeder
 
         DB::table('penjualan')->truncate();
 
-        DB::table('penjualan')->insert([
-            [
-                'tanggal' => Carbon::now(),
-                'id_produk' => 1,
-                'jumlah' => 300,
-                'omzet' => 2250000,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'tanggal' => Carbon::now(),
-                'id_produk' => 2,
-                'jumlah' => 400,
-                'omzet' => 3400000,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-        ]);
+        for ($i = 0; $i < 2; $i++) {
+            DB::table('penjualan')->insert([
+                [
+                    'tanggal' => fake()->date(),
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ],
+            ]);
+        }
 
         Schema::enableForeignKeyConstraints();
     }

@@ -21,7 +21,7 @@
     </script>
 </head>
 
-<body class="select-none dark:bg-gray-900">
+<body class="dark:bg-gray-900">
     @include('layouts.nav')
 
     <aside id="logo-sidebar"

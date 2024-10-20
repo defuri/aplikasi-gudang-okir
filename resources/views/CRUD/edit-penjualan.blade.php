@@ -3,7 +3,7 @@
 <section class="-mt-14 bg-white dark:bg-gray-900">
     <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
         <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white mt-10">Edit Data</h2>
-        <form action="{{ route('transaksiBahanBaku.update', $transaksiBahanBaku->id) }}" method="POST">
+        <form action="{{ route('penjualan.update', $penjualan->id) }}" method="POST">
             @csrf
             @method('PUT')
             {{-- date picker --}}
@@ -28,17 +28,17 @@
                 </div>
             </div>
 
-            @foreach ($detailTransaksiBahanBaku as $currentDetail)
+            @foreach ($detailPenjualan as $currentDetail)
                 <div class="grid gap-4 sm:grid-cols-2 sm:gap-6 mt-6 mb-6">
                     {{-- bahan baku --}}
                     <div class="w-full">
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Bahan Baku
                                 <div class="mt-2"></div>
-                                <select name="bahanBaku[{{ $currentDetail->id }}]" required disabled
-                                    class=".bahanBaku bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <select name="produk[{{ $currentDetail->id }}]" required disabled
+                                    class=".produk bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option value="{{ $currentDetail->id }}" selected>
-                                        {{ $currentDetail->bahanBaku->nama }}
+                                        {{ $currentDetail->produk->nama }}
                                     </option>
                                 </select>
                             </label>
@@ -52,34 +52,6 @@
                         <input type="number" name="jumlah[{{ $currentDetail->id }}]]" value="{{ $currentDetail->jumlah }}"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="Masukan jumlah" required="" min="1">
-                    </div>
-
-                    {{-- satuan --}}
-                    <div class="w-full">
-                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Satuan
-                                <div class="mt-2"></div>
-                                <select name="satuan[{{ $currentDetail->id }}]]" required
-                                    class=".satuan bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value="" disabled selected>Pilih satuan</option>
-                                    @foreach ($satuan as $currentSatuan)
-                                        <option value="{{ $currentSatuan->id }}"
-                                            @if ($currentSatuan->id == $currentDetail->satuan_id) selected @endif>
-                                            {{ $currentSatuan->nama }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </label>
-                        </label>
-                    </div>
-
-                    {{-- harga --}}
-                    <div>
-                        <label for="harga"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Harga</label>
-                        <input type="number" name="harga[{{ $currentDetail->id }}]]" id="harga" value="{{ $currentDetail->harga }}"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="Masukan harga" required="" min="1">
                     </div>
                 </div>
 

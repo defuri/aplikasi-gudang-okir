@@ -10,22 +10,20 @@ class penjualanModel extends Model
 {
     use HasFactory;
     protected $table = 'penjualan';
+
     protected $fillable = [
         'tanggal',
-        'id_produk',
-        'jumlah',
-        'omzet',
         'created_at',
         'updated_at',
     ];
 
     /**
-     * Get the produk that owns the penjualanModel
+     * Get the detail penjualan records associated with the penjualanModel
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function produk(): BelongsTo
+    public function detailPenjualan()
     {
-        return $this->belongsTo(produkModel::class, 'id_produk');
+        return $this->hasMany(DetailPenjualan::class, 'penjualan_id');
     }
 }

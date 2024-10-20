@@ -4,7 +4,7 @@
 <section class="-mt-14 bg-white dark:bg-gray-900">
     <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
         <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white mt-10">Tambah Data</h2>
-        <form action="{{ route('transaksiBahanBaku.store') }}" method="POST">
+        <form action="{{ route('penjualan.store') }}" method="POST">
             @csrf
             {{-- date picker --}}
             <div class="grid gap-4 sm:grid-cols-1 sm:gap-6">
@@ -28,16 +28,16 @@
             </div>
 
             <div class="grid gap-4 sm:grid-cols-2 sm:gap-6 mt-6 mb-6">
-                {{-- bahan baku --}}
+                {{-- produk --}}
                 <div class="w-full">
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Bahan Baku
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Produk
                             <div class="mt-2"></div>
-                            <select name="bahanBaku[]" required
-                                class=".bahanBaku bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="" disabled selected>Pilih bahan baku</option>
-                                @foreach ($bahanBaku as $currentBahanBaku)
-                                    <option value="{{ $currentBahanBaku->id }}">{{ $currentBahanBaku->nama }}
+                            <select name="produk[]" required
+                                class=".produk bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="" disabled selected>Pilih Produk</option>
+                                @foreach ($produk as $currentProduk)
+                                    <option value="{{ $currentProduk->id }}">{{ $currentProduk->nama }}
                                     </option>
                                 @endforeach
                             </select>
@@ -52,32 +52,6 @@
                     <input type="number" name="jumlah[]"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Masukan jumlah" required="" min="1">
-                </div>
-
-                {{-- satuan --}}
-                <div class="w-full">
-                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Satuan
-                            <div class="mt-2"></div>
-                            <select name="satuan[]" required
-                                class=".satuan bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="" disabled selected>Pilih satuan</option>
-                                @foreach ($satuan as $currentSatuan)
-                                    <option value="{{ $currentSatuan->id }}">{{ $currentSatuan->nama }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </label>
-                    </label>
-                </div>
-
-                {{-- harga --}}
-                <div>
-                    <label for="harga"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Harga</label>
-                    <input type="number" name="harga[]" id="harga"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Masukan harga" required="" min="1">
                 </div>
             </div>
 
@@ -101,5 +75,5 @@
     </div>
 </section>
 
-<script src="{{ asset('js/createTransaksiBahanBaku.js') }}"></script>
+<script src="{{ asset('js/createDetailPenjualan.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
