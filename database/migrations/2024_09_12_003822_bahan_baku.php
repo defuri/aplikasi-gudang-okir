@@ -14,7 +14,7 @@ return new class extends Migration
         // membuat tabel bahan baku
         Schema::create('bahan_baku', function(Blueprint $table) {
             $table->id();
-            $table->string('nama', 50);
+            $table->string('nama', 50)->unique();
             $table->unsignedBigInteger('id_suplier');
             $table->timestamps();
             $table->foreign('id_suplier')->references('id')->on('suplier')->onDelete('cascade');

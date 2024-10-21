@@ -36,6 +36,8 @@ class stokController extends Controller
             $totalProduk += $currentStok->stok;
         }
 
+        $formattedTotal = number_format($totalProduk, 0, ',', '.');
+
         $html = '
         <html>
             <head>
@@ -56,7 +58,7 @@ class stokController extends Controller
                         <td>Departemen:</td>
                         <td>Gudang</td>
                         <td>Total stok:</td>
-                        <td>' . $totalProduk . '</td>
+                        <td>' . $formattedTotal . '</td>
                     </tr>
                     <tr class="mt-2">
                         <td>Admin:</td>

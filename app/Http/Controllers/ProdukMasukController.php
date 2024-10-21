@@ -16,7 +16,6 @@ class ProdukMasukController extends Controller
     public function index()
     {
         //
-
         $ProdukMasuk = ProdukMasukModel::orderBy('id', 'desc')->paginate(10);
         $gudang = gudangModel::all();
         $produk = produkModel::all();
@@ -27,10 +26,20 @@ class ProdukMasukController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $id_gudang = $request->id_gudang;
+        $produk = produkModel::all();
+        $gudang = gudangModel::all();
+
+        $nama_gudang = null;
+        if ($id_gudang) {
+            $nama_gudang = gudangModel::find($id_gudang)->nama ?? null;
+        }
+
+        return view('owner.create-produk-masuk', compact('id_gudang', 'nama_gudang', 'produk', 'gudang'));
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -40,45 +49,60 @@ class ProdukMasukController extends Controller
         try {
             $request->validate([
                 'id_gudang' => ['required', 'integer'],
-                'id_produk' => ['required', 'integer'],
-                'jumlah' => ['required', 'integer'],
+                'produk_id.*' => ['required', 'integer'],
+                'jumlah.*' => ['required', 'integer'],
             ]);
 
-            $stokExists = StokModel::where('id_gudang', $request->id_gudang)
-                ->where('id_produk', $request->id_produk)
-                ->exists();
+            // Pastikan array produk_id dan jumlah memiliki panjang yang sama
+            if (count($request->produk_id) != count($request->jumlah)) {
+                throw new \Exception('Data produk dan jumlah tidak sesuai');
+            }
 
-            if ($stokExists) {
-                StokModel::where('id_gudang', $request->id_gudang)
-                    ->where('id_produk', $request->id_produk)
-                    ->increment('stok', $request->jumlah);
-            } else {
-                StokModel::create([
+            // Loop through setiap produk
+            foreach ($request->produk_id as $key => $produkId) {
+                $jumlah = $request->jumlah[$key];
+
+                // Cek dan update atau create stok
+                $stokExists = StokModel::where('id_gudang', $request->id_gudang)
+                    ->where('id_produk', $produkId)
+                    ->exists();
+
+                if ($stokExists) {
+                    StokModel::where('id_gudang', $request->id_gudang)
+                        ->where('id_produk', $produkId)
+                        ->increment('stok', $jumlah);
+                } else {
+                    StokModel::create([
+                        'id_gudang' => $request->id_gudang,
+                        'id_produk' => $produkId,
+                        'stok' => $jumlah,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+
+                // Create record produk masuk
+                ProdukMasukModel::create([
                     'id_gudang' => $request->id_gudang,
-                    'id_produk' => $request->id_produk,
-                    'stok' => $request->jumlah,
+                    'id_produk' => $produkId,
+                    'jumlah' => $jumlah,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
+
+                // Update timestamp
+                StokModel::where('id_gudang', $request->id_gudang)
+                    ->where('id_produk', $produkId)
+                    ->update(['updated_at' => now()]);
             }
-
-            ProdukMasukModel::create([
-                'id_gudang' => $request->id_gudang,
-                'id_produk' => $request->id_produk,
-                'jumlah' => $request->jumlah,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-
-            StokModel::where('id_gudang', $request->id_gudang)
-                ->where('id_produk', $request->id_produk)
-                ->update(['updated_at' => now()]);
 
             return redirect('/owner/ProdukMasuk')->with(['success' => 'Data berhasil disimpan!']);
         } catch (\Exception $e) {
             return redirect('/owner/ProdukMasuk')->with('error', 'Data gagal disimpan: ' . $e->getMessage());
         }
     }
+
+
     /**
      * Display the specified resource.
      */
@@ -104,7 +128,7 @@ class ProdukMasukController extends Controller
         try {
             $request->validate([
                 'id_gudang' => ['required', 'integer'],
-                'id_produk' => ['required', 'integer'],
+                'produk_id' => ['required', 'integer'],
                 'jumlah' => ['required', 'integer'],
             ]);
 
@@ -113,23 +137,23 @@ class ProdukMasukController extends Controller
 
             // * kurangi data sekarang dengan data yang mau diedit
             StokModel::where('id_gudang', $request->id_gudang)
-                ->where('id_produk', $request->id_produk)
+                ->where('produk_id', $request->produk_id)
                 ->decrement('stok', $data->jumlah);
 
             // * tambahkan data sesuai dengan data terbaru yang diinputkan
             StokModel::where('id_gudang', $request->id_gudang)
-                ->where('id_produk', $request->id_produk)
+                ->where('produk_id', $request->produk_id)
                 ->increment('stok', $request->jumlah);
 
             // * update data updated_at di tabel stok
             StokModel::where('id_gudang', $request->id_gudang)
-                ->where('id_produk', $request->id_produk)
+                ->where('produk_id', $request->produk_id)
                 ->update(['updated_at' => now()]);
 
             // * update semua data
             $data->update([
                 'id_gudang' => $request->id_gudang,
-                'id_produk' => $request->id_produk,
+                'produk_id' => $request->produk_id,
                 'jumlah' => $request->jumlah,
                 'updated_at' => now(),
             ]);
@@ -151,12 +175,12 @@ class ProdukMasukController extends Controller
 
             // * kurangi data dengan data yang mau dihapus
             StokModel::where('id_gudang', $data->id_gudang)
-                ->where('id_produk', $data->id_produk)
+                ->where('produk_id', $data->produk_id)
                 ->decrement('stok', $data->jumlah);
 
             // * update data updated_at di tabel stok
             StokModel::where('id_gudang', $data->id_gudang)
-                ->where('id_produk', $data->id_produk)
+                ->where('produk_id', $data->produk_id)
                 ->update(['updated_at' => now()]);
 
             // * hapus data

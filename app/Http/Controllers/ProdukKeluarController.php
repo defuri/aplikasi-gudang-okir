@@ -27,9 +27,19 @@ class ProdukKeluarController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         //
+        $id_gudang = $request->id_gudang;
+        $produk = produkModel::all();
+        $gudang = gudangModel::all();
+
+        $nama_gudang = null;
+        if ($id_gudang) {
+            $nama_gudang = gudangModel::find($id_gudang)->nama ?? null;
+        }
+
+        return view('owner.create-produk-keluar', compact('id_gudang', 'nama_gudang', 'produk', 'gudang'));
     }
 
     /**
@@ -40,60 +50,62 @@ class ProdukKeluarController extends Controller
         try {
             $request->validate([
                 'id_gudang' => ['required', 'integer'],
-                'id_produk' => ['required', 'integer'],
-                'jumlah' => ['required', 'integer'],
+                'produk_id.*' => ['required', 'integer'],
+                'jumlah.*' => ['required', 'integer'],
             ]);
 
-            $exists = StokModel::where('id_gudang', $request->id_gudang)
-                ->where('id_produk', $request->id_produk)
-                ->exists();
+            // Pastikan array produk_id dan jumlah memiliki panjang yang sama
+            if (count($request->produk_id) != count($request->jumlah)) {
+                throw new \Exception('Data produk dan jumlah tidak sesuai');
+            }
 
-            if ($exists) {
-                $stok = StokModel::where('id_gudang', $request->id_gudang)
-                    ->where('id_produk', $request->id_produk)
-                    ->first();
+            // Loop through setiap produk
+            foreach ($request->produk_id as $key => $produkId) {
+                $jumlah = $request->jumlah[$key];
 
-                if ($stok && ($stok->stok - $request->jumlah) > -1) {
-                    ProdukKeluarModel::create([
-                        'id_gudang' => $request->id_gudang,
-                        'id_produk' => $request->id_produk,
-                        'jumlah' => $request->jumlah,
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]);
+                // Cek keberadaan stok
+                $exists = StokModel::where('id_gudang', $request->id_gudang)
+                    ->where('id_produk', $produkId)
+                    ->exists();
 
-                    try {
-                        StokModel::where('id_gudang', $request->id_gudang)
-                            ->where('id_produk', $request->id_produk)
-                            ->decrement('stok', $request->jumlah);
+                if ($exists) {
+                    $stok = StokModel::where('id_gudang', $request->id_gudang)
+                        ->where('id_produk', $produkId)
+                        ->first();
 
-                        StokModel::where(function ($query) use ($request) {
-                            $query->where('id_gudang', $request->id_gudang)
-                                ->where('id_produk', $request->id_produk);
-                        })->update(['updated_at' => now()]);
-
-                        return redirect('/owner/ProdukKeluar')->with(['success' => 'Data berhasil disimpan!']);
-                    } catch (\Throwable $th) {
-                        StokModel::create([
+                    // Cek apakah stok mencukupi
+                    if ($stok && ($stok->stok - $jumlah) > -1) {
+                        // Buat record produk keluar
+                        ProdukKeluarModel::create([
                             'id_gudang' => $request->id_gudang,
-                            'id_produk' => $request->id_produk,
-                            'stok' => $request->stok,
+                            'id_produk' => $produkId,
+                            'jumlah' => $jumlah,
                             'created_at' => now(),
                             'updated_at' => now(),
                         ]);
+
+                        // Kurangi stok
+                        StokModel::where('id_gudang', $request->id_gudang)
+                            ->where('id_produk', $produkId)
+                            ->decrement('stok', $jumlah);
+
+                        // Update timestamp
+                        StokModel::where('id_gudang', $request->id_gudang)
+                            ->where('id_produk', $produkId)
+                            ->update(['updated_at' => now()]);
+                    } else {
+                        throw new \Exception('Stok tidak mencukupi untuk produk ID: ' . $produkId);
                     }
                 } else {
-                    return redirect('/owner/ProdukKeluar')->with('error', 'Pastikan jumlah barang yang dimasukkan kurang dari stok di gudang');
+                    throw new \Exception('Produk ID: ' . $produkId . ' tidak ada di gudang');
                 }
-            } else {
-                return redirect('/owner/ProdukKeluar')->with('error', 'Produk tidak ada di gudang');
             }
+
+            return redirect('/owner/ProdukKeluar')->with(['success' => 'Data berhasil disimpan!']);
         } catch (\Exception $e) {
             return redirect('/owner/ProdukKeluar')->with('error', 'Data gagal disimpan: ' . $e->getMessage());
         }
     }
-
-
 
     /**
      * Display the specified resource.

@@ -40,20 +40,20 @@ class usersSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            [
-                'id_hak' => 4,
-                'username' => '4',
-                'password' => bcrypt(1),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_hak' => 5,
-                'username' => '5',
-                'password' => bcrypt(1),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+            // [
+            //     'id_hak' => 4,
+            //     'username' => '4',
+            //     'password' => bcrypt(1),
+            //     'created_at' => now(),
+            //     'updated_at' => now(),
+            // ],
+            // [
+            //     'id_hak' => 5,
+            //     'username' => '5',
+            //     'password' => bcrypt(1),
+            //     'created_at' => now(),
+            //     'updated_at' => now(),
+            // ],
         ]);
     }
 }

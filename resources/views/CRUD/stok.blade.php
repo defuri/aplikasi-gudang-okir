@@ -26,7 +26,7 @@
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </div>
-                                    <input type="text" value="transaksiBahanBaku" name="tabel" id=""
+                                    <input type="text" value="stok" name="tabel" id=""
                                         required class="hidden">
                                     <input type="text" id="simple-search" name="cari" value="{{ $query ?? '' }}"
                                         class="bg-gray-50 border border-gray-300 rounded-l-lg text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"

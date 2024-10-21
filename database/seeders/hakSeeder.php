@@ -24,7 +24,7 @@ class hakSeeder extends Seeder
 
         DB::table('hak')->insert([
             [
-                'nama' => 'super admin',
+                'nama' => 'sudo',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
@@ -38,16 +38,16 @@ class hakSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
-            [
-                'nama' => 'admin lapangan',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'nama' => 'admin administrasi',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
+            // [
+            //     'nama' => 'admin lapangan',
+            //     'created_at' => Carbon::now(),
+            //     'updated_at' => Carbon::now(),
+            // ],
+            // [
+            //     'nama' => 'admin administrasi',
+            //     'created_at' => Carbon::now(),
+            //     'updated_at' => Carbon::now(),
+            // ],
         ]);
     }
 }

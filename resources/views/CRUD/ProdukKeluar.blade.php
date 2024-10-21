@@ -30,9 +30,8 @@
                             </button>
                         </div>
                         <!-- Modal body -->
-                        <form action="{{ route('ProdukKeluar.store') }}" method="POST">
-                            @csrf
-                            <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                        <form action="{{ route('ProdukKeluar.create') }}" method="GET">
+                            <div class="grid gap-4 mb-4 sm:grid-cols-1">
                                 <div>
                                     <label for="id_gudang"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
@@ -48,34 +47,9 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div>
-                                    <label for="id_produk"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
-                                        produk:</label>
-                                    <select id="id_produk" name="id_produk" required
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option value="" disabled selected>Pilih produk
-                                        </option>
-                                        @foreach ($produk as $DataProduk)
-                                            <option value="{{ $DataProduk->id }}">
-                                                {{ $DataProduk->nama }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="grid gap-4 mb-4 sm:grid-cols-1">
-                                <div>
-                                    <label for="jumlah"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah:</label>
-                                    <input type="number" name="jumlah" id="jumlah" min="1"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                        placeholder="Masukan jumlah" required="" required
-                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                                </div>
                             </div>
                             <button type="submit"
-                                class="flex items-center text-gray-900 justify-center bg-primary-700 border-gray-200 dark:border-gray-600 border-2 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                                class="flex select-none items-center text-gray-900 justify-center bg-primary-700 border-gray-200 dark:border-gray-600 border-2 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                                 <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd"
@@ -104,7 +78,8 @@
                                         clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="text" value="produkKeluar" name="tabel" id="" required class="hidden">
+                            <input type="text" value="produkKeluar" name="tabel" id="" required
+                                class="hidden">
                             <input type="text" id="simple-search" name="cari" value="{{ $query ?? '' }}"
                                 class="bg-gray-50 border border-gray-300 rounded-l-lg text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="Cari">
