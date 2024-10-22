@@ -15,9 +15,10 @@ class gudangController extends Controller
     public function index()
     {
         //
-        $gudang = gudangModel::orderBy('id', 'asc')->paginate(10);
+        $gudang = gudangModel::orderBy('id', 'desc')->paginate(10);
+        $user = Auth::user();
 
-            return view('owner.gudang', compact('gudang'));
+        return view('CRUD.gudang', compact('user', 'gudang'));
     }
 
     /**
@@ -34,6 +35,23 @@ class gudangController extends Controller
     public function store(Request $request)
     {
         //
+        try {
+            $request->validate([
+                'nama' => 'required|string|max:20|unique:satuan,nama',
+                'alamat' => 'required|string',
+            ]);
+
+            gudangModel::create([
+                'nama' => $request->nama,
+                'alamat' => $request->alamat,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+
+            return redirect()->route('gudang.index')->with('success', 'Data berhasil disimpan');
+        } catch (\Throwable $th) {
+            return redirect()->route('gudang.index')->with('error', 'Data gagal disimpan: ' . $th->getMessage());
+        }
     }
 
     /**

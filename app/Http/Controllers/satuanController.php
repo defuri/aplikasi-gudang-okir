@@ -15,7 +15,9 @@ class satuanController extends Controller
         $jumlahData = $dataSatuan->total();
 
         $user = Auth::user();
-        return view('owner.satuan', compact('dataSatuan', 'jumlahData'));
+
+        // return view('owner.satuan', compact('dataSatuan', 'jumlahData', 'user'));
+        return view('CRUD.satuan', compact('dataSatuan', 'jumlahData', 'user'));
     }
 
     public function search(Request $request)

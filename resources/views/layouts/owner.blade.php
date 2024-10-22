@@ -32,13 +32,12 @@
                 <li>
                     <a href="/owner"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                            viewBox="0 0 22 21">
-                            <path
-                                d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
-                            <path
-                                d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+                        <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path fill-rule="evenodd"
+                                d="M4.857 3A1.857 1.857 0 0 0 3 4.857v4.286C3 10.169 3.831 11 4.857 11h4.286A1.857 1.857 0 0 0 11 9.143V4.857A1.857 1.857 0 0 0 9.143 3H4.857Zm10 0A1.857 1.857 0 0 0 13 4.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 21 9.143V4.857A1.857 1.857 0 0 0 19.143 3h-4.286Zm-10 10A1.857 1.857 0 0 0 3 14.857v4.286C3 20.169 3.831 21 4.857 21h4.286A1.857 1.857 0 0 0 11 19.143v-4.286A1.857 1.857 0 0 0 9.143 13H4.857Zm10 0A1.857 1.857 0 0 0 13 14.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 21 19.143v-4.286A1.857 1.857 0 0 0 19.143 13h-4.286Z"
+                                clip-rule="evenodd" />
                         </svg>
                         <span class="ms-3">Dashboard</span>
                     </a>
@@ -63,20 +62,20 @@
                     </button>
                     <ul id="dropdown-example" class="hidden py-2 space-y-2">
                         <li>
-                            <a href="/admin/satuan"
+                            <a href="/satuan"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Satuan</a>
                         </li>
                         <li>
-                            <a href="/owner/suplier"
+                            <a href="/suplier"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Suplier</a>
                         </li>
                         <li>
-                            <a href="/owner/bahanBaku"
+                            <a href="/bahan-baku"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Bahan
                                 Baku</a>
                         </li>
                         <li>
-                            <a href="/owner/transaksiBahanBaku"
+                            <a href="/transaksi-bahan-baku"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Transaksi
                                 Bahan Baku</a>
                         </li>
@@ -102,19 +101,19 @@
                     </button>
                     <ul id="menuProduk" class="hidden py-2 space-y-2">
                         <li>
-                            <a href="/owner/rasa"
+                            <a href="/rasa"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Rasa</a>
                         </li>
                         <li>
-                            <a href="/owner/kategori"
+                            <a href="/kategori"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Kategori</a>
                         </li>
                         <li>
-                            <a href="/owner/pack"
+                            <a href="/pack"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pack</a>
                         </li>
                         <li>
-                            <a href="/owner/produk"
+                            <a href="/produk"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Produk</a>
                         </li>
                     </ul>
@@ -139,21 +138,21 @@
                     </button>
                     <ul id="menuGudang" class="hidden py-2 space-y-2">
                         <li>
-                            <a href="/owner/gudang"
+                            <a href="/gudang"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Gudang</a>
                         </li>
                         <li>
-                            <a href="/owner/ProdukMasuk"
+                            <a href="/produk-masuk"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Produk
                                 Masuk</a>
                         </li>
                         <li>
-                            <a href="/owner/ProdukKeluar"
+                            <a href="/produk-keluar"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Produk
                                 Keluar</a>
                         </li>
                         <li>
-                            <a href="/owner/stok"
+                            <a href="/stok"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Stok
                                 Produk</a>
                         </li>
@@ -179,23 +178,23 @@
                     </button>
                     <ul id="LapanganMenu" class="hidden py-2 space-y-2">
                         <li>
-                            <a href="/owner/pelanggan"
+                            <a href="/pelanggan"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pelanggan</a>
                         </li>
                         <li>
-                            <a href="/owner/penjualan"
+                            <a href="/penjualan"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Penjualan</a>
                         </li>
                         <li>
-                            <a href="/owner/pesanan"
+                            <a href="/pesanan"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pesanan</a>
                         </li>
                         <li>
-                            <a href="/owner/pengiriman"
+                            <a href="/pengiriman"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pengiriman</a>
                         </li>
                         <li>
-                            <a href="/owner/riwayat-pengiriman"
+                            <a href="/riwayat-pengiriman"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Riwayat
                                 Pengiriman</a>
                         </li>
@@ -221,19 +220,19 @@
                     </button>
                     <ul id="menuKaryawan" class="hidden py-2 space-y-2">
                         <li>
-                            <a href="/owner/divisi"
+                            <a href="/divisi"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Divisi</a>
                         </li>
                         <li>
-                            <a href="/owner/jabatan"
+                            <a href="/jabatan"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Jabatan</a>
                         </li>
                         <li>
-                            <a href="/owner/karyawan"
+                            <a href="/karyawan"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Karyawan</a>
                         </li>
                         <li>
-                            <a href="/owner/penggajian"
+                            <a href="/penggajian"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Penggajian</a>
                         </li>
                     </ul>
@@ -258,12 +257,12 @@
                     </button>
                     <ul id="menuAkun" class="hidden py-2 space-y-2">
                         <li>
-                            <a href="/owner/hak"
+                            <a href="/hak"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Hak
                                 Akses</a>
                         </li>
                         <li>
-                            <a href="/owner/akun"
+                            <a href="/akun"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Akun</a>
                         </li>
                     </ul>

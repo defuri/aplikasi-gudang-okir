@@ -19,15 +19,12 @@ class bahanBakuController extends Controller
     public function index()
     {
         //
-
-        $bahanBaku = bahanBakuModel::with('suplier')->orderBy('id', 'asc')->paginate(10);
+        $bahanBaku = bahanBakuModel::with('suplier')->orderBy('id', 'desc')->paginate(10);
         $totalBaris = $bahanBaku->total();
         $suppliers = suplier::get();
-
-
         $user = Auth::user();
 
-            return view('owner.bahanBaku', compact(['bahanBaku', 'totalBaris', 'suppliers']));
+        return view('CRUD.bahanBaku', compact(['bahanBaku', 'totalBaris', 'suppliers', 'user']));
     }
 
     /**
@@ -43,7 +40,6 @@ class bahanBakuController extends Controller
      */
     public function store(Request $request)
     {
-
         try {
             $request->validate([
                 'nama' => 'required|string|max:50',
@@ -57,9 +53,9 @@ class bahanBakuController extends Controller
                 'updated_at' => Carbon::now(),
             ]);
 
-            return redirect()->route('bahanBaku.index')->with(['success' => 'Data berhasil disimpan!']);
-        } catch(\Exception $e) {
-            return redirect()->route('bahanBaku.index')->with(['error' => 'Data gagal disimpan: ' . $e->getMessage()]);
+            return redirect()->route('bahan-baku.index')->with(['success' => 'Data berhasil disimpan!']);
+        } catch (\Exception $e) {
+            return redirect()->route('bahan-baku.index')->with(['error' => 'Data gagal disimpan: ' . $e->getMessage()]);
         }
     }
 
@@ -104,10 +100,9 @@ class bahanBakuController extends Controller
                 'updated_at' => Carbon::now(),
             ]);
 
-            return redirect()->route('bahanBaku.index')->with(['success' => 'Data Berhasil Diubah!']);
-
+            return redirect()->route('bahan-baku.index')->with(['success' => 'Data Berhasil Diubah!']);
         } catch (\Exception $e) {
-            return redirect()->route('bahanBaku.index')->with('error', 'Data gagal dirubah: ' . $e->getMessage());
+            return redirect()->route('bahan-baku.index')->with('error', 'Data gagal dirubah: ' . $e->getMessage());
         }
     }
 
@@ -122,10 +117,10 @@ class bahanBakuController extends Controller
             $bahanBaku->delete();
 
             // Menyimpan pesan flash ke session jika berhasil
-            return redirect()->route('bahanBaku.index')->with('success', 'Data berhasil dihapus');
+            return redirect()->route('bahan-baku.index')->with('success', 'Data berhasil dihapus');
         } catch (\Exception $e) {
             // Menyimpan pesan flash ke session jika gagal
-            return redirect()->route('bahanBaku.index')->with('error', 'Data gagal dihapus: ' . $e->getMessage());
+            return redirect()->route('bahan-baku.index')->with('error', 'Data gagal dihapus: ' . $e->getMessage());
         }
     }
 

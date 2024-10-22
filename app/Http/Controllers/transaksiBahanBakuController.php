@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DetailPesanan;
-use App\Models\DetailTransaksiBahanBaku;
-use Carbon\Carbon;
 use Date;
+use Carbon\Carbon;
 use Dompdf\Dompdf;
 use App\Models\satuanModel;
 use Illuminate\Http\Request;
+use App\Models\DetailPesanan;
 use App\Models\bahanBakuModel;
+use Illuminate\Support\Facades\Auth;
 use App\Models\transaksiBahanBakuModel;
+use App\Models\DetailTransaksiBahanBaku;
 
 class transaksiBahanBakuController extends Controller
 {
@@ -20,12 +21,13 @@ class transaksiBahanBakuController extends Controller
     public function index()
     {
         //
+        $user = Auth::user();
         $transaksiBahanBaku = transaksiBahanBakuModel::orderBy('id', 'desc')->paginate(10);
         $detailTransaksiBahanBaku = DetailTransaksiBahanBaku::all();
         $bahanBaku = bahanBakuModel::all();
         $satuan = satuanModel::all();
 
-        return view('owner.transaksiBahanBaku', compact('transaksiBahanBaku', 'detailTransaksiBahanBaku', 'bahanBaku', 'satuan'));
+        return view('CRUD.transaksiBahanBaku', compact('transaksiBahanBaku', 'detailTransaksiBahanBaku', 'bahanBaku', 'satuan', 'user'));
     }
 
     /**
@@ -36,8 +38,9 @@ class transaksiBahanBakuController extends Controller
         //
         $bahanBaku = bahanBakuModel::all();
         $satuan = satuanModel::all();
+        $user = Auth::user();
 
-        return view('owner.create-transaksi-bahan-baku', compact('bahanBaku', 'satuan'));
+        return view('CRUD.create-transaksi-bahan-baku', compact('bahanBaku', 'satuan', 'user'));
     }
 
     /**
@@ -51,7 +54,7 @@ class transaksiBahanBakuController extends Controller
             // Check if transaction for this date already exists
             $transaksiBahanBaku = transaksiBahanBakuModel::where('tanggal', $tanggal)->first();
             if ($transaksiBahanBaku !== null) {
-                return redirect()->route('transaksiBahanBaku.index')
+                return redirect()->route('transaksi-bahan-baku.index')
                     ->with('error', 'Data gagal disimpan: Data transaksi tanggal tersebut sudah ada');
             }
 
@@ -59,7 +62,7 @@ class transaksiBahanBakuController extends Controller
             $bahanBakuIds = $request->bahanBaku;
             $duplicates = array_diff_assoc($bahanBakuIds, array_unique($bahanBakuIds));
             if (!empty($duplicates)) {
-                return redirect()->route('transaksiBahanBaku.index')
+                return redirect()->route('transaksi-bahan-baku.index')
                     ->with('error', 'Data gagal disimpan: Terdapat bahan baku yang duplikat dalam transaksi');
             }
 
@@ -84,10 +87,10 @@ class transaksiBahanBakuController extends Controller
                 $detailTransaksiBahanBaku->save();
             }
 
-            return redirect()->route('transaksiBahanBaku.index')
+            return redirect()->route('transaksi-bahan-baku.index')
                 ->with(['success' => 'Data berhasil disimpan!']);
         } catch (\Throwable $th) {
-            return redirect()->route('transaksiBahanBaku.index')
+            return redirect()->route('transaksi-bahan-baku.index')
                 ->with('error', 'Data gagal disimpan: ' . $th->getMessage());
         }
     }
@@ -114,8 +117,9 @@ class transaksiBahanBakuController extends Controller
         $satuan = satuanModel::all();
 
         $tanggal = Carbon::createFromFormat('Y-m-d', $transaksiBahanBaku->tanggal)->format('m-d-Y');
+        $user = Auth::user();
 
-        return view('owner.edit-transaksi-bahan-baku', compact('transaksiBahanBaku', 'detailTransaksiBahanBaku', 'bahanBaku', 'satuan', 'tanggal'));
+        return view('CRUD.edit-transaksi-bahan-baku', compact('transaksiBahanBaku', 'detailTransaksiBahanBaku', 'bahanBaku', 'satuan', 'tanggal', 'user'));
     }
 
     /**
@@ -143,7 +147,7 @@ class transaksiBahanBakuController extends Controller
 
             // Jika ada transaksi dengan tanggal yang sama, berikan error
             if ($cek) {
-                return redirect()->route('transaksiBahanBaku.index')->with('error', 'Data gagal dirubah: Data dengan tanggal tersebut sudah ada');
+                return redirect()->route('transaksi-bahan-baku.index')->with('error', 'Data gagal dirubah: Data dengan tanggal tersebut sudah ada');
             }
 
             // Update transaksi bahan baku
@@ -164,9 +168,9 @@ class transaksiBahanBakuController extends Controller
                 $diedit->save();
             }
 
-            return redirect()->route('transaksiBahanBaku.index')->with(['success' => 'Data Berhasil Diubah!']);
+            return redirect()->route('transaksi-bahan-baku.index')->with(['success' => 'Data Berhasil Diubah!']);
         } catch (\Exception $e) {
-            return redirect()->route('transaksiBahanBaku.index')->with('error', 'Data gagal dirubah: ' . $e->getMessage());
+            return redirect()->route('transaksi-bahan-baku.index')->with('error', 'Data gagal dirubah: ' . $e->getMessage());
         }
     }
 
@@ -182,9 +186,9 @@ class transaksiBahanBakuController extends Controller
 
             $data->delete();
 
-            return redirect()->route('transaksiBahanBaku.index')->with(['success' => 'Data Berhasil dihapus!']);
+            return redirect()->route('transaksi-bahan-baku.index')->with(['success' => 'Data Berhasil dihapus!']);
         } catch (\Throwable $th) {
-            return redirect()->route('transaksiBahanBaku.index')->with('error', 'Data gagal dihapus: ' . $th->getMessage());
+            return redirect()->route('transaksi-bahan-baku.index')->with('error', 'Data gagal dihapus: ' . $th->getMessage());
         }
     }
     public function cetak(Request $request)
@@ -196,6 +200,8 @@ class transaksiBahanBakuController extends Controller
             } else {
                 $tanggal = Carbon::createFromFormat('m/d/Y', $request->tanggal)->format('Y-m-d');
             }
+
+            $user = Auth::user();
 
             $transaksiBahanBaku = transaksiBahanBakuModel::where('tanggal', $tanggal)->first();
             $detailTransaksiBahanBaku = DetailTransaksiBahanBaku::where('transaksi_bahan_baku_id', $transaksiBahanBaku->id)->get();
@@ -231,7 +237,7 @@ class transaksiBahanBakuController extends Controller
                             <td>No Transaksi:</td>
                             <td>' . $transaksiBahanBaku->id . '</td>
                             <td>Admin:</td>
-                            <td>Nama Admin</td>
+                            <td>' . $user->username . '</td>
                         </tr>
                         <tr class="mt-2">
                             <td>Merchant:</td>
@@ -285,7 +291,7 @@ class transaksiBahanBakuController extends Controller
 
             return $dompdf->stream('Laporan Transaksi.pdf', ['Attachment' => 0]);
         } catch (\Throwable $th) {
-            return redirect()->route('transaksiBahanBaku.index')->with('error', 'Gagal mencetak data: ' . $th->getMessage());
+            return redirect()->route('transaksi-bahan-baku.index')->with('error', 'Gagal mencetak data: ' . $th->getMessage());
         }
     }
 }

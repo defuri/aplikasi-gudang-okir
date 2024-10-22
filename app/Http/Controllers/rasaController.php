@@ -21,7 +21,7 @@ class rasaController extends Controller
 
         $user = Auth::user();
 
-            return view('owner.rasa', compact('rasa'));
+        return view('CRUD.rasa', compact('rasa', 'user'));
     }
 
     /**
@@ -55,7 +55,7 @@ class rasaController extends Controller
             return redirect()->route('rasa.index')->with('success', 'Data berhasil dibuat!');
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->route('rasa.index')->with('error', 'Error, terjadi kesalahan:'. $th->getMessage());
+            return redirect()->route('rasa.index')->with('error', 'Error, terjadi kesalahan:' . $th->getMessage());
         }
     }
 

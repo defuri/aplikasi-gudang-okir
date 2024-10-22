@@ -21,8 +21,9 @@ class stokController extends Controller
         $stok = stokModel::orderBy('id', 'asc')->paginate(10);
         $gudang = gudangModel::all();
         $produk = produkModel::all();
+        $user = Auth::user();
 
-        return view('owner.stok', compact('stok', 'gudang', 'produk'));
+        return view('CRUD.stok', compact('stok', 'gudang', 'produk', 'user'));
     }
 
     public function cetak()

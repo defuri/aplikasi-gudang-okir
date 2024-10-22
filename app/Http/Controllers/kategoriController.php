@@ -20,7 +20,7 @@ class kategoriController extends Controller
 
         $user = Auth::user();
 
-            return view('owner.kategori', compact('kategori'));
+        return view('CRUD.kategori', compact('kategori', 'user'));
     }
 
     /**

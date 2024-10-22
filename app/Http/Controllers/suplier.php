@@ -22,15 +22,13 @@ class suplier extends Controller
 
         $user = Auth::user();
 
-            return view('owner.suplier', compact('suplier'));
+        return view('crud.suplier', compact('suplier', 'user'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -93,7 +91,6 @@ class suplier extends Controller
             ]);
 
             return redirect()->route('suplier.index')->with(['success' => 'Data Berhasil Diubah!']);
-
         } catch (\Exception $e) {
             return redirect()->route('suplier.index')->with('error', 'Data gagal dirubah: ' . $e->getMessage());
         }

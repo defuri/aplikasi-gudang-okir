@@ -27,6 +27,7 @@ use App\Models\penggajianModel;
 use App\Models\ProdukMasukModel;
 use App\Models\ProdukKeluarModel;
 use App\Models\RiwayatPengiriman;
+use Illuminate\Support\Facades\Auth;
 use App\Models\transaksiBahanBakuModel;
 use App\Models\DetailTransaksiBahanBaku;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -41,6 +42,7 @@ class SearchController extends Controller
                 'tabel' => 'string|required',
             ]);
 
+            $user = Auth::user();
             $query = $request->cari;
             $satuan = satuanModel::all();
             $pack = packModel::all();
@@ -51,16 +53,17 @@ class SearchController extends Controller
             switch ($request->tabel) {
                 case 'satuan':
                     $dataSatuan = satuanModel::where('nama', 'LIKE', "%{$query}%")->orderBy('id')->paginate(10);
-                    return view('owner.satuan', compact('query', 'dataSatuan'));
+                    return view('general.satuan', compact('query', 'dataSatuan', 'user'));
 
                 case 'suplier':
                     $suplier = suplier::where('nama', 'LIKE', "%{$query}%")->orderBy('id')->paginate(10);
-                    return view('owner.suplier', compact('query', 'suplier'));
+                    return view('general.suplier', compact('query', 'suplier', 'user'));
 
                 case 'bahanBaku':
                     $bahanBaku = bahanBakuModel::where('nama', 'LIKE', "%{$query}%")->orderBy('id')->paginate(10);
                     $suppliers = suplier::get();
-                    return view('owner.bahanBaku', compact('query', 'bahanBaku', 'suppliers'));
+
+                    return view('CRUD.bahanBaku', compact('query', 'bahanBaku', 'suppliers', 'user'));
 
                 case 'transaksiBahanBaku':
                     $tanggal = $request->input('tanggal', null);
@@ -86,20 +89,20 @@ class SearchController extends Controller
                     $bahanBaku = bahanBakuModel::all();
                     $satuan = satuanModel::all();
 
-                    return view('owner.transaksiBahanBaku', compact('transaksiBahanBaku', 'detailTransaksiBahanBaku', 'bahanBaku', 'satuan', 'inputan'));
+                    return view('CRUD.transaksiBahanBaku', compact('transaksiBahanBaku', 'detailTransaksiBahanBaku', 'bahanBaku', 'satuan', 'inputan', 'user'));
 
                 case 'rasa':
                     $rasa = rasaModel::where('nama', 'LIKE', "%{$query}%")->orderBy('id')->paginate(10);
-                    return view('owner.rasa', compact('query', 'rasa'));
+                    return view('CRUD.rasa', compact('query', 'rasa', 'user'));
 
                 case 'kategori':
                     $kategori = kategoriModel::where('nama', 'LIKE', "%{$query}%")->orderBy('id')->paginate(10);
-                    return view('owner.kategori', compact('query', 'kategori'));
+                    return view('CRUD.kategori', compact('query', 'kategori', 'user'));
 
                 case 'pack':
                     $pack = packModel::where('nama', 'LIKE', "%{$query}%")->orderBy('id')->paginate(10);
 
-                    return view('owner.pack', compact('query', 'pack', 'satuan'));
+                    return view('CRUD.pack', compact('query', 'pack', 'satuan', 'user'));
 
                 case 'produk':
                     $produk = produkModel::where('nama', 'LIKE', "%{$query}%")->orderBy('id')->paginate(10);
@@ -107,7 +110,7 @@ class SearchController extends Controller
                     $kategori = kategoriModel::all();
                     $total = $produk->total();
 
-                    return view('owner.produk', compact('query', 'pack', 'kategori', 'rasa', 'produk', 'satuan', 'total'));
+                    return view('CRUD.produk', compact('query', 'pack', 'kategori', 'rasa', 'produk', 'satuan', 'total', 'user'));
 
                 case 'stok':
                     $gudang = gudangModel::where('nama', 'LIKE', "%{$query}%")->first()->id;
@@ -116,35 +119,67 @@ class SearchController extends Controller
                     return view('owner.stok', compact('query', 'stok', 'satuan', 'pack'));
 
                 case 'produkMasuk':
-                    $IDproduk = produkModel::where('nama', 'LIKE', "%{$query}%")->first()->id;
-                    $ProdukMasuk = ProdukMasukModel::where('id_produk',  "{$IDproduk}")->orderBy('id')->paginate(10);
+                    $tanggal = $request->input('tanggal', null);
+                    $query = $request->input('query');
+                    $inputan = $request->tanggal;
 
-                    if ($query == null) {
-                        $ProdukMasuk = ProdukMasukModel::orderBy('id')->paginate(10);
+                    // Base query
+                    $ProdukMasuk = ProdukMasukModel::query();
 
-                        return view('owner.produkMasuk', compact('ProdukMasuk', 'gudang', 'produk'));
+                    // Jika ada input tanggal
+                    if ($tanggal) {
+                        $tanggalFormatted = Carbon::createFromFormat('m/d/Y', $tanggal)->format('Y-m-d');
+                        $ProdukMasuk = $ProdukMasuk->whereDate('created_at', $tanggalFormatted);
                     }
 
-                    return view('owner.produkMasuk', compact('query', 'IDproduk', 'ProdukMasuk', 'gudang', 'produk'));
+                    // Jika ada input query nama produk
+                    if ($query) {
+                        $IDproduk = produkModel::where('nama', 'LIKE', "%{$query}%")->first()->id;
+                        $ProdukMasuk = $ProdukMasuk->where('id_produk', $IDproduk);
+                    }
+
+                    // Eksekusi query dengan pagination
+                    $ProdukMasuk = $ProdukMasuk->orderBy('id', 'desc')->paginate(10);
+
+                    // Append semua parameter yang ada di request
+                    $ProdukMasuk->appends($request->all());
+
+                    // View data
+                    return view('CRUD.ProdukMasuk', compact('ProdukMasuk', 'gudang', 'produk', 'user', 'query', 'tanggal', 'query', 'inputan'));
 
                 case 'produkKeluar':
-                    $gudang = gudangModel::all();
-                    $produk = produkModel::all();
-                    $IDproduk = produkModel::where('nama', 'LIKE', "%{$query}%")->first()->id;
-                    $ProdukKeluar = ProdukKeluarModel::where('id_produk', $IDproduk)->orderBy('id')->paginate(10);
+                    $tanggal = $request->input('tanggal', null);
+                    $query = $request->input('query');
+                    $inputan = $request->tanggal;
 
-                    if ($query == null) {
-                        $ProdukKeluar = ProdukKeluarModel::orderBy('id')->paginate(10);
+                    // Base query
+                    $ProdukKeluar = ProdukMasukModel::query();
 
-                        return view('owner.ProdukKeluar', compact('ProdukKeluar', 'gudang', 'produk'));
+                    // Jika ada input tanggal
+                    if ($tanggal) {
+                        $tanggalFormatted = Carbon::createFromFormat('m/d/Y', $tanggal)->format('Y-m-d');
+                        $ProdukKeluar = $ProdukKeluar->whereDate('created_at', $tanggalFormatted);
                     }
 
-                    return view('owner.ProdukKeluar', compact('ProdukKeluar', 'gudang', 'produk', 'query'));
+                    // Jika ada input query nama produk
+                    if ($query) {
+                        $IDproduk = produkModel::where('nama', 'LIKE', "%{$query}%")->first()->id;
+                        $ProdukKeluar = $ProdukKeluar->where('id_produk', $IDproduk);
+                    }
+
+                    // Eksekusi query dengan pagination
+                    $ProdukKeluar = $ProdukKeluar->orderBy('id', 'desc')->paginate(10);
+
+                    // Append semua parameter yang ada di request
+                    $ProdukKeluar->appends($request->all());
+
+                    // View data
+                    return view('CRUD.ProdukKeluar', compact('ProdukKeluar', 'gudang', 'produk', 'user', 'query', 'tanggal', 'query', 'inputan'));
 
                 case 'gudang':
                     $gudang = gudangModel::where('nama', 'LIKE', "%{$query}%")->orderBy('id')->paginate(10);
 
-                    return view('owner.gudang', compact('query', 'gudang'));
+                    return view('CRUD.gudang', compact('query', 'user', 'gudang'));
 
                 case 'pesanan':
                     // Mencari pelanggan berdasarkan nama

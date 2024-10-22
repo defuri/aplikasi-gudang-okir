@@ -32,7 +32,7 @@ class produkController extends Controller
 
         $user = Auth::user();
 
-        return view('owner.produk', compact('rasa', 'kategori', 'pack', 'produk'));
+        return view('CRUD.produk', compact('rasa', 'kategori', 'pack', 'produk', 'produk', 'user'));
     }
 
     /**
