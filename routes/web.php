@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\suplier;
+use App\Http\Middleware\CheckAdminGudang;
+use App\Http\Middleware\CheckAdminProduksi;
+use App\Http\Middleware\CheckLoginMiddleware;
+use App\Http\Middleware\CheckOwner;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\hakController;
@@ -44,31 +48,37 @@ Route::get('/api/bahan-baku', [bahanBakuController::class, 'get']);
 
 Route::get('/owner', function () {
     return view('owner.dashboard');
-});
+})->middleware(CheckOwner::class);
+
 Route::get('/produksi', function () {
     return view('layouts.produksiLayout');
-});
+})->middleware(CheckAdminProduksi::class);
 
 Route::get('/gudang-home', function () {
     return view('layouts.gudangLayout');
-});
+})->middleware(CheckAdminGudang::class);
 
-Route::resource('/satuan', satuanController::class);
-Route::resource('/suplier', suplier::class);
-Route::resource('/bahan-baku', bahanBakuController::class);
-Route::resource('/transaksi-bahan-baku', transaksiBahanBakuController::class);
-Route::get('/create-transaksi-bahan-baku', [transaksiBahanBakuController::class, 'create']);
-Route::post('/cetak-transaksi-bahan-baku', [transaksiBahanBakuController::class, 'cetak']);
-Route::resource('/rasa', rasaController::class);
-Route::resource('/kategori', kategoriController::class);
-Route::resource('/pack', packController::class);
-Route::resource('/produk', produkController::class);
-Route::resource('/gudang', gudangController::class);
-Route::resource('/produk-masuk', ProdukMasukController::class);
-Route::post('/cetak-produk-masuk', [ProdukMasukController::class, 'cetak']);
-Route::resource('/produk-keluar', ProdukKeluarController::class);
-Route::post('/cetak-produk-keluar', [ProdukKeluarController::class, 'cetak']);
-Route::resource('/stok', stokController::class);
+Route::middleware([CheckLoginMiddleware::class])->group(function () {
+    Route::resource('/satuan', satuanController::class);
+    Route::resource('/suplier', suplier::class);
+    Route::resource('/bahan-baku', bahanBakuController::class);
+    Route::resource('/transaksi-bahan-baku', transaksiBahanBakuController::class);
+    Route::get('/create-transaksi-bahan-baku', [transaksiBahanBakuController::class, 'create']);
+    Route::post('/cetak-transaksi-bahan-baku', [transaksiBahanBakuController::class, 'cetak']);
+    Route::resource('/rasa', rasaController::class);
+    Route::resource('/kategori', kategoriController::class);
+    Route::resource('/pack', packController::class);
+    Route::resource('/produk', produkController::class);
+    Route::resource('/gudang', gudangController::class);
+    Route::resource('/produk-masuk', ProdukMasukController::class);
+    Route::post('/cetak-produk-masuk', [ProdukMasukController::class, 'cetak']);
+    Route::resource('/produk-keluar', ProdukKeluarController::class);
+    Route::post('/cetak-produk-keluar', [ProdukKeluarController::class, 'cetak']);
+    Route::resource('/stok', stokController::class);
+    Route::post('cetak-stok', [stokController::class, 'cetak']);
+    Route::resource('/hak', hakController::class);
+    Route::resource('/akun', akunController::class);
+});
 
 // Route::resource('/admin/satuan', satuanController::class);
 // Route::resource('/owner/suplier', suplier::class);

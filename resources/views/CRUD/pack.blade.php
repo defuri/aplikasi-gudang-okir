@@ -1,7 +1,7 @@
 @extends($user->id_hak === 1 ? 'layouts.owner' : 'layouts.produksiLayout')
 
 @section('namaHalaman', 'Pack')
-@section('namaOperator', $user->id_hak === 1 ? 'Owner' : 'Admin Produksi')
+@section('namaOperator', $user->id_hak === 1 ? 'Super Admin' : 'Admin Produksi')
 @section('judul', 'Data Pack')
 
 @section('content')

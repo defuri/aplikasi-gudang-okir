@@ -36,10 +36,10 @@ class loginController extends Controller
                         return redirect()->intended('/produksi');
                     case '3';
                         return redirect()->intended('/gudang');
-                    case '4';
-                        return redirect()->intended('/lapangan');
-                    case '5';
-                        return redirect()->intented('/administrasi');
+                    // case '4';
+                    //     return redirect()->intended('/lapangan');
+                    // case '5';
+                    //     return redirect()->intented('/administrasi');
                     default:
                         return back()->with('error', 'Error: Username atau password salah ');
                 }

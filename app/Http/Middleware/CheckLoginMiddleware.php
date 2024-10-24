@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class CekAdminProduksi
+class CheckLoginMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,12 +16,10 @@ class CekAdminProduksi
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check()) {
-            return redirect('/login');
-        }
+        $user = Auth::user();
 
-        if (Auth::user()->id_hak == 1 | 2) {
-            abort(403, 'Unauthorized action.');
+        if(!$user) {
+            return redirect('/login')->with('error', 'Anda tidak mempunyai hak akses menuju halaman ini.');
         }
 
         return $next($request);

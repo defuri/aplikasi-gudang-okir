@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\CheckLoginMiddleware;
 use Carbon\Carbon;
 use App\Models\Pesanan;
 use App\Models\suplier;
@@ -49,6 +50,11 @@ class SearchController extends Controller
             $gudang = gudangModel::all();
             $produk = produkModel::all();
             $pelanggan = pelanggan::all();
+
+            if(!$user)
+            {
+                return redirect('/login')->with('error', 'Anda tidak mempunyai akses untuk halaman ini');
+            }
 
             switch ($request->tabel) {
                 case 'satuan':
@@ -342,12 +348,12 @@ class SearchController extends Controller
                     $akun = akunModel::where('username', 'LIKE', "%{$query}")->orderBy('id', 'desc')->paginate(10);
                     $hak = hakModel::all();
 
-                    return view('owner.akun', compact('akun', 'hak', 'query'));
+                    return view('CRUD.akun', compact('akun', 'hak', 'query'));
 
                 case 'hak':
                     $hak = hakModel::where('nama', 'LIKE', "%{$query}%")->orderBy('id')->paginate(10);
 
-                    return view('owner.hak', compact('hak', 'query'));
+                    return view('crud.hak', compact('hak', 'query'));
 
                 default:
                     return back()->with('error', 'Terjadi kesalahan: Gagal mencari, silahkan coba lagi');

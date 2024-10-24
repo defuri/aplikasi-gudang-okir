@@ -20,7 +20,7 @@ class akunController extends Controller
         $akun = akunModel::orderBy('id', 'desc')->paginate(10);
         $hak = hakModel::all();
 
-        return view('owner.akun', compact('akun', 'hak'));
+        return view('CRUD.akun', compact('akun', 'hak'));
     }
 
     /**
