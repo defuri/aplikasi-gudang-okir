@@ -189,8 +189,8 @@
                                             <td class="px-4 py-3">{{ $data->kategori->nama }}</td>
                                             <td class="px-4 py-3">{{ $data->pack->nama }}</td>
                                             <td class="px-4 py-3">{{ $data->harga }}</td>
-                                            <td class="px-4 py-3">{{ $data->created_at }}</td>
-                                            <td class="px-4 py-3">{{ $data->updated_at }}</td>
+                                            <td class="px-4 py-3">{{ $data->formatted_created_at }}</td>
+                                            <td class="px-4 py-3">{{ $data->formatted_updated }}</td>
                                             <td class="px-4 py-3 flex items-center justify-end">
                                                 <button id="apple-imac-27-dropdown-button"
                                                     data-dropdown-toggle="dropDownAksi{{ $loop->iteration }}"

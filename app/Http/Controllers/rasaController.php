@@ -17,7 +17,7 @@ class rasaController extends Controller
     {
         //
 
-        $rasa = rasaModel::orderBy('id', 'asc')->paginate(10);
+        $rasa = rasaModel::orderBy('id', 'desc')->paginate(10);
 
         $user = Auth::user();
 

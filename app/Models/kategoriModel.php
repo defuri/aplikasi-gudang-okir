@@ -26,4 +26,14 @@ class kategoriModel extends Model
     {
         return $this->hasMany(kategoriController::class, 'id_kategori', 'id');
     }
+
+    public function getFormattedCreatedAtAttribute()
+    {
+        return $this->created_at->timezone('Asia/Jakarta')->format('d-m-Y H:i');
+    }
+
+    public function getFormattedUpdatedAttribute()
+    {
+        return $this->updated_at->timezone('Asia/Jakarta')->format('d-m-Y H:i');
+    }
 }

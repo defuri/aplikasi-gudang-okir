@@ -25,4 +25,14 @@ class rasaModel extends Model
     {
         return $this->hasMany(rasaModel::class, 'id_rasa');
     }
+
+    public function getFormattedCreatedAtAttribute()
+    {
+        return $this->created_at->timezone('Asia/Jakarta')->format('d-m-Y H:i');
+    }
+
+    public function getFormattedUpdatedAttribute()
+    {
+        return $this->updated_at->timezone('Asia/Jakarta')->format('d-m-Y H:i');
+    }
 }

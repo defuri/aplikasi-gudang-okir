@@ -18,7 +18,7 @@ class stokController extends Controller
     public function index()
     {
         //
-        $stok = stokModel::orderBy('id', 'asc')->paginate(10);
+        $stok = stokModel::orderByDesc('id')->paginate(10);
         $gudang = gudangModel::all();
         $produk = produkModel::all();
         $user = Auth::user();
@@ -45,7 +45,7 @@ class stokController extends Controller
                 <style>' . $tailwindCss . '</style>
             </head>
             <body>
-                <p class="text-xs">' . Date(now()) . '</p>
+                <p class="text-xs">' . Carbon::now('Asia/Jakarta')->format('d-m-Y H:i') . '</p>
 
                 <h1 class="text-xl font-bold text-center mt-10">PT Original Kiripik</h1>
                 <h1 class="text-4xl font-bold text-center mt-3">Stok Produk</h1>
@@ -55,7 +55,7 @@ class stokController extends Controller
                 <table class="w-full text-xs mt-2">
                     <tr class="font-bold">
                         <td>Tanggal:</td>
-                        <td>' . Date(now()) . '</td>
+                        <td>' . Carbon::now('Asia/Jakarta')->format('d-m-Y') . '</td>
                         <td>Departemen:</td>
                         <td>Gudang</td>
                         <td>Total stok:</td>

@@ -26,4 +26,14 @@ class bahanBakuModel extends Model
     public function transaksiBahanbaku(): HasMany {
         return $this->hasMany(bahanBakuModel::class, 'id_bahan_baku');
     }
+
+    public function getFormattedCreatedAtAttribute()
+    {
+        return $this->created_at->timezone('Asia/Jakarta')->format('d-m-Y H:i');
+    }
+
+    public function getFormattedUpdatedAttribute()
+    {
+        return $this->updated_at->timezone('Asia/Jakarta')->format('d-m-Y H:i');
+    }
 }

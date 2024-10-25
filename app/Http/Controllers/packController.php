@@ -17,7 +17,7 @@ class packController extends Controller
     {
         //
         $satuan = satuanModel::all();
-        $pack = packModel::orderBy('id', 'asc')->paginate(10);
+        $pack = packModel::orderBy('id', 'desc')->paginate(10);
         $user = Auth::user();
 
         return view('CRUD.pack', compact('pack', 'satuan', 'user'));

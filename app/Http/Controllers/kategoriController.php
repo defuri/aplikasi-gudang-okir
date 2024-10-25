@@ -16,7 +16,7 @@ class kategoriController extends Controller
     {
         //
 
-        $kategori = kategoriModel::orderBy('id', 'asc')->paginate(10);
+        $kategori = kategoriModel::orderBy('id', 'desc')->paginate(10);
 
         $user = Auth::user();
 

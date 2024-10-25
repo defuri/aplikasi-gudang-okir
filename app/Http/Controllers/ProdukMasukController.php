@@ -201,17 +201,45 @@ class ProdukMasukController extends Controller
     public function cetak(Request $request)
     {
         try {
-            $user = Auth::user();
-            $tanggalFormatted = Carbon::createFromFormat('m/d/Y', $request->tanggal)->format('Y-m-d');
-            $ProdukMasuk = ProdukMasukModel::query();
-            $ProdukMasuk = $ProdukMasuk->whereDate('created_at', $tanggalFormatted)->get();
-            $total = 0;
+            if ($request->dariTanggal && $request->keTanggal) {
+                if ($request->dariTanggal == $request->keTanggal) {
+                    $dariTanggal = $request->dariTanggal;
+                    $keTanggal = $request->keTanggal;
+                    $tanggal = Carbon::createFromFormat('m/d/Y', $request->dariTanggal)->format('Y-m-d');
+                    $ProdukMasuk = ProdukMasukModel::whereDate('created_at', $tanggal)->get();
+                } else {
+                    $dariTanggal = Carbon::createFromFormat('m/d/Y', $request->dariTanggal)->format('Y-m-d');
+                    $keTanggal = Carbon::createFromFormat('m/d/Y', $request->keTanggal)->format('Y-m-d');
+                    $ProdukMasuk = ProdukMasukModel::whereBetween('created_at', [$dariTanggal, $keTanggal])->get();
 
-            foreach ($ProdukMasuk as $currentProduk) {
-                $total = $total + $currentProduk->jumlah;
+                    $query = ProdukMasukModel::query();
+
+                    if ($request->filled(['dariTanggal', 'keTanggal'])) {
+                        $dariTanggal = Carbon::createFromFormat('m/d/Y', $request->dariTanggal)
+                            ->startOfDay();
+
+                        $keTanggal = Carbon::createFromFormat('m/d/Y', $request->keTanggal)
+                            ->endOfDay();
+
+                        $query->whereBetween('created_at', [$dariTanggal, $keTanggal]);
+                    }
+
+                    $ProdukMasuk =  $query->get();
+                }
             }
 
+            if ($ProdukMasuk->isEmpty()) {
+                return redirect()->route('produk-masuk.index')->with('error', 'Gagal mencetak data: Data tidak ditemukan');
+            }
+
+            $total = 0;
+            foreach ($ProdukMasuk as $currentProduk) {
+                $total += $currentProduk->jumlah;
+            }
             $formattedTotal = number_format($total, 0, ',', '.');
+            $dariTanggalFormatted = Carbon::parse($dariTanggal)->format('Y-m-d');
+            $keTanggalFormatted = Carbon::parse($keTanggal)->format('Y-m-d');
+            $user = Auth::user();
             $dompdf = new Dompdf();
             $tailwindCss = file_get_contents(public_path('css/tailwind-pdf.css'));
 
@@ -221,20 +249,25 @@ class ProdukMasukController extends Controller
                     <style>' . $tailwindCss . '</style>
                 </head>
                 <body>
-                    <p class="text-xs">' . Date(now()) . '</p>
-
+                    <p class="text-xs">' . Carbon::now('Asia/Jakarta')->format('d-m-Y H:i') . '</p>
                     <h1 class="text-xl font-bold text-center mt-10">PT Original Kiripik</h1>
-                    <h1 class="text-4xl font-bold text-center mt-3">Transaksi Bahan Baku</h1>
-
+                    <h1 class="text-4xl font-bold text-center mt-3">Data Produk Masuk Gudang</h1>
                     <hr class="h-px my-8 bg-gray-200 border-0 mt-4">
 
                     <table class="w-full text-xs mt-2">
                         <tr class="font-bold">
                             <td>Admin:</td>
-                            <td>' . $user->username . '</td>
-                            <td>Tanggal:</td>
-                            <td>' . $request->tanggal . '</td>
-                            <td>Total:</td>
+                            <td>' . $user->username . '</td>';
+
+            if ($dariTanggal == $keTanggal) {
+                $html .= '  <td>Tanggal:</td>
+                            <td>' . $request->dariTanggal . '</td>';
+            } else {
+                $html .= '  <td>Periode:</td>
+                            <td>' . $dariTanggalFormatted . ' hingga ' . $keTanggalFormatted . '</td>';
+            }
+
+            $html .= '       <td>Total:</td>
                             <td>' . $formattedTotal . '</td>
                         </tr>
                         <tr class="mt-2">
@@ -250,24 +283,31 @@ class ProdukMasukController extends Controller
                     <table class="w-full text-xs text-left text-gray-500 mt-2 border border-gray-300 border-collapse">
                         <thead class="text-gray-700 capitalize bg-gray-200">
                             <tr>
-                                <td scope="col" class="px-3 py-1">#</td>
+                                <td scope="col" class="px-3 py-1">#</td>';
+            if ($dariTanggal != $keTanggal) {
+                $html .= '<td scope="col" class = "px-3 py-1">Tanggal</td>';
+            }
+
+            $html .= '          <td scope="col" class="px-3 py-1">Produk</td>
                                 <td scope="col" class="px-3 py-1">Gudang</td>
-                                <td scope="col" class="px-3 py-1">Produk</td>
                                 <td scope="col" class="px-3 py-1">Jumlah</td>
-                                <td scope="col" class="px-3 py-1">Waktu</td>
                             </tr>
                         </thead>
                         <tbody>';
 
             foreach ($ProdukMasuk as $index => $item) {
                 $html .= '
-                        <tr class="border-b">
-                            <td class="px-4 py-1">' . ($index + 1) . '</td>
-                               <td class="px-4 py-1">' . $item->gudang->nama . '</td>
-                            <td class="px-4 py-1">' . $item->produk->nama . '</td>
-                            <td class="px-4 py-1">' . $item->jumlah . '</td>
-                            <td class="px-4 py-1">' . $item->created_at . '</td>
-                        </tr>';
+                            <tr class="border-b">
+                                <td class="px-4 py-1">' . ($index + 1) . '</td>';
+
+                if ($dariTanggal != $keTanggal) {
+                    $html .= '<td class="px-4 py-1">' . $item->created_at->format('d-m-Y')  . '</td>';
+                }
+
+                $html .=       '<td class="px-4 py-1">' . $item->gudang->nama . '</td>
+                                <td class="px-4 py-1">' . $item->produk->nama . '</td>
+                                <td class="px-4 py-1">' . $item->jumlah . '</td>
+                            </tr>';
             }
 
             $html .= '
@@ -275,13 +315,10 @@ class ProdukMasukController extends Controller
                     </table>
 
                     <div class="text-right w-full mt-9">
-                    <p style="margin-top: 130px;text-align: right; margin-right: 100px;" class="text-xs">Mengetahui </p>
+                        <p style="margin-top: 130px; text-align: right; margin-right: 100px;" class="text-xs">Mengetahui</p>
                     </div>
-
                 </body>
-
             </html>';
-
 
             $dompdf->loadHtml($html);
             $dompdf->render();

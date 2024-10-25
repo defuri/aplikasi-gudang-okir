@@ -16,7 +16,7 @@ class suplier extends Controller
     public function index(): View
     {
         //get suplier
-        $suplier = ModelsSuplier::orderBy('id', 'asc')->paginate(10);
+        $suplier = ModelsSuplier::orderBy('id', 'desc')->paginate(10);
 
         $totalBaris = $suplier->total();
 

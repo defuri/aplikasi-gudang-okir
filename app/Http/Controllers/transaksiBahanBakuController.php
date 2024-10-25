@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Date;
 use Carbon\Carbon;
 use Dompdf\Dompdf;
 use App\Models\satuanModel;
 use Illuminate\Http\Request;
-use App\Models\DetailPesanan;
 use App\Models\bahanBakuModel;
 use Illuminate\Support\Facades\Auth;
 use App\Models\transaksiBahanBakuModel;
@@ -51,14 +49,12 @@ class transaksiBahanBakuController extends Controller
         try {
             $tanggal = Carbon::createFromFormat('m/d/Y', $request->tanggal)->format('Y-m-d');
 
-            // Check if transaction for this date already exists
             $transaksiBahanBaku = transaksiBahanBakuModel::where('tanggal', $tanggal)->first();
             if ($transaksiBahanBaku !== null) {
                 return redirect()->route('transaksi-bahan-baku.index')
                     ->with('error', 'Data gagal disimpan: Data transaksi tanggal tersebut sudah ada');
             }
 
-            // Check for duplicate bahan_baku_id in the request
             $bahanBakuIds = $request->bahanBaku;
             $duplicates = array_diff_assoc($bahanBakuIds, array_unique($bahanBakuIds));
             if (!empty($duplicates)) {
@@ -66,14 +62,12 @@ class transaksiBahanBakuController extends Controller
                     ->with('error', 'Data gagal disimpan: Terdapat bahan baku yang duplikat dalam transaksi');
             }
 
-            // Create new transaksi
             $transaksiBahanBaku = new transaksiBahanBakuModel();
             $transaksiBahanBaku->tanggal = $tanggal;
             $transaksiBahanBaku->save();
 
             $transaksiBahanBakuID = transaksiBahanBakuModel::latest()->first()->id;
 
-            // Store detail transaksi
             for ($i = 0; $i < count($request->bahanBaku); $i++) {
                 $detailTransaksiBahanBaku = new DetailTransaksiBahanBaku();
                 $detailTransaksiBahanBaku->transaksi_bahan_baku_id = $transaksiBahanBakuID;
@@ -194,26 +188,31 @@ class transaksiBahanBakuController extends Controller
     public function cetak(Request $request)
     {
         try {
-
-            if ($request->normal) {
-                $tanggal = $request->tanggal;
+            if (!$request->normal) {
+                $dariTanggal = Carbon::createFromFormat('m/d/Y', $request->dariTanggal)->format('Y-m-d');
+                $keTanggal = Carbon::createFromFormat('m/d/Y', $request->keTanggal)->format('Y-m-d');
             } else {
-                $tanggal = Carbon::createFromFormat('m/d/Y', $request->tanggal)->format('Y-m-d');
+                $dariTanggal = $request->dariTanggal;
+                $keTanggal = $request->keTanggal;
             }
 
             $user = Auth::user();
 
-            $transaksiBahanBaku = transaksiBahanBakuModel::where('tanggal', $tanggal)->first();
-            $detailTransaksiBahanBaku = DetailTransaksiBahanBaku::where('transaksi_bahan_baku_id', $transaksiBahanBaku->id)->get();
+            $transaksiBahanBaku = TransaksiBahanBakuModel::whereBetween('tanggal', [$dariTanggal, $keTanggal])->get();
 
-            $total = 0;
-
-            foreach ($detailTransaksiBahanBaku as $detailSekarang) {
-                $total = $total + $detailSekarang->total;
+            if ($transaksiBahanBaku->isEmpty()) {
+                return redirect()->route('transaksi-bahan-baku.index')->with('error', 'Gagal mencetak data: Data tidak ditemukan');
             }
 
-            $formattedTotal = number_format($total, 0, ',', '.');
+            $transaksiIds = $transaksiBahanBaku->pluck('id')->toArray();
 
+            $detailTransaksiBahanBaku = DetailTransaksiBahanBaku::whereIn('transaksi_bahan_baku_id', $transaksiIds)
+                ->with(['bahanBaku', 'satuan'])
+                ->get();
+
+            $total = $detailTransaksiBahanBaku->sum('total');
+            $formattedTotal = number_format($total, 0, ',', '.');
+            $sekarang = now()->format('d-m-Y H:i');
             $dompdf = new Dompdf();
             $tailwindCss = file_get_contents(public_path('css/tailwind-pdf.css'));
 
@@ -223,7 +222,7 @@ class transaksiBahanBakuController extends Controller
                     <style>' . $tailwindCss . '</style>
                 </head>
                 <body>
-                    <p class="text-xs">' . Date(now()) . '</p>
+                    <p class="text-xs">' . $sekarang . '</p>
 
                     <h1 class="text-xl font-bold text-center mt-10">PT Original Kiripik</h1>
                     <h1 class="text-4xl font-bold text-center mt-3">Transaksi Bahan Baku</h1>
@@ -232,45 +231,66 @@ class transaksiBahanBakuController extends Controller
 
                     <table class="w-full text-xs mt-2">
                         <tr class="font-bold">
-                            <td>Tanggal:</td>
-                            <td>' . Date(now()) . '</td>
-                            <td>No Transaksi:</td>
-                            <td>' . $transaksiBahanBaku->id . '</td>
-                            <td>Admin:</td>
+                            <td>Periode:</td>';
+
+            $dariTanggalNormal = Carbon::createFromFormat('Y-m-d', $dariTanggal)->format('d-m-Y');
+            $keTanggalNormal = Carbon::createFromFormat('Y-m-d', $keTanggal)->format('d-m-Y');
+
+            if ($dariTanggal != $keTanggal) {
+                $html .= '  <td>' . $dariTanggalNormal . ' hingga ' . $keTanggalNormal . '</td>';
+            } else {
+                $html .= '  <td>' . $dariTanggalNormal . '</td>';
+            }
+
+            $html .= '      <td>Admin:</td>
                             <td>' . $user->username . '</td>
+                            <td>Total:</td>
+                            <td>Rp ' . $formattedTotal . '</td>
                         </tr>
                         <tr class="mt-2">
                             <td>Merchant:</td>
                             <td>Okir</td>
                             <td>Departemen:</td>
                             <td>Produksi</td>
-                            <td>Total:</td>
-                            <td>Rp ' . $formattedTotal . '</td>
+                            <td>Keterangan:</td>
+                            <td></td>
                         </tr>
                     </table>
 
                     <table class="w-full text-xs text-left text-gray-500 mt-2 border border-gray-300 border-collapse">
                         <thead class="text-gray-700 capitalize bg-gray-200">
                             <tr>
-                                <td scope="col" class="px-3 py-1">#</td>
-                                <td scope="col" class="px-3 py-1">Bahan Baku</td>
+                                <td scope="col" class="px-3 py-1">#</td>';
+
+            if ($dariTanggal != $keTanggal) {
+                $html .= '  <td>Tanggal</td>';
+            }
+
+            $html .= '          <td scope="col" class="px-3 py-1">Bahan Baku</td>
                                 <td scope="col" class="px-3 py-1">Jumlah</td>
                                 <td scope="col" class="px-3 py-1">Satuan</td>
                                 <td scope="col" class="px-3 py-1">Harga</td>
                                 <td scope="col" class="px-3 py-1">Total</td>
                             </tr>
                         </thead>
-                        <tbody>';
+                    <tbody>';
 
             foreach ($detailTransaksiBahanBaku as $index => $item) {
+                $tanggalTransaksi = $item->transaksiBahanBaku->tanggal ?? '';
+
                 $html .= '
                             <tr class="border-b">
-                                <td class="px-4 py-1">' . ($index + 1) . '</td>
-                                <td class="px-4 py-1">' . $item->bahanBaku->nama . '</td>
+                                <td class="px-4 py-1">' . ($index + 1) . '</td>';
+
+                if ($dariTanggal != $keTanggal) {
+                    $html .= '<td class="px-4 py-1">' . $tanggalTransaksi . '</td>';
+                }
+
+                $html .= '       <td class="px-4 py-1">' . $item->bahanBaku->nama . '</td>
                                 <td class="px-4 py-1">' . $item->jumlah . '</td>
                                 <td class="px-4 py-1">' . $item->satuan->nama . '</td>
-                                <td class="px-4 py-1">' . $item->harga . '</td>
-                                <td class="px-4 py-1">' . $item->total . '</td>
+                                <td class="px-4 py-1">Rp ' . number_format($item->harga, 0, ',', '.') . '</td>
+                                <td class="px-4 py-1">Rp ' . number_format($item->total, 0, ',', '.') . '</td>
                             </tr>';
             }
 
@@ -279,17 +299,16 @@ class transaksiBahanBakuController extends Controller
                     </table>
 
                     <div class="text-right w-full mt-9">
-                    <p style="margin-top: 130px;text-align: right; margin-right: 100px;" class="text-xs">Mengetahui </p>
+                        <p style="margin-top: 130px;text-align: right; margin-right: 100px;" class="text-xs">Mengetahui </p>
                     </div>
 
                 </body>
-
             </html>';
 
             $dompdf->loadHtml($html);
             $dompdf->render();
 
-            return $dompdf->stream('Laporan Transaksi.pdf', ['Attachment' => 0]);
+            return $dompdf->stream('Laporan Transaksi Bahan Baku.pdf', ['Attachment' => 0]);
         } catch (\Throwable $th) {
             return redirect()->route('transaksi-bahan-baku.index')->with('error', 'Gagal mencetak data: ' . $th->getMessage());
         }

@@ -28,7 +28,7 @@ class produkController extends Controller
         $rasa = rasaModel::all();
         $kategori = kategoriModel::all();
         $pack = packModel::all();
-        $produk = produkModel::orderby('id', 'asc')->paginate(10);
+        $produk = produkModel::orderby('id', 'desc')->paginate(10);
 
         $user = Auth::user();
 

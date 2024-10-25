@@ -234,7 +234,7 @@
                                                             Apa anda yakin ingin menghapus data ini?</h3>
 
                                                         <form id="delete-form-{{ $data->id }}"
-                                                            action="{{ route('suplier.destroy', $data->id) }}"
+                                                            action="{{ route('bahan-baku.destroy', $data->id) }}"
                                                             method="POST" style="display: none;">
                                                             @csrf
                                                             @method('DELETE')
@@ -263,8 +263,8 @@
                                     <td class="px-4 py-3">{{ $data->id }}</td>
                                     <td class="px-4 py-3">{{ $data->nama }}</td>
                                     <td class="px-4 py-3">{{ $data->suplier->nama ?? 'tidak ada nama' }}</td>
-                                    <td class="px-4 py-3">{{ $data->created_at }}</td>
-                                    <td class="px-4 py-3">{{ $data->updated_at }}</td>
+                                    <td class="px-4 py-3">{{ $data->formatted_created_at }}</td>
+                                    <td class="px-4 py-3">{{ $data->formatted_updated }}</td>
                                     <td class="px-4 py-3 flex items-center justify-end">
                                         <button id="row{{ $loop->iteration }}"
                                             data-dropdown-toggle="show{{ $data->id }}"

@@ -59,8 +59,8 @@
                                         {{ $loop->iteration }}</th>
                                     <td class="px-4 py-3">{{ $data->id }}</td>
                                     <td class="px-4 py-3">{{ $data->nama }}</td>
-                                    <td class="px-4 py-3">{{ $data->created_at }}</td>
-                                    <td class="px-4 py-3">{{ $data->updated_at }}</td>
+                                    <td class="px-4 py-3">{{ $data->formatted_created_at }}</td>
+                                    <td class="px-4 py-3">{{ $data->formatted_updated }}</td>
                                 </tr>
                             @empty
                             @endforelse
