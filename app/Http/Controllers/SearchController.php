@@ -114,8 +114,9 @@ class SearchController extends Controller
                 case 'stok':
                     $gudang = gudangModel::where('nama', 'LIKE', "%{$query}%")->first()->id;
                     $stok = stokModel::where('id_gudang',  "{$gudang}")->orderBy('id')->paginate(10);
+                    $user = Auth::user();
 
-                    return view('owner.stok', compact('query', 'stok', 'satuan', 'pack'));
+                    return view('CRUD.stok', compact('query', 'stok', 'satuan', 'pack', 'user'));
 
                 case 'produkMasuk':
                     $dariTanggal = $request->dariTanggal;

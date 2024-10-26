@@ -206,11 +206,11 @@ class ProdukMasukController extends Controller
                     $dariTanggal = $request->dariTanggal;
                     $keTanggal = $request->keTanggal;
                     $tanggal = Carbon::createFromFormat('m/d/Y', $request->dariTanggal)->format('Y-m-d');
-                    $ProdukMasuk = ProdukMasukModel::whereDate('created_at', $tanggal)->get();
+                    $ProdukMasuk = ProdukMasukModel::whereDate('created_at', $tanggal)->orderBy('id')->get();
                 } else {
                     $dariTanggal = Carbon::createFromFormat('m/d/Y', $request->dariTanggal)->format('Y-m-d');
                     $keTanggal = Carbon::createFromFormat('m/d/Y', $request->keTanggal)->format('Y-m-d');
-                    $ProdukMasuk = ProdukMasukModel::whereBetween('created_at', [$dariTanggal, $keTanggal])->get();
+                    $ProdukMasuk = ProdukMasukModel::whereBetween('created_at', [$dariTanggal, $keTanggal])->orderBy('id')->get();
 
                     $query = ProdukMasukModel::query();
 
@@ -224,7 +224,7 @@ class ProdukMasukController extends Controller
                         $query->whereBetween('created_at', [$dariTanggal, $keTanggal]);
                     }
 
-                    $ProdukMasuk =  $query->get();
+                    $ProdukMasuk =  $query->orderBy('id_gudang')->get();
                 }
             }
 

@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Dompdf\Dompdf;
 use App\Models\Produk;
-use Illuminate\Http\Request;
 use App\Models\Penjualan;
-use App\Models\DetailPenjualan;
-use App\Models\penjualanModel;
 use App\Models\produkModel;
+use Illuminate\Http\Request;
+use App\Models\penjualanModel;
+use App\Models\DetailPenjualan;
+use Illuminate\Support\Facades\Auth;
 
 class penjualanController extends Controller
 {
@@ -179,7 +180,7 @@ class penjualanController extends Controller
                         </tr>
                         <tr class="mt-2">
                             <td>Admin:</td>
-                            <td>Nama Admin</td>
+                            <td>' . Auth::user()->username . '</td>
                             <td>Merchant:</td>
                             <td>Okir</td>
                             <td>Mata Uang:</td>

@@ -148,9 +148,10 @@
                 </div>
 
                 <div
-                    class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+                    class="flex flex-col lg:flex-row items-center justify-between space-y-3 lg:space-y-0 lg:space-x-4 p-4">
                     <div class="w-full lg:w-1/2">
                         <form class="lg:flex items-center rounded-lg" method="GET" action="{{ route('search') }}">
+                            @csrf
                             <input type="text" value="produkMasuk" name="tabel" required class="hidden">
                             <label for="simple-search" class="sr-only">Search</label>
                             <div id="cariTanggal" date-rangepicker class="sm:flex items-center">
@@ -191,28 +192,30 @@
                             </button>
                         </form>
                     </div>
-                    <div class="lg:flex lg:items-center lg:gap-3 w-full sm:w-auto">
-                        <button type="button" data-modal-target="modalCetak" data-modal-toggle="modalCetak"
-                            class="w-full justify-center text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            <svg class="mr-1 -ml-1 w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd"
-                                    d="M8 3a2 2 0 0 0-2 2v3h12V5a2 2 0 0 0-2-2H8Zm-3 7a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h1v-4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v4h1a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2H5Zm4 11a1 1 0 0 1-1-1v-4h8v4a1 1 0 0 1-1 1H9Z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            Cetak
-                        </button>
-                        <div
-                            class="mt-3 w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                            <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal"
-                                class="flex items-center border-2 border-gray-200 dark:border-gray-600 justify-center text-gray-900 dark:text-gray-300 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-3 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
-                                <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                    <path clip-rule="evenodd" fill-rule="evenodd"
-                                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                    <div
+                        class="w-full lg:w-auto flex flex-col lg:flex-row space-y-2 lg:space-y-0 items-stretch lg:items-center justify-end lg:space-x-3 flex-shrink-0">
+                        <div class="lg:flex lg:items-center lg:gap-3">
+                            <button type="button" data-modal-target="modalCetak" data-modal-toggle="modalCetak"
+                                class="w-full justify-center text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <svg class="mr-1 -ml-1 w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd"
+                                        d="M8 3a2 2 0 0 0-2 2v3h12V5a2 2 0 0 0-2-2H8Zm-3 7a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h1v-4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v4h1a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2H5Zm4 11a1 1 0 0 1-1-1v-4h8v4a1 1 0 0 1-1 1H9Z"
+                                        clip-rule="evenodd" />
                                 </svg>
-                                Tambah data
+                                Cetak
                             </button>
+                            <a href="{{ route('produk-masuk.create') }}">
+                                <button type="button"
+                                    class="mt-3 lg:mt-0 flex w-full items-center justify-center text-gray-900 bg-primary-700 border-gray-200 dark:border-gray-600 border-2 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2.5 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 whitespace-nowrap">
+                                    <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path clip-rule="evenodd" fill-rule="evenodd"
+                                            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                                    </svg>
+                                    Tambah Data
+                                </button>
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -209,11 +209,11 @@ class ProdukKeluarController extends Controller
                     $dariTanggal = $request->dariTanggal;
                     $keTanggal = $request->keTanggal;
                     $tanggal = Carbon::createFromFormat('m/d/Y', $request->dariTanggal)->format('Y-m-d');
-                    $ProdukKeluar = ProdukKeluarModel::whereDate('created_at', $tanggal)->get();
+                    $ProdukKeluar = ProdukKeluarModel::whereDate('created_at', $tanggal)->orderBy('id')->get();
                 } else {
                     $dariTanggal = Carbon::createFromFormat('m/d/Y', $request->dariTanggal)->format('Y-m-d');
                     $keTanggal = Carbon::createFromFormat('m/d/Y', $request->keTanggal)->format('Y-m-d');
-                    $ProdukKeluar = ProdukKeluarModel::whereBetween('created_at', [$dariTanggal, $keTanggal])->get();
+                    $ProdukKeluar = ProdukKeluarModel::whereBetween('created_at', [$dariTanggal, $keTanggal])->orderby('id')->get();
 
                     $query = ProdukKeluarModel::query();
 

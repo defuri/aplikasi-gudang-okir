@@ -63,7 +63,7 @@ class stokController extends Controller
                     </tr>
                     <tr class="mt-2">
                         <td>Admin:</td>
-                        <td>Nama Admin</td>
+                        <td>' . Auth::user()->username . '</td>
                         <td>Merchant:</td>
                         <td>Okir</td>
                         <td>Satuan:</td>

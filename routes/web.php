@@ -34,6 +34,7 @@ use App\Http\Controllers\ProdukMasukController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\transaksiBahanBakuController;
 
+
 Route::get('/', function () {
     return view('index');
 });
@@ -43,8 +44,10 @@ Route::post('/login/auth', [loginController::class, 'authenticate']);
 Route::post('/logout', [loginController::class, 'logout']);
 Route::get('/results', [SearchController::class, 'index'])->name('search');
 
-Route::get('/get-products', [produkController::class, 'getProducts']);
-Route::get('/api/bahan-baku', [bahanBakuController::class, 'get']);
+Route::group(['middleware' => CheckLoginMiddleware::class], function () {
+    Route::get('/get-products', [produkController::class, 'getProducts'])->middleware();
+    Route::get('/api/bahan-baku', [bahanBakuController::class, 'get']);
+});
 
 Route::get('/owner', function () {
     return view('owner.dashboard');

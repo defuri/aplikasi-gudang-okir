@@ -212,7 +212,7 @@ class transaksiBahanBakuController extends Controller
 
             $total = $detailTransaksiBahanBaku->sum('total');
             $formattedTotal = number_format($total, 0, ',', '.');
-            $sekarang = now()->format('d-m-Y H:i');
+            $sekarang = Carbon::now('Asia/Jakarta')->format('d-m-Y H:i');
             $dompdf = new Dompdf();
             $tailwindCss = file_get_contents(public_path('css/tailwind-pdf.css'));
 
