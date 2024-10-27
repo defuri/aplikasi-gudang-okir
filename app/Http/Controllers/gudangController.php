@@ -112,4 +112,11 @@ class gudangController extends Controller
             return to_route('gudang.index')->with('error', 'Error, terjadi kesalahan: ' . $th->getMessage());
         }
     }
+
+    public function getGudang()
+    {
+        $gudang = gudangModel::all();
+
+        return response()->json($gudang);
+    }
 }

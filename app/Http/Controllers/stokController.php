@@ -109,4 +109,31 @@ class stokController extends Controller
 
         return $dompdf->stream('Laporan Stok.pdf', ['Attachment' => 0]);
     }
+
+    public function getStok($id_gudang, $rentang)
+    {
+        switch ($rentang) {
+            case 'bulan':
+                $dateSatu = Carbon::now()->startOfMonth();
+                $dateDua = Carbon::now()->endOfMonth();
+                break;
+
+            case 'minggu':
+                $dateSatu = Carbon::now()->startOfWeek();
+                $dateDua = Carbon::now()->endOfWeek();
+                break;
+
+            case 'hari':
+                $dateSatu = Carbon::now()->startOfDay();
+                $dateDua = Carbon::now()->endOfDay();
+                break;
+
+            default:
+                abort(404, 'Data tidak ditemukan');
+        }
+
+        $stok = stokModel::where('id_gudang', $id_gudang)->whereBetween('created_at', [$dateSatu, $dateDua])->with('produk')->get();
+
+        return response()->json($stok);
+    }
 }

@@ -205,7 +205,7 @@
                                 </svg>
                                 Cetak
                             </button>
-                            <a href="{{ route('produk-keluar.create') }}">
+                            <a href="#" data-modal-target="defaultModal" data-modal-toggle="defaultModal">
                                 <button type="button"
                                     class="mt-3 lg:mt-0 flex w-full items-center justify-center text-gray-900 bg-primary-700 border-gray-200 dark:border-gray-600 border-2 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2.5 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 whitespace-nowrap">
                                     <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20"

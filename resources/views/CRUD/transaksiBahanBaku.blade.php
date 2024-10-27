@@ -278,9 +278,9 @@
                                                                             <p class="text-gray-500 dark:text-gray-400">
                                                                                 {{ $currentDetail->satuan->nama }}</p>
                                                                             <p class="text-gray-500 dark:text-gray-400">
-                                                                                {{ $currentDetail->harga }}</p>
+                                                                                Rp {{ $currentDetail->harga }}</p>
                                                                             <p class="text-gray-500 dark:text-gray-400">
-                                                                                {{ $currentDetail->total }}</p>
+                                                                                Rp {{ $currentDetail->total }}</p>
                                                                         </div>
                                                                     @endforeach
                                                                 </div>

@@ -45,8 +45,11 @@ Route::post('/logout', [loginController::class, 'logout']);
 Route::get('/results', [SearchController::class, 'index'])->name('search');
 
 Route::group(['middleware' => CheckLoginMiddleware::class], function () {
-    Route::get('/get-products', [produkController::class, 'getProducts'])->middleware();
+    Route::get('/get-products', [produkController::class, 'getProducts']);
     Route::get('/api/bahan-baku', [bahanBakuController::class, 'get']);
+    Route::get('/get-gudang', [gudangController::class, 'getGudang']);
+    Route::get('/get-stok-{idGudang}-{rentang}', [stokController::class, 'getStok']);
+    Route::get('/get-produk-masuk/{rentang}/{idGudang}/{produkId}', [ProdukMasukController::class, 'getProdukMasuk']);
 });
 
 Route::get('/owner', function () {
