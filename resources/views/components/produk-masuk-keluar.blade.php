@@ -32,11 +32,12 @@
         </div>
     </div>
 
-    <div id="produkMasukKeluar"></div>
 </div>
+
+<div id="produkMasukKeluar" class="mt-8"></div>
 
 <div id="stok"></div>
 
 @push('scripts')
-    <script src="{{ asset('js/dashboardOwner.js') }}"></script>
+    <script src="{{ asset('js/produkMasukKeluar.js') }}"></script>
 @endpush

@@ -50,6 +50,7 @@ Route::group(['middleware' => CheckLoginMiddleware::class], function () {
     Route::get('/get-gudang', [gudangController::class, 'getGudang']);
     Route::get('/get-stok-{idGudang}-{rentang}', [stokController::class, 'getStok']);
     Route::get('/get-produk-masuk/{rentang}/{idGudang}/{produkId}', [ProdukMasukController::class, 'getProdukMasuk']);
+    Route::get('/get-produk-keluar/{rentang}/{idGudang}/{produkId}', [ProdukKeluarController::class, 'getProdukKeluar']);
 });
 
 Route::get('/owner', function () {

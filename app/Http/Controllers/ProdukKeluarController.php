@@ -330,4 +330,31 @@ class ProdukKeluarController extends Controller
             return redirect()->route('produk-keluar.index')->with('error', 'Gagal mencetak data: ' . $th->getMessage());
         }
     }
+
+    public function getProdukKeluar($rentang, $idGudang, $produkId)
+    {
+        switch ($rentang) {
+            case 'bulan':
+                $dateSatu = Carbon::now()->startOfMonth();
+                $dateDua = Carbon::now()->endOfMonth();
+                break;
+
+            case 'minggu':
+                $dateSatu = Carbon::now()->startOfWeek();
+                $dateDua = Carbon::now()->endOfWeek();
+                break;
+
+            case 'hari':
+                $dateSatu = Carbon::now()->startOfDay();
+                $dateDua = Carbon::now()->endOfDay();
+                break;
+
+            default:
+                abort(404, 'Data tidak ditemukan');
+        }
+
+        $produkKeluar = ProdukKeluarModel::where('id_gudang', $idGudang)->where('id_produk', $produkId)->whereBetween('created_at', [$dateSatu, $dateDua])->get();
+
+        return response()->json($produkKeluar);
+    }
 }

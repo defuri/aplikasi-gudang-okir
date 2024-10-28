@@ -313,4 +313,7 @@ class transaksiBahanBakuController extends Controller
             return redirect()->route('transaksi-bahan-baku.index')->with('error', 'Gagal mencetak data: ' . $th->getMessage());
         }
     }
+
+    public function getTransaksiBahanBaku($tanggal) {
+    }
 }
