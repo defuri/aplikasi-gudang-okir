@@ -44,6 +44,7 @@ Route::post('/login/auth', [loginController::class, 'authenticate']);
 Route::post('/logout', [loginController::class, 'logout']);
 Route::get('/results', [SearchController::class, 'index'])->name('search');
 
+// API
 Route::group(['middleware' => CheckLoginMiddleware::class], function () {
     Route::get('/get-products', [produkController::class, 'getProducts']);
     Route::get('/api/bahan-baku', [bahanBakuController::class, 'get']);

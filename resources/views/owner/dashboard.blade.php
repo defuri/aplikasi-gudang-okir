@@ -1,11 +1,9 @@
 @extends('layouts.owner')
 
 @section('content')
-    <div class="mt-24">
-        <x-produk-masuk-keluar />
+    <div class="mt-24"></div>
 
-        <x-transaksi-bahan-baku />
+    <x-produk-masuk-keluar />
 
-        <x-footer />
-    </div>
+    <x-footer />
 @endsection

@@ -36,8 +36,7 @@
 
 <div id="produkMasukKeluar" class="mt-8"></div>
 
-<div id="stok"></div>
-
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.41.0/dist/apexcharts.min.js"></script>
     <script src="{{ asset('js/produkMasukKeluar.js') }}"></script>
 @endpush

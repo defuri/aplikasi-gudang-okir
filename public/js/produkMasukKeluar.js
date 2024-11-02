@@ -1,276 +1,215 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const selectGudang = document.querySelector('#selectGudang');
-    const selectRange = document.getElementById('selectRange');
-    const selectProduk = document.getElementById('selectProduk');
+document.addEventListener('DOMContentLoaded', async function() {
+    // Wait a moment to ensure ApexCharts is fully loaded
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    // Initialize selects
+    const gudangSelect = document.getElementById('selectGudang');
+    const produkSelect = document.getElementById('selectProduk');
+    const rangeSelect = document.getElementById('selectRange');
+
+    // Chart instance variable
     let chart = null;
 
-    // Fungsi untuk mendapatkan status dark mode
-    function isDarkMode() {
-        return document.documentElement.classList.contains('dark');
-    }
-
-    // Fungsi untuk mendapatkan warna teks berdasarkan mode
-    function getTextColor() {
-        return isDarkMode() ? '#ffffff' : '#000000';
-    }
-
-    // Fungsi untuk mendapatkan warna grid berdasarkan mode
-    function getGridColor() {
-        return isDarkMode() ? '#424242' : '#e0e0e0';
-    }
-
-    function initializeChart() {
-        const options = {
-            chart: {
-                type: 'line',
-                height: 350,
-                toolbar: {
-                    show: false,
-                },
-                foreColor: getTextColor(),
-                background: 'transparent'
-            },
-            series: [
-                {
-                    name: 'Produk Masuk',
-                    data: []
-                },
-                {
-                    name: 'Produk Keluar',
-                    data: []
-                }
-            ],
-            xaxis: {
-                categories: [],
-                title: {
-                    text: 'Tanggal',
-                    style: {
-                        color: getTextColor()
-                    }
-                },
-                labels: {
-                    style: {
-                        colors: getTextColor()
-                    }
-                },
-                axisBorder: {
-                    color: getGridColor()
-                },
-                axisTicks: {
-                    color: getGridColor()
-                },
-
-            },
-            yaxis: {
-                title: {
-                    text: 'Jumlah Produk',
-                    style: {
-                        color: getTextColor()
-                    }
-                },
-                labels: {
-                    style: {
-                        colors: getTextColor()
-                    }
-                }
-            },
-            title: {
-                text: 'Data Produk Masuk dan Produk Keluar',
-                align: 'center',
-                style: {
-                    color: getTextColor()
-                }
-            },
-            markers: {
-                size: 5,
-            },
-            colors: ['#008FFB', '#FF4560'],
-            legend: {
-                labels: {
-                    colors: getTextColor()
-                }
-            }
-        };
-
-        chart = new ApexCharts(document.querySelector("#produkMasukKeluar"), options);
-        chart.render();
-
-        // Mendengarkan perubahan dark mode
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.attributeName === 'class') {
-                    updateChartTheme();
-                }
-            });
-        });
-
-        observer.observe(document.documentElement, {
-            attributes: true,
-            attributeFilter: ['class']
-        });
-    }
-
-    // Fungsi untuk memperbarui tema chart
-    function updateChartTheme() {
-        const textColor = getTextColor();
-        const gridColor = getGridColor();
-
-        chart.updateOptions({
-            chart: {
-                foreColor: textColor
-            },
-            grid: {
-                borderColor: gridColor
-            },
-            xaxis: {
-                title: {
-                    style: {
-                        color: textColor
-                    }
-                },
-                labels: {
-                    style: {
-                        colors: textColor
-                    }
-                },
-                axisBorder: {
-                    color: gridColor
-                },
-                axisTicks: {
-                    color: gridColor
-                }
-            },
-            yaxis: {
-                title: {
-                    style: {
-                        color: textColor
-                    }
-                },
-                labels: {
-                    style: {
-                        colors: textColor
-                    }
-                }
-            },
-            title: {
-                style: {
-                    color: textColor
-                }
-            },
-            legend: {
-                labels: {
-                    colors: textColor
-                }
-            }
-        });
-    }
-
-    // Sisanya tetap sama seperti kode sebelumnya...
-    function updateChartData(masukData, keluarData, tanggalData) {
-        chart.updateOptions({
-            series: [
-                {
-                    name: 'Produk Masuk',
-                    data: masukData
-                },
-                {
-                    name: 'Produk Keluar',
-                    data: keluarData
-                }
-            ],
-            xaxis: {
-                categories: tanggalData
-            }
-        });
-    }
-
-    function fetchData() {
-        const masukPromise = $.ajax({
-            url: `/get-produk-masuk/${selectRange.value}/${selectGudang.value}/${selectProduk.value}`,
-            type: 'GET',
-            dataType: 'json'
-        });
-
-        const keluarPromise = $.ajax({
-            url: `/get-produk-keluar/${selectRange.value}/${selectGudang.value}/${selectProduk.value}`,
-            type: 'GET',
-            dataType: 'json'
-        });
-
-        Promise.all([masukPromise, keluarPromise])
-            .then(([masukResponse, keluarResponse]) => {
-                const allDates = [...new Set([
-                    ...masukResponse.map(item => item.created_at.split('T')[0]),
-                    ...keluarResponse.map(item => item.created_at.split('T')[0])
-                ])].sort();
-
-                const masukMap = new Map(
-                    masukResponse.map(item => [item.created_at.split('T')[0], item.jumlah])
-                );
-                const keluarMap = new Map(
-                    keluarResponse.map(item => [item.created_at.split('T')[0], item.jumlah])
-                );
-
-                const masukData = allDates.map(date => masukMap.get(date) || 0);
-                const keluarData = allDates.map(date => keluarMap.get(date) || 0);
-
-                updateChartData(masukData, keluarData, allDates);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-    }
-
-    async function initializeData() {
+    // Load gudang options first
+    async function loadGudangOptions() {
         try {
-            initializeChart();
+            const response = await fetch('/get-gudang');
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const data = await response.json();
 
-            await Promise.all([
-                new Promise((resolve) => {
-                    $.ajax({
-                        url: '/get-gudang',
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function (response) {
-                            selectGudang.innerHTML = '';
-                            response.forEach(gudang => {
-                                const option = document.createElement('option');
-                                option.value = gudang.id;
-                                option.textContent = gudang.nama;
-                                selectGudang.appendChild(option);
-                            });
-                            resolve();
-                        }
-                    });
-                }),
-                new Promise((resolve) => {
-                    $.ajax({
-                        url: '/get-products',
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function (response) {
-                            selectProduk.innerHTML = '';
-                            response.forEach(produk => {
-                                const option = document.createElement('option');
-                                option.value = produk.id;
-                                option.textContent = produk.nama;
-                                selectProduk.appendChild(option);
-                            });
-                            resolve();
-                        }
-                    });
-                })
-            ]);
+            gudangSelect.innerHTML = data.map(gudang =>
+                `<option value="${gudang.id}">${gudang.nama}</option>`
+            ).join('');
 
-            fetchData();
+            return data;
         } catch (error) {
-            console.error('Error initializing data:', error);
+            console.error('Error loading gudang:', error);
+            gudangSelect.innerHTML = '<option value="">Error loading gudang</option>';
+            throw error;
         }
     }
 
-    selectRange.addEventListener('change', fetchData);
-    selectGudang.addEventListener('change', fetchData);
-    selectProduk.addEventListener('change', fetchData);
+    // Load produk options
+    async function loadProdukOptions() {
+        try {
+            const response = await fetch('/get-products');
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const data = await response.json();
 
-    initializeData();
+            produkSelect.innerHTML = data.map(produk =>
+                `<option value="${produk.id}">${produk.nama}</option>`
+            ).join('');
+
+            return data;
+        } catch (error) {
+            console.error('Error loading products:', error);
+            produkSelect.innerHTML = '<option value="">Error loading products</option>';
+            throw error;
+        }
+    }
+
+    function createChart() {
+        try {
+            // Ensure the chart element exists
+            const chartElement = document.querySelector("#produkMasukKeluar");
+            if (!chartElement) {
+                throw new Error('Chart element not found');
+            }
+
+            // Basic chart configuration
+            const options = {
+                chart: {
+                    type: 'line',
+                    height: 350,
+                    zoom: {
+                        enabled: false
+                    },
+                    toolbar: {
+                        show: false
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    width: [2, 2],
+                    curve: 'smooth'
+                },
+                series: [
+                    {
+                        name: 'Produk Masuk',
+                        data: [0]
+                    },
+                    {
+                        name: 'Produk Keluar',
+                        data: [0]
+                    }
+                ],
+                grid: {
+                    row: {
+                        colors: ['transparent', 'transparent'],
+                        opacity: 0.5
+                    }
+                },
+                xaxis: {
+                    categories: ['Loading...']
+                },
+                yaxis: {
+                    title: {
+                        text: 'Jumlah'
+                    }
+                }
+            };
+
+            // Create new ApexCharts instance
+            return new ApexCharts(chartElement, options);
+        } catch (error) {
+            console.error('Error creating chart:', error);
+            return null;
+        }
+    }
+
+    // Format date helper
+    function formatDate(date) {
+        return new Date(date).toLocaleDateString('id-ID', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+    }
+
+    // Update chart data
+    async function updateChart() {
+        if (!chart) {
+            console.error('Chart not initialized');
+            return;
+        }
+
+        const gudangId = gudangSelect.value;
+        const produkId = produkSelect.value;
+        const rentang = rangeSelect.value;
+
+        if (!gudangId || !produkId || !rentang) return;
+
+        try {
+            const [masukData, keluarData] = await Promise.all([
+                fetch(`/get-produk-masuk/${rentang}/${gudangId}/${produkId}`).then(r => r.json()),
+                fetch(`/get-produk-keluar/${rentang}/${gudangId}/${produkId}`).then(r => r.json())
+            ]);
+
+            const allDates = [...new Set([
+                ...masukData.map(item => item.created_at),
+                ...keluarData.map(item => item.created_at)
+            ])].sort();
+
+            if (allDates.length === 0) {
+                chart.updateOptions({
+                    xaxis: { categories: ['No Data'] },
+                    series: [
+                        { name: 'Produk Masuk', data: [0] },
+                        { name: 'Produk Keluar', data: [0] }
+                    ]
+                });
+                return;
+            }
+
+            const masukSeries = allDates.map(date => {
+                const item = masukData.find(m => m.created_at === date);
+                return item ? item.jumlah : 0;
+            });
+
+            const keluarSeries = allDates.map(date => {
+                const item = keluarData.find(k => k.created_at === date);
+                return item ? item.jumlah : 0;
+            });
+
+            chart.updateOptions({
+                xaxis: {
+                    categories: allDates.map(formatDate)
+                },
+                series: [
+                    { name: 'Produk Masuk', data: masukSeries },
+                    { name: 'Produk Keluar', data: keluarSeries }
+                ]
+            });
+
+        } catch (error) {
+            console.error('Error updating chart:', error);
+            chart.updateOptions({
+                xaxis: { categories: ['Error'] },
+                series: [
+                    { name: 'Produk Masuk', data: [0] },
+                    { name: 'Produk Keluar', data: [0] }
+                ]
+            });
+        }
+    }
+
+    // Initialize everything
+    try {
+        // First load the data
+        await Promise.all([loadGudangOptions(), loadProdukOptions()]);
+
+        // Create chart
+        chart = createChart();
+        if (!chart) {
+            console.error('Chart failed to initialize.');
+            throw new Error('Failed to create chart');
+        }
+
+
+        // Render chart
+        await chart.render();
+
+        // Set up event listeners
+        gudangSelect.addEventListener('change', updateChart);
+        produkSelect.addEventListener('change', updateChart);
+        rangeSelect.addEventListener('change', updateChart);
+
+        // Initial chart update
+        await updateChart();
+
+    } catch (error) {
+        console.error('Initialization error:', error);
+    }
 });
