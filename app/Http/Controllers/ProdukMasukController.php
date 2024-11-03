@@ -89,7 +89,7 @@ class ProdukMasukController extends Controller
                 }
 
                 // Create record produk masuk
-                ProdukMasukModel::create([
+                $data = ProdukMasukModel::create([
                     'id_gudang' => $request->id_gudang,
                     'id_produk' => $produkId,
                     'jumlah' => $jumlah,
@@ -101,6 +101,12 @@ class ProdukMasukController extends Controller
                 StokModel::where('id_gudang', $request->id_gudang)
                     ->where('id_produk', $produkId)
                     ->update(['updated_at' => now()]);
+
+
+                activity()
+                    ->causedBy(Auth::user()) // Menyertakan informasi pengguna yang melakukan tindakan
+                    ->useLog('Produk Masuk')
+                    ->log('INSERT ID: ' . $data->id);
             }
 
             return redirect()->route('produk-masuk.index')->with(['success' => 'Data berhasil disimpan!']);
@@ -166,6 +172,10 @@ class ProdukMasukController extends Controller
                 'updated_at' => now(),
             ]);
 
+            activity()
+                ->useLog('Produk Masuk')
+                ->log('UPDATE: ' . $data->id);
+
             return redirect()->route('produk-masuk.index')->with(['success' => 'Data berhasil dirubah!']);
         } catch (\Exception $e) {
             return redirect()->route('produk-masuk.index')->with('error', 'Data gagal dirubah: ' . $e->getMessage());
@@ -194,6 +204,10 @@ class ProdukMasukController extends Controller
 
             // * hapus data
             $data->delete();
+
+            activity()
+                ->useLog('Produk Masuk')
+                ->log('DELETE ID: ' . $data->id);
 
             return to_route('produk-masuk.index')->with('success', 'Data berhasil dihapus!');
         } catch (\Throwable $th) {

@@ -58,7 +58,7 @@ class produkController extends Controller
                 'harga' => 'integer|required',
             ]);
 
-            produkModel::create([
+            $data = produkModel::create([
                 'nama' => $request->nama,
                 'id_rasa' => $request->id_rasa,
                 'id_kategori' => $request->id_kategori,
@@ -67,6 +67,10 @@ class produkController extends Controller
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
+
+            activity()
+                ->useLog('Produk')
+                ->log('INSERT ID: ' . $data->id);
 
             return to_route('produk.index')->with('success', 'data berhasil disimpan');
         } catch (\Throwable $th) {
@@ -116,6 +120,10 @@ class produkController extends Controller
                 'updated_at' => Carbon::now(),
             ]);
 
+            activity()
+                ->useLog('Produk')
+                ->log('UPDATE ID: ' . $data->id);
+
             return to_route('produk.index')->with('success', 'data berhasil dirubah!');
         } catch (\Throwable $th) {
             return to_route('produk.index')->with('error', 'Error, terjadi kesalahan: ' . $th->getMessage());
@@ -130,6 +138,10 @@ class produkController extends Controller
         //
         try {
             $data = produkModel::findOrFail($id);
+
+            activity()
+                ->useLog('Produk')
+                ->log('DELETE ID: ' . $data->id);
 
             $data->delete();
 

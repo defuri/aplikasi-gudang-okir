@@ -67,30 +67,7 @@
     </div>
 
     <!-- Recent Activity and Low Stock Tables -->
-    <div class="grid gap-6 mb-8 md:grid-cols-2">
-        <!-- Recent Activity Table -->
-        <div class="min-w-0 p-4 bg-white rounded-lg shadow dark:bg-gray-800">
-            <h4 class="mb-4 font-semibold text-gray-800 dark:text-gray-300">Aktivitas Terkini</h4>
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-4 py-3">Waktu</th>
-                            <th scope="col" class="px-4 py-3">Aktivitas</th>
-                            <th scope="col" class="px-4 py-3">Jumlah</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-b dark:border-gray-700">
-                            <td class="px-4 py-3">10:45</td>
-                            <td class="px-4 py-3">Stok Masuk - Kiripik Singkong</td>
-                            <td class="px-4 py-3">1324</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
+    <div class="grid gap-6 mb-8 md:grid-cols-1">
         <!-- Low Stock Alert Table -->
         <div class="min-w-0 p-4 bg-white rounded-lg shadow dark:bg-gray-800">
             <h4 class="mb-4 font-semibold text-gray-800 dark:text-gray-300">Peringatan Stok Menipis</h4>
@@ -120,6 +97,68 @@
 
                             </tr>
                         @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Recent Activity Table -->
+        <div class="min-w-0 p-4 bg-white rounded-lg shadow dark:bg-gray-800">
+            <h4 class="mb-4 font-semibold text-gray-800 dark:text-gray-300">Aktivitas Terkini</h4>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-4 py-3">ID</th>
+                            <th scope="col" class="px-4 py-3">log_name</th>
+                            <th scope="col" class="px-4 py-3">description</th>
+                            <th scope="col" class="px-4 py-3">username</th>
+                            <th scope="col" class="px-4 py-3">waktu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($activity as $currentActivity)
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <td class="px-6 py-4 text-bold">{{ $currentActivity->id }}</td>
+                                <td class="px-6 py-4">{{ $currentActivity->log_name }}</td>
+                                <td class="px-6 py-4 text-nowrap">
+                                    @php
+                                        $description = $currentActivity->description;
+                                        $badgeColor = '';
+
+                                        if ($description == 'LOGIN') {
+                                            $badgeColor = 'green';
+                                        } elseif ($description == 'LOGOUT') {
+                                            $badgeColor = 'red';
+                                        } elseif (str_contains(strtolower($description), 'insert')) {
+                                            $badgeColor = 'green';
+                                        } elseif (str_contains(strtolower($description), 'update')) {
+                                            $badgeColor = 'yellow';
+                                        } elseif (str_contains(strtolower($description), 'delete')) {
+                                            $badgeColor = 'red';
+                                        }
+                                    @endphp
+
+                                    @if ($badgeColor)
+                                        <span
+                                            class="bg-{{ $badgeColor }}-100 text-{{ $badgeColor }}-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-{{ $badgeColor }}-900 dark:text-{{ $badgeColor }}-300">
+                                            {{ $description }}
+                                        </span>
+                                    @else
+                                        {{ $description }}
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4">{{ $currentActivity->causer_id }}</td>
+                                <td class="px-6 py-4">
+                                    {{ $currentActivity->created_at->setTimezone('Asia/Jakarta')->format('H:i d-m-Y') }}
+                                </td>
+                            </tr>
+                        @empty
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <td colspan="5" class="text-center px-6 py-4">
+                                    Tidak ada data
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

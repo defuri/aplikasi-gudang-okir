@@ -46,12 +46,20 @@ class bahanBakuController extends Controller
                 'id_suplier' => 'required|integer|exists:suplier,id',
             ]);
 
-            bahanBakuModel::create([
+            $bahanbaku = bahanBakuModel::create([
                 'nama' => $request->nama,
                 'id_suplier' => $request->id_suplier, // Pastikan ini sesuai
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
+
+            // Get the latest ID
+            $latestID = $bahanbaku->id;
+
+            // Log the activity with the latest ID
+            activity()
+                ->useLog('Bahan Baku')
+                ->log('INSERT ID: ' . $latestID);
 
             return redirect()->route('bahan-baku.index')->with(['success' => 'Data berhasil disimpan!']);
         } catch (\Exception $e) {
@@ -100,6 +108,10 @@ class bahanBakuController extends Controller
                 'updated_at' => Carbon::now(),
             ]);
 
+            activity()
+                ->useLog('Bahan Baku')
+                ->log('UPDATE ID: ' . $bahanBaku->id);
+
             return redirect()->route('bahan-baku.index')->with(['success' => 'Data Berhasil Diubah!']);
         } catch (\Exception $e) {
             return redirect()->route('bahan-baku.index')->with('error', 'Data gagal dirubah: ' . $e->getMessage());
@@ -114,6 +126,11 @@ class bahanBakuController extends Controller
         //
         try {
             $bahanBaku = bahanBakuModel::findOrFail($id);
+
+            activity()
+                ->useLog('Bahan Baku')
+                ->log('DELETE ID: ' . $bahanBaku->id);
+
             $bahanBaku->delete();
 
             // Menyimpan pesan flash ke session jika berhasil

@@ -19,9 +19,7 @@ class satuanController extends Controller
         return view('CRUD.satuan', compact('dataSatuan', 'jumlahData', 'user'));
     }
 
-    public function search(Request $request)
-    {
-    }
+    public function search(Request $request) {}
 
     public function store(Request $request)
     {
@@ -30,17 +28,26 @@ class satuanController extends Controller
                 'nama' => 'required|string|max:20|unique:satuan,nama'
             ]);
 
-            satuanModel::create([
+            // Membuat instance baru dari model
+            $satuan = satuanModel::create([
                 'nama' => $request->nama,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
+
+            // Mendapatkan ID terbaru dari instance yang baru saja dibuat
+            $latestID = $satuan->id;
+
+            activity()
+                ->useLog('Satuan')
+                ->log('INSERT ID: ' . $latestID);
 
             return redirect()->route('satuan.index')->with('success', 'Data berhasil disimpan');
         } catch (\Throwable $th) {
             return redirect()->route('satuan.index')->with('error', 'Data gagal disimpan: ' . $th->getMessage());
         }
     }
+
 
     public function update(Request $request, string $id)
     {
@@ -56,6 +63,10 @@ class satuanController extends Controller
                 'updated_at' => Carbon::now(),
             ]);
 
+            activity()
+                ->useLog('Satuan')
+                ->log('UPDATE ID: ' . $satuan->id);
+
             return redirect()->route('satuan.index')->with('success', 'Data berhasil dirubah!');
         } catch (\Throwable $th) {
             return redirect()->route('satuan.index')->with('error', 'Data gagal dirubah: ' . $th->getMessage());
@@ -68,6 +79,11 @@ class satuanController extends Controller
 
         try {
             $satuan->delete();
+
+            activity()
+                ->useLog('Satuan')
+                ->log('DELETE ID: ' . $satuan->id);
+
             return redirect()->route('satuan.index')->with('success', 'Data berhasil dihapus!');
         } catch (\Throwable $th) {
             return redirect()->route('satuan.index')->with('error', 'Data gagal dihapus: ' . $th->getMessage());

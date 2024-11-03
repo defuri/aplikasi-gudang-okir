@@ -81,6 +81,10 @@ class transaksiBahanBakuController extends Controller
                 $detailTransaksiBahanBaku->save();
             }
 
+            activity()
+                ->useLog('Transaksi Bahan Baku')
+                ->log('INSERT ID: ' . $transaksiBahanBakuID);
+
             return redirect()->route('transaksi-bahan-baku.index')
                 ->with(['success' => 'Data berhasil disimpan!']);
         } catch (\Throwable $th) {
@@ -162,6 +166,10 @@ class transaksiBahanBakuController extends Controller
                 $diedit->save();
             }
 
+            activity()
+                ->useLog('Transaksi Bahan Baku')
+                ->log('UPDATE ID: ' . $transaksiBahanBaku->id);
+
             return redirect()->route('transaksi-bahan-baku.index')->with(['success' => 'Data Berhasil Diubah!']);
         } catch (\Exception $e) {
             return redirect()->route('transaksi-bahan-baku.index')->with('error', 'Data gagal dirubah: ' . $e->getMessage());
@@ -177,6 +185,10 @@ class transaksiBahanBakuController extends Controller
         //
         try {
             $data = transaksiBahanBakuModel::findOrFail($id);
+
+            activity()
+                ->useLog('Transaksi Bahan Baku')
+                ->log('DELETE ID: ' . $data->id);
 
             $data->delete();
 
@@ -312,8 +324,5 @@ class transaksiBahanBakuController extends Controller
         } catch (\Throwable $th) {
             return redirect()->route('transaksi-bahan-baku.index')->with('error', 'Gagal mencetak data: ' . $th->getMessage());
         }
-    }
-
-    public function getTransaksiBahanBaku($tanggal) {
     }
 }

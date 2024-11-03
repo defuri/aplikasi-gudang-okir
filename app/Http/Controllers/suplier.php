@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\satuanModel;
 use Carbon\Carbon;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -36,23 +37,33 @@ class suplier extends Controller
     public function store(Request $request)
     {
         try {
-            //validate form
+            // Validate form
             $request->validate([
                 'nama' => 'required|string|max:40|unique:suplier,nama',
             ]);
 
-            ModelsSuplier::create([
+            // Insert data and get the created model instance
+            $suplier = ModelsSuplier::create([
                 'nama' => $request->nama,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
 
+            // Get the latest ID
+            $latestID = $suplier->id;
+
+            // Log the activity with the latest ID
+            activity()
+                ->useLog('suplier')
+                ->log('INSERT ID: ' . $latestID);
+
             return redirect()->route('suplier.index')->with(['success' => 'Data berhasil disimpan!']);
         } catch (\Exception $e) {
-            // Menyimpan pesan flash ke session jika gagal
-            return redirect()->route('suplier.index')->with('error', 'Data gagal dihapus: ' . $e->getMessage());
+            // Save the flash message in session if failed
+            return redirect()->route('suplier.index')->with('error', 'Data gagal disimpan: ' . $e->getMessage());
         }
     }
+
 
     /**
      * Display the specified resource.
@@ -90,6 +101,10 @@ class suplier extends Controller
                 'updated_at' => Carbon::now(),
             ]);
 
+            activity()
+                ->useLog('Suplier')
+                ->log('UPDATE ID: ' . $suplier->id);
+
             return redirect()->route('suplier.index')->with(['success' => 'Data Berhasil Diubah!']);
         } catch (\Exception $e) {
             return redirect()->route('suplier.index')->with('error', 'Data gagal dirubah: ' . $e->getMessage());
@@ -103,6 +118,11 @@ class suplier extends Controller
     {
         try {
             $suplier = ModelsSuplier::findOrFail($id);
+
+            activity()
+                ->useLog('Suplier')
+                ->log('DELETE ID: ' . $suplier->id);
+
             $suplier->delete();
 
             // Menyimpan pesan flash ke session jika berhasil

@@ -11,6 +11,7 @@ use App\Models\ProdukMasukModel;
 use App\Models\ProdukKeluarModel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\Models\Activity;
 
 class gudangController extends Controller
 {
@@ -62,7 +63,11 @@ class gudangController extends Controller
 
         $stokMenipis = stokModel::where('stok', '<', 1000)->select('id_produk', DB::raw('SUM(stok) as stok'))->groupBy('id_produk')->get();
 
-        return view('gudang.index', compact('totalProduk', 'totalTransaksi', 'nilaiInventori', 'stokMenipis'));
+        $logNames = ['gudang', 'Produk masuk', 'Produk Keluar', 'Stok'];
+
+        $activity = Activity::whereIn('log_name', $logNames)->latest()->limit(10)->get();
+
+        return view('gudang.index', compact('totalProduk', 'totalTransaksi', 'nilaiInventori', 'stokMenipis', 'activity'));
     }
 
 
@@ -86,12 +91,16 @@ class gudangController extends Controller
                 'alamat' => 'required|string',
             ]);
 
-            gudangModel::create([
+            $data = gudangModel::create([
                 'nama' => $request->nama,
                 'alamat' => $request->alamat,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
+
+            activity()
+                ->useLog('Gudang')
+                ->log('INSERT ID: ' . $data->id);
 
             return redirect()->route('gudang.index')->with('success', 'Data berhasil disimpan');
         } catch (\Throwable $th) {
@@ -135,6 +144,10 @@ class gudangController extends Controller
                 'updated_at' => Carbon::now(),
             ]);
 
+            activity()
+                ->useLog('Gudang')
+                ->log('UPDATE ID: ' . $data->id);
+
             return to_route('gudang.index')->with('success', 'data berhasil dirubah!');
         } catch (\Throwable $th) {
             return to_route('gudang.index')->with('error', 'Error, terjadi kesalahan: ' . $th->getMessage());
@@ -151,6 +164,10 @@ class gudangController extends Controller
             $data = gudangModel::findOrFail($id);
 
             $data->delete();
+
+            activity()
+                ->useLog('Gudang')
+                ->log('DELETE ID: ' . $data->id);
 
             return to_route('gudang.index')->with('success', 'data berhasil dihapus!');
         } catch (\Throwable $th) {

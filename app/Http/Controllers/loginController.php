@@ -29,7 +29,7 @@ class loginController extends Controller
                 activity()
                     ->useLog('auth')
                     ->withProperties(['ip' => $request->ip(), 'user_agent' => $request->userAgent()])
-                    ->log('User logout');
+                    ->log('LOGIN');
 
                 switch ($user->id_hak) {
                     case '1':
@@ -54,7 +54,7 @@ class loginController extends Controller
         activity()
             ->useLog('auth')
             ->withProperties(['ip' => $request->ip(), 'user_agent' => $request->userAgent()])
-            ->log('User logout');
+            ->log('LOGOUT');
 
         Auth::logout();
 

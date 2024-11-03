@@ -42,11 +42,15 @@ class kategoriController extends Controller
                 'nama' => 'string|required|max:40',
             ]);
 
-            kategoriModel::create([
+            $data = kategoriModel::create([
                 "nama" => $request->nama,
                 "created_at" => Carbon::now(),
                 "updated_at" => Carbon::now(),
             ]);
+
+            activity()
+                ->useLog('Kategori')
+                ->log('INSERT ID: ' . $data->id);
 
             return to_route('kategori.index')->with('success', 'data berhasil disimpan');
         } catch (\Throwable $th) {
@@ -88,6 +92,10 @@ class kategoriController extends Controller
                 "updated_at" => Carbon::now(),
             ]);
 
+            activity()
+                ->useLog('Kategori')
+                ->log('UPDATE ID: ' . $data->id);
+
             return to_route('kategori.index')->with('success', 'data berhasil dirubah');
         } catch (\Throwable $th) {
             return to_route('kategori.index')->with('error', 'Error, terjadi kesalahan: ' . $th->getMessage());
@@ -102,6 +110,10 @@ class kategoriController extends Controller
         //
         try {
             $data = kategoriModel::findOrFail($id);
+
+            activity()
+                ->useLog('Kategori')
+                ->log('DELETE ID: ' . $data->id);
 
             $data->delete();
 

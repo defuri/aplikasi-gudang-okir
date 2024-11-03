@@ -135,6 +135,7 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-3">No</th>
                                     <th scope="col" class="px-6 py-3">Tanggal</th>
+                                    <th scope="col" class="px-6 py-3"></th>
                                 </tr>
                             </thead>
                             <tbody>

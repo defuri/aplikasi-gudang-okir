@@ -44,13 +44,17 @@ class packController extends Controller
                 'id_satuan' => 'required|integer',
             ]);
 
-            packModel::create([
+            $data = packModel::create([
                 'nama' => $request->nama,
                 'ukuran' => $request->ukuran,
                 'id_satuan' => $request->id_satuan,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
+
+            activity()
+                ->useLog('Pack')
+                ->log('INSERT ID: ' . $data->id);
 
             return to_route('pack.index')->with('success', 'data berhasil disimpan!');
         } catch (\Throwable $th) {
@@ -96,6 +100,10 @@ class packController extends Controller
                 'updated_at' => Carbon::now(),
             ]);
 
+            activity()
+                ->useLog('Pack')
+                ->log('UPDATE ID: ' . $data->id);
+
             return to_route('pack.index')->with('success', 'data berhasil dirubah!');
         } catch (\Throwable $th) {
             return to_route('pack.index')->with('error', 'Error, terjadi kesalahan: ' . $th->getMessage());
@@ -110,6 +118,10 @@ class packController extends Controller
         //
         try {
             $data = packModel::findOrFail($id);
+
+            activity()
+                ->useLog('Pack')
+                ->log('DELETE ID: ' . $data->id);
 
             $data->delete();
 

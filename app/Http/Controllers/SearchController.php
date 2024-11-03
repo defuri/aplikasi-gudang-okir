@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\transaksiBahanBakuModel;
 use App\Models\DetailTransaksiBahanBaku;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Spatie\Activitylog\Models\Activity;
 
 class SearchController extends Controller
 {
@@ -382,6 +383,12 @@ class SearchController extends Controller
                     $hak = hakModel::where('nama', 'LIKE', "%{$query}%")->orderBy('id')->paginate(10);
 
                     return view('crud.hak', compact('hak', 'query'));
+
+                case 'activityOwner':
+                    $activity = Activity::where('log_name', 'LIKE', "%{$query}%")->orderByDesc('id')->paginate(10);
+                    $user = Auth::user();
+
+                    return view('owner.activity', compact('activity', 'user'));
 
                 default:
                     return back()->with('error', 'Terjadi kesalahan: Gagal mencari, silahkan coba lagi');

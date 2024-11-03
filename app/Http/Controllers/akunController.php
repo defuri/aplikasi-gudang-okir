@@ -36,27 +36,28 @@ class akunController extends Controller
      */
     public function store(Request $request)
     {
-        //
         try {
             $request->validate([
                 'id_hak' => 'integer|required',
                 'username' => 'string|required|unique:users,username',
                 'password' => 'string|required',
+                'confirmPassword' => 'string|required|same:password',
             ]);
 
-            $password = $request->password;
-            $confirmPassword = $request->confirmPassword;
-
-            if ($password === $confirmPassword) {
-
-                akunModel::create([
+            // Lakukan pengecekan kecocokan password dan confirm password
+            if ($request->password === $request->confirmPassword) {
+                $akun = akunModel::create([
                     'username' => $request->username,
                     'id_hak' => $request->id_hak,
-                    'password' => bcrypt($request->passwordBaru),
+                    'password' => bcrypt($request->password),
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
-
                 ]);
+
+                // Gunakan ID dari objek yang baru dibuat
+                activity()
+                    ->useLog('Akun')
+                    ->log('INSERT ID: ' . $akun->id);
 
                 return redirect()->route('akun.index')->with('success', 'Data berhasil disimpan');
             } else {
@@ -66,6 +67,7 @@ class akunController extends Controller
             return redirect()->route('akun.index')->with('error', 'Data gagal disimpan: ' . $th->getMessage());
         }
     }
+
 
     /**
      * Display the specified resource.
@@ -150,6 +152,10 @@ class akunController extends Controller
                 return redirect()->route('login')->with('success', 'Perubahan dilakukan. Silakan login kembali.');
             }
 
+            activity()
+                ->useLog('Akun')
+                ->log('UPDATE ID: ' . $akun->id);
+
             return redirect()->route('akun.index')->with('success', 'Data berhasil dirubah!');
         } catch (\Throwable $th) {
             return redirect()->route('akun.index')->with('error', 'Data gagal disimpan: ' . $th->getMessage());
@@ -176,6 +182,10 @@ class akunController extends Controller
             }
 
             $data->delete();
+
+            activity()
+                ->useLog('Akun')
+                ->log('DELETE ID: ' . $data->id);
 
             return redirect()->route('akun.index')->with('success', 'Data berhasil dihapus!');
         } catch (\Throwable $th) {

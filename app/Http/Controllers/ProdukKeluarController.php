@@ -62,7 +62,6 @@ class ProdukKeluarController extends Controller
                 'jumlah.*' => ['required', 'integer'],
             ]);
 
-            // Pastikan array produk_id dan jumlah memiliki panjang yang sama
             if (count($request->produk_id) != count($request->jumlah)) {
                 throw new \Exception('Data produk dan jumlah tidak sesuai');
             }
@@ -71,7 +70,6 @@ class ProdukKeluarController extends Controller
                 foreach ($request->produk_id as $key => $produkId) {
                     $jumlah = $request->jumlah[$key];
 
-                    // Ambil data stok
                     $stok = StokModel::where('id_gudang', $request->id_gudang)
                         ->where('id_produk', $produkId)
                         ->first();
@@ -79,7 +77,7 @@ class ProdukKeluarController extends Controller
                     if ($stok) {
                         if (($stok->stok - $jumlah) >= 0) {
                             // Buat record produk keluar
-                            ProdukKeluarModel::create([
+                            $produkKeluar = ProdukKeluarModel::create([
                                 'id_gudang' => $request->id_gudang,
                                 'id_produk' => $produkId,
                                 'jumlah' => $jumlah,
@@ -91,6 +89,11 @@ class ProdukKeluarController extends Controller
                             $stok->decrement('stok', $jumlah);
                             $stok->updated_at = now();
                             $stok->save();
+
+                            // Catat aktivitas
+                            activity()
+                                ->useLog('Produk Keluar')
+                                ->log('INSERT ID: ' . $produkKeluar->id);
                         } else {
                             throw new \Exception('Stok tidak mencukupi');
                         }
@@ -105,6 +108,7 @@ class ProdukKeluarController extends Controller
             return redirect()->route('produk-keluar.index')->with('error', 'Data gagal disimpan: ' . $e->getMessage());
         }
     }
+
 
     /**
      * Display the specified resource.
@@ -173,6 +177,12 @@ class ProdukKeluarController extends Controller
                 'updated_at' => now(),
             ]);
 
+            $data = ProdukKeluarModel::latest()->first()->id;
+
+            activity()
+                ->useLog('Produk Keluar')
+                ->log('UPDATE ID: ' . $data->id);
+
             return redirect()->route('produk-keluar.index')->with(['success' => 'Data berhasil dirubah!']);
         } catch (\Exception $e) {
             return redirect()->route('produk-keluar.index')->with('error', 'Data gagal dirubah: ' . $e->getMessage());
@@ -201,6 +211,10 @@ class ProdukKeluarController extends Controller
                 ->update(['updated_at' => now()]);
 
             $data->delete();
+
+            activity()
+                ->useLog('Produk Keluar')
+                ->log('DELETE ID: ' . $data->id);
 
             return to_route('produk-keluar.index')->with('success', 'Data berhasil dihapus!');
         } catch (\Throwable $th) {

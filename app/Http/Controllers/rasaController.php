@@ -44,13 +44,17 @@ class rasaController extends Controller
                 'nama' => 'required|string|max:15|unique:rasa,nama,id',
             ]);
 
-            rasaModel::create(
+            $rasa = rasaModel::create(
                 [
                     'nama' => $request->nama,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                 ]
             );
+
+            activity()
+                ->useLog('Rasa')
+                ->log('INSERT ID: ' . $rasa->id);
 
             return redirect()->route('rasa.index')->with('success', 'Data berhasil dibuat!');
         } catch (\Throwable $th) {
@@ -94,6 +98,10 @@ class rasaController extends Controller
                 'updated_at' => Carbon::now(),
             ]);
 
+            activity()
+                ->useLog('Rasa')
+                ->log('UPDATE ID: ' . $data->id);
+
             return redirect()->route('rasa.index')->with('success', 'Data berhasil diupdate!');
         } catch (\Throwable $th) {
             //throw $th;
@@ -110,6 +118,10 @@ class rasaController extends Controller
         //
         try {
             $data = rasaModel::findOrFail($id);
+
+            activity()
+                ->useLog('Rasa')
+                ->log('DELETE ID: ' . $data->id);
 
             $data->delete();
 

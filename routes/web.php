@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\suplier;
@@ -59,9 +60,10 @@ Route::group(['middleware' => CheckLoginMiddleware::class], function () {
 // index
 Route::get('/owner', [OwnerController::class, 'index'])->middleware(CheckOwner::class);
 Route::get('/produksi', [ProduksiController::class, 'index'])->middleware(CheckAdminProduksi::class);
-Route::get('/gudang-home', [gudangController::class, 'dashboard'])->middleware(CheckAdminGudang::class);
+Route::get('/gudang-home', [gudangController::class, 'dashboard'])->middleware(CheckAdminGudang::class)->name('gudangHome');
 
 Route::middleware([CheckLoginMiddleware::class])->group(function () {
+    Route::resource('/activity', ActivityController::class);
     Route::resource('/satuan', satuanController::class);
     Route::resource('/suplier', suplier::class);
     Route::resource('/bahan-baku', bahanBakuController::class);

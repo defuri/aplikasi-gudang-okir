@@ -9,7 +9,8 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             <!-- Total Products -->
             <a href="{{ route('produk.index') }}">
-                <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-gray-500 dark:text-gray-400">Total Produk</h3>
                         <svg class="w-6 h-6 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -25,7 +26,8 @@
 
             <!-- Low Stock Products -->
             <a href="{{ route('produk.index') }}">
-                <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-gray-500 dark:text-gray-400">Peringatan Stok</h3>
                         <svg class="w-6 h-6 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -41,7 +43,8 @@
 
             <!-- Total Suppliers -->
             <a href="{{ route('suplier.index') }}">
-                <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-gray-500 dark:text-gray-400">Suplier Aktif</h3>
                         <svg class="w-6 h-6 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -57,7 +60,8 @@
 
             <!-- Total Users -->
             <a href="{{ route('akun.index') }}">
-                <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-gray-500 dark:text-gray-400">Sistem</h3>
                         <svg class="w-6 h-6 text-purple-500" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -146,27 +150,57 @@
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" class="px-6 py-3">#</th>
                                 <th scope="col" class="px-6 py-3">id</th>
                                 <th scope="col" class="px-6 py-3">log_name</th>
-                                <th scope="col" class="px-6 py-3">description</th>
-                                <th scope="col" class="px-6 py-3">subject_type</th>
+                                <th scope="col" class="px-6 py-3">aktivitas</th>
                                 <th scope="col" class="px-6 py-3">causer_id</th>
                                 <th scope="col" class="px-6 py-3">created_at</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($activity as $currentActivity)
+                            @forelse ($activity as $currentActivity)
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                    <td class="px-6 py-4">{{ $loop->iteration }}</td>
                                     <td class="px-6 py-4">{{ $currentActivity->id }}</td>
                                     <td class="px-6 py-4">{{ $currentActivity->log_name }}</td>
-                                    <td class="px-6 py-4">{{ $currentActivity->description }}</td>
-                                    <td class="px-6 py-4">{{ $currentActivity->causer_type }}</td>
+                                    <td class="px-6 py-4 text-nowrap">
+                                        @php
+                                            $description = $currentActivity->description;
+                                            $badgeColor = '';
+
+                                            if ($description == 'LOGIN') {
+                                                $badgeColor = 'green';
+                                            } elseif ($description == 'LOGOUT') {
+                                                $badgeColor = 'red';
+                                            } elseif (str_contains(strtolower($description), 'insert')) {
+                                                $badgeColor = 'green';
+                                            } elseif (str_contains(strtolower($description), 'update')) {
+                                                $badgeColor = 'yellow';
+                                            } elseif (str_contains(strtolower($description), 'delete')) {
+                                                $badgeColor = 'red';
+                                            }
+                                        @endphp
+
+                                        @if ($badgeColor)
+                                            <span
+                                                class="bg-{{ $badgeColor }}-100 text-{{ $badgeColor }}-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-{{ $badgeColor }}-900 dark:text-{{ $badgeColor }}-300">
+                                                {{ $description }}
+                                            </span>
+                                        @else
+                                            {{ $description }}
+                                        @endif
+                                    </td>
                                     <td class="px-6 py-4">{{ $currentActivity->causer_id }}</td>
-                                    <td class="px-6 py-4">{{ $currentActivity->created_at->format('H:i d-m-Y') }}</td>
+                                    <td class="px-6 py-4">
+                                        {{ $currentActivity->created_at->setTimezone('Asia/Jakarta')->format('H:i d-m-Y') }}
+                                    </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                    <td colspan="5" class="text-center px-6 py-4">
+                                        Tidak ada data
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
