@@ -15,16 +15,29 @@ class stokController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $stok = stokModel::orderByDesc('id')->paginate(10);
+        $query = stokModel::query();
+
+        // Only apply the stok > 0 filter if show_empty is not present
+        if (!$request->has('show_empty')) {
+            $query->where('stok', '>', 0);
+        }
+
+        $stok = $query->orderByDesc('id')->paginate(10);
+
+        if ($request->ajax()) {
+            // Mengembalikan tampilan stok secara langsung untuk permintaan AJAX
+            return view('CRUD.stok_data', compact('stok'))->render();
+        }
+
         $gudang = gudangModel::all();
         $produk = produkModel::all();
         $user = Auth::user();
 
         return view('CRUD.stok', compact('stok', 'gudang', 'produk', 'user'));
     }
+
 
     public function cetak()
     {

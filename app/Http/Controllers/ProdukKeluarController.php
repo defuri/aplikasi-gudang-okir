@@ -9,6 +9,7 @@ use App\Models\gudangModel;
 use App\Models\produkModel;
 use Illuminate\Http\Request;
 use App\Models\ProdukKeluarModel;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class ProdukKeluarController extends Controller
@@ -66,47 +67,38 @@ class ProdukKeluarController extends Controller
                 throw new \Exception('Data produk dan jumlah tidak sesuai');
             }
 
-            // Loop through setiap produk
-            foreach ($request->produk_id as $key => $produkId) {
-                $jumlah = $request->jumlah[$key];
+            DB::transaction(function () use ($request) {
+                foreach ($request->produk_id as $key => $produkId) {
+                    $jumlah = $request->jumlah[$key];
 
-                // Cek keberadaan stok
-                $exists = StokModel::where('id_gudang', $request->id_gudang)
-                    ->where('id_produk', $produkId)
-                    ->exists();
-
-                if ($exists) {
+                    // Ambil data stok
                     $stok = StokModel::where('id_gudang', $request->id_gudang)
                         ->where('id_produk', $produkId)
                         ->first();
 
-                    // Cek apakah stok mencukupi
-                    if ($stok && ($stok->stok - $jumlah) > -1) {
-                        // Buat record produk keluar
-                        ProdukKeluarModel::create([
-                            'id_gudang' => $request->id_gudang,
-                            'id_produk' => $produkId,
-                            'jumlah' => $jumlah,
-                            'created_at' => now(),
-                            'updated_at' => now(),
-                        ]);
+                    if ($stok) {
+                        if (($stok->stok - $jumlah) >= 0) {
+                            // Buat record produk keluar
+                            ProdukKeluarModel::create([
+                                'id_gudang' => $request->id_gudang,
+                                'id_produk' => $produkId,
+                                'jumlah' => $jumlah,
+                                'created_at' => now(),
+                                'updated_at' => now(),
+                            ]);
 
-                        // Kurangi stok
-                        StokModel::where('id_gudang', $request->id_gudang)
-                            ->where('id_produk', $produkId)
-                            ->decrement('stok', $jumlah);
-
-                        // Update timestamp
-                        StokModel::where('id_gudang', $request->id_gudang)
-                            ->where('id_produk', $produkId)
-                            ->update(['updated_at' => now()]);
+                            // Kurangi stok
+                            $stok->decrement('stok', $jumlah);
+                            $stok->updated_at = now();
+                            $stok->save();
+                        } else {
+                            throw new \Exception('Stok tidak mencukupi');
+                        }
                     } else {
-                        throw new \Exception('Stok tidak mencukupi untuk produk ID: ' . $produkId);
+                        throw new \Exception('Produk ID: ' . $produkId . ' tidak ada di gudang');
                     }
-                } else {
-                    throw new \Exception('Produk ID: ' . $produkId . ' tidak ada di gudang');
                 }
-            }
+            });
 
             return redirect()->route('produk-keluar.index')->with(['success' => 'Data berhasil disimpan!']);
         } catch (\Exception $e) {
@@ -135,7 +127,6 @@ class ProdukKeluarController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
         try {
             $request->validate([
                 'id_gudang' => ['required', 'integer'],
@@ -143,23 +134,37 @@ class ProdukKeluarController extends Controller
                 'jumlah' => ['required', 'integer'],
             ]);
 
-
             $data = ProdukKeluarModel::findOrFail($id);
 
-            // * tambahkan dulu dengan jumlah data keluar
-            StokModel::where('id_gudang', $data->id_gudang)
+            // Tambahkan stok kembali pada stok lama
+            $stokLama = StokModel::where('id_gudang', $data->id_gudang)
                 ->where('id_produk', $data->id_produk)
-                ->increment('stok', $data->jumlah);
+                ->first();
 
-            // * kurangi dengan data baru
-            StokModel::where('id_gudang', $request->id_gudang)
-                ->where('id_produk', $request->id_produk)
-                ->decrement('stok', $request->jumlah);
+            if (!$stokLama) {
+                return redirect()->route('produk-keluar.index')->with('error', 'Data stok lama tidak ditemukan.');
+            }
 
-            // * update data updated_at di tabel stok
-            StokModel::where('id_gudang', $request->id_gudang)
+            $stokLama->increment('stok', $data->jumlah);
+
+            // Cek stok baru, jika tidak ada atau stok tidak mencukupi maka munculkan error
+            $stokBaru = StokModel::where('id_gudang', $request->id_gudang)
                 ->where('id_produk', $request->id_produk)
-                ->update(['updated_at' => now()]);
+                ->first();
+
+            if (!$stokBaru) {
+                return redirect()->route('produk-keluar.index')->with('error', 'Data stok untuk gudang atau produk yang baru tidak ditemukan.');
+            }
+
+            if ($stokBaru->stok < $request->jumlah) {
+                return redirect()->route('produk-keluar.index')->with('error', 'Stok tidak mencukupi untuk produk ini di gudang yang dipilih.');
+            }
+
+            // Kurangi stok berdasarkan data baru
+            $stokBaru->decrement('stok', $request->jumlah);
+
+            // Update data updated_at pada tabel stok
+            $stokBaru->update(['updated_at' => now()]);
 
             $data->update([
                 'id_gudang' => $request->id_gudang,
@@ -173,6 +178,8 @@ class ProdukKeluarController extends Controller
             return redirect()->route('produk-keluar.index')->with('error', 'Data gagal dirubah: ' . $e->getMessage());
         }
     }
+
+
 
     /**
      * Remove the specified resource from storage.

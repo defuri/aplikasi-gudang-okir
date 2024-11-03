@@ -34,6 +34,20 @@ class stok extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'id_gudang' => 2,
+                'id_produk' => 1,
+                'stok' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_gudang' => 2,
+                'id_produk' => 2,
+                'stok' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
 
         Schema::enableForeignKeyConstraints();

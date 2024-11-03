@@ -16,7 +16,6 @@ class satuanController extends Controller
 
         $user = Auth::user();
 
-        // return view('owner.satuan', compact('dataSatuan', 'jumlahData', 'user'));
         return view('CRUD.satuan', compact('dataSatuan', 'jumlahData', 'user'));
     }
 

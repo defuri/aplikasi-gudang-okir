@@ -45,14 +45,25 @@
                                         Cari
                                     </button>
                                 </form>
+
                             </div>
                             <div
                                 class="w-full lg:w-auto flex flex-col lg:flex-row space-y-2 lg:space-y-0 items-stretch lg:items-center justify-end lg:space-x-3 flex-shrink-0">
                                 <div class="lg:flex lg:items-center lg:gap-3">
+                                    <form action="" id="formCheckbox">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" id="checkboxStok" name="cetakCheckbox" value="semua"
+                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600">
+                                            <label for="checkboxStok"
+                                                class="ml-2 text-sm select-none font-medium text-gray-900 dark:text-gray-300">Tampilkan
+                                                Stok
+                                                Kosong</label>
+                                        </div>
+                                    </form>
                                     <form action="/cetak-stok" method="post">
                                         @csrf
                                         <button type="submit"
-                                            class="w-full justify-center text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            class="mt-4 lg:mt-0 w-full justify-center text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                             <svg class="mr-1 -ml-1 w-5 h-5" aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 fill="currentColor" viewBox="0 0 24 24">
@@ -65,6 +76,7 @@
                                     </form>
                                 </div>
                             </div>
+
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -117,4 +129,63 @@
             </section>
         </div>
     </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkbox = document.getElementById('checkboxStok');
+
+            const updateCheckboxState = () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const hasEmptyStock = document.querySelector('meta[name="has-empty-stock"]');
+
+                // Check if we're showing empty stock based on URL parameter
+                const showingEmpty = urlParams.has('show_empty');
+
+                // If there are empty stock items in results, check the box
+                if (hasEmptyStock && hasEmptyStock.content === 'true') {
+                    checkbox.checked = true;
+                } else {
+                    checkbox.checked = showingEmpty;
+                }
+            };
+
+            checkbox.addEventListener('change', function() {
+                let url = new URL(window.location.href);
+
+                if (this.checked) {
+                    url.searchParams.set('show_empty', '1');
+                } else {
+                    url.searchParams.delete('show_empty');
+                }
+
+                // Preserve the search query if it exists
+                const searchQuery = url.searchParams.get('cari');
+                if (searchQuery) {
+                    url.searchParams.set('cari', searchQuery);
+                }
+
+                fetch(url.toString())
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+
+                        const newTable = doc.querySelector('table');
+                        if (newTable) {
+                            document.querySelector('table').innerHTML = newTable.innerHTML;
+                        }
+
+                        const newPagination = doc.querySelector('nav[aria-label="Table navigation"]');
+                        if (newPagination) {
+                            document.querySelector('nav[aria-label="Table navigation"]').innerHTML =
+                                newPagination.innerHTML;
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+
+            // Set initial checkbox state
+            updateCheckboxState();
+        });
+    </script>
 @endsection

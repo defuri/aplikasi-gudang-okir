@@ -112,11 +112,57 @@ class SearchController extends Controller
                     return view('CRUD.produk', compact('query', 'pack', 'kategori', 'rasa', 'produk', 'satuan', 'total', 'user'));
 
                 case 'stok':
-                    $gudang = gudangModel::where('nama', 'LIKE', "%{$query}%")->first()->id;
-                    $stok = stokModel::where('id_gudang',  "{$gudang}")->orderBy('id')->paginate(10);
-                    $user = Auth::user();
+                    try {
+                        // Find the warehouse first
+                        $gudang = gudangModel::where('nama', 'LIKE', "%{$query}%")->first();
 
-                    return view('CRUD.stok', compact('query', 'stok', 'satuan', 'pack', 'user'));
+                        if ($gudang) {
+                            // Check if there are any products with zero stock in this warehouse
+                            $allResults = stokModel::where('id_gudang', $gudang->id)->get();
+                            $hasEmptyStock = $allResults->where('stok', 0)->count() > 0;
+
+                            // Build the query
+                            $stokQuery = stokModel::where('id_gudang', $gudang->id);
+
+                            // Show all results if empty stock exists and show_empty is set
+                            if (!request()->has('show_empty')) {
+                                $stokQuery->where('stok', '>', 0);
+                            }
+
+                            $stok = $stokQuery->orderBy('id')->paginate(10);
+
+                            return view('CRUD.stok', [
+                                'query' => $query,
+                                'stok' => $stok,
+                                'satuan' => $satuan ?? null,
+                                'pack' => $pack ?? null,
+                                'user' => $user,
+                                'hasEmptyStock' => $hasEmptyStock
+                            ]);
+                        } else {
+                            // Handle case when no warehouse is found
+                            $stok = collect([])->paginate(10);
+                            return view('CRUD.stok', [
+                                'query' => $query,
+                                'stok' => $stok,
+                                'satuan' => $satuan ?? null,
+                                'pack' => $pack ?? null,
+                                'user' => $user,
+                                'hasEmptyStock' => false
+                            ]);
+                        }
+                    } catch (\Exception $e) {
+                        // Handle any errors
+                        $stok = collect([])->paginate(10);
+                        return view('CRUD.stok', [
+                            'query' => $query,
+                            'stok' => $stok,
+                            'satuan' => $satuan ?? null,
+                            'pack' => $pack ?? null,
+                            'user' => $user,
+                            'hasEmptyStock' => false
+                        ]);
+                    }
 
                 case 'produkMasuk':
                     $dariTanggal = $request->dariTanggal;

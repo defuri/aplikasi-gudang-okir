@@ -131,22 +131,24 @@ class ProdukMasukController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
         try {
             $request->validate([
                 'id_gudang' => ['required', 'integer'],
+                'id_produk' => ['required', 'integer'],
                 'jumlah' => ['required', 'integer'],
             ]);
 
-            // * cari data yang mau diedit
+            // * cari data produk masuk yang mau diedit
             $data = ProdukMasukModel::findOrFail($id);
 
-            // * kurangi data sekarang dengan data yang mau diedit
-            StokModel::where('id_gudang', $request->id_gudang)
-                ->where('id_produk', $request->id_produk)
-                ->decrement('stok', $data->jumlah);
+            // * jika id_produk atau id_gudang berubah, kurangi stok lama
+            if ($data->id_gudang != $request->id_gudang || $data->id_produk != $request->id_produk) {
+                StokModel::where('id_gudang', $data->id_gudang)
+                    ->where('id_produk', $data->id_produk)
+                    ->decrement('stok', $data->jumlah);
+            }
 
-            // * tambahkan data sesuai dengan data terbaru yang diinputkan
+            // * tambahkan stok baru sesuai dengan data yang diinputkan
             StokModel::where('id_gudang', $request->id_gudang)
                 ->where('id_produk', $request->id_produk)
                 ->increment('stok', $request->jumlah);
@@ -156,7 +158,7 @@ class ProdukMasukController extends Controller
                 ->where('id_produk', $request->id_produk)
                 ->update(['updated_at' => now()]);
 
-            // * update semua data
+            // * update semua data di ProdukMasukModel
             $data->update([
                 'id_gudang' => $request->id_gudang,
                 'id_produk' => $request->id_produk,
@@ -169,6 +171,7 @@ class ProdukMasukController extends Controller
             return redirect()->route('produk-masuk.index')->with('error', 'Data gagal dirubah: ' . $e->getMessage());
         }
     }
+
 
     /**
      * Remove the specified resource from storage.

@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\stokModel;
 use App\Models\gudangModel;
+use App\Models\produkModel;
 use Illuminate\Http\Request;
+use App\Models\ProdukMasukModel;
+use App\Models\ProdukKeluarModel;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class gudangController extends Controller
@@ -20,6 +25,46 @@ class gudangController extends Controller
 
         return view('CRUD.gudang', compact('user', 'gudang'));
     }
+
+    public function dashboard()
+    {
+        $totalProduk = produkModel::count();
+
+        $countProdukMasuk = ProdukMasukModel::whereBetween('created_at', [Carbon::today(), Carbon::tomorrow()])->count();
+        $countProdukKeluar = ProdukKeluarModel::whereBetween('created_at', [Carbon::today(), Carbon::tomorrow()])->count();
+        $totalTransaksi = $countProdukMasuk + $countProdukKeluar;
+
+        $stok = stokModel::all();
+
+        function format_uang($angka)
+        {
+            if ($angka >= 1000000000) {
+                return number_format($angka / 1000000000, 3) . ' M';
+            } elseif ($angka >= 1000000) {
+                return number_format($angka / 1000000, 3) . ' jt';
+            } elseif ($angka >= 1000) {
+                return number_format($angka / 1000, 1) . ' rb';
+            } else {
+                return number_format($angka);
+            }
+        }
+
+        $nilaiInventori = 0;
+
+        foreach ($stok as $currentStok) {
+            $hargaProduknya = produkModel::where('id', $currentStok->id_produk)->first()->harga;
+            $totalnya = $hargaProduknya * $currentStok->stok;
+
+            $nilaiInventori += $totalnya;
+        }
+
+        $nilaiInventori = format_uang($nilaiInventori);
+
+        $stokMenipis = stokModel::where('stok', '<', 1000)->select('id_produk', DB::raw('SUM(stok) as stok'))->groupBy('id_produk')->get();
+
+        return view('gudang.index', compact('totalProduk', 'totalTransaksi', 'nilaiInventori', 'stokMenipis'));
+    }
+
 
     /**
      * Show the form for creating a new resource.

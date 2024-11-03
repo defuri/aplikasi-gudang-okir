@@ -2,6 +2,9 @@
 <html lang="en">
 
 <head>
+    @if (isset($hasEmptyStock))
+        <meta name="has-empty-stock" content="{{ $hasEmptyStock ? 'true' : 'false' }}">
+    @endif
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -205,13 +208,13 @@
     </aside>
 
     <div class="px-8 sm:ml-64">
+        <div class="mt-24"></div>
         @yield('content')
     </div>
 
     @push('scripts')
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <script>
             var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
             var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');

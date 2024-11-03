@@ -30,18 +30,8 @@ class DatabaseSeeder extends Seeder
             produk::class,
             gudang::class,
             stok::class,
-            // penjualan::class,
-            // DetailPenjualanSeeder::class,
-            // divisi::class,
-            // jabatan::class,
-            // karyawan::class,
-            // penggajian::class,
             ProdukMasukSeeder::class,
             ProdukKeluarSeeder::class,
-            // PelangganSeeder::class,
-            // PesananSeeder::class,
-            // DetailPesananSeeder::class,
-            // PengirimanSeeder::class,
             DetailTransaksiBahanBakuSeeder::class,
         ]);
     }

@@ -2,6 +2,9 @@
 <html lang="en">
 
 <head>
+    @if (isset($hasEmptyStock))
+        <meta name="has-empty-stock" content="{{ $hasEmptyStock ? 'true' : 'false' }}">
+    @endif
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -54,8 +57,8 @@
                         <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Gudang</span>
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2" d="m1 1 4 4 4-4" />
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
                         </svg>
                     </button>
                     <ul id="menuGudang" class="hidden py-2 space-y-2">
@@ -142,6 +145,7 @@
             }
         });
     </script>
+
 </body>
 
 </html>
