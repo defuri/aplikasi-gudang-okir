@@ -1,4 +1,4 @@
-@extends($user->id_hak === 1 ? 'layouts.owner' : 'layouts.gudang')
+@extends($user->id_hak === 1 ? 'layouts.owner' : 'layouts.gudangLayout')
 
 @section('namaHalaman', 'Produk Masuk')
 @section('namaOperator', $user->id_hak === 1 ? 'Owner' : 'Admin Gudang')

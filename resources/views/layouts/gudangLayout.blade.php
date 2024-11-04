@@ -111,6 +111,7 @@
                             <span class="ms-3">Logout</span>
                         </button>
                     </form>
+                </li>
             </ul>
         </div>
     </aside>

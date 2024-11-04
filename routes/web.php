@@ -58,8 +58,8 @@ Route::group(['middleware' => CheckLoginMiddleware::class], function () {
 });
 
 // index
-Route::get('/owner', [OwnerController::class, 'index'])->middleware(CheckOwner::class);
-Route::get('/produksi', [ProduksiController::class, 'index'])->middleware(CheckAdminProduksi::class);
+Route::get('/owner', [OwnerController::class, 'index'])->middleware(CheckOwner::class)->name('ownerHome');
+Route::get('/produksi', [ProduksiController::class, 'index'])->middleware(CheckAdminProduksi::class)->name('produksiHome');
 Route::get('/gudang-home', [gudangController::class, 'dashboard'])->middleware(CheckAdminGudang::class)->name('gudangHome');
 
 Route::middleware([CheckLoginMiddleware::class])->group(function () {
