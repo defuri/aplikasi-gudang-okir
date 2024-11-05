@@ -30,6 +30,21 @@ class suplier extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'nama' => 'Siti',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama' => 'Budi',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama' => 'Rina',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
 
         Schema::enableForeignKeyConstraints();

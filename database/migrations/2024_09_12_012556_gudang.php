@@ -14,7 +14,7 @@ return new class extends Migration
         // membuat tabel gudang
         Schema::create('gudang', function(Blueprint $table) {
             $table->id();
-            $table->string('nama', 40);
+            $table->string('nama', 40)->unique();
             $table->text('alamat');
             $table->timestamps();
         });

@@ -28,7 +28,7 @@
         <!-- Navbar Responsif Bagian Bawah -->
         <div class="relative h-full transition ease-linear duration-200" id="navbarResponsifBawah">
             <div class="mt-40 w-full flex flex-row justify-center items-center">
-                <ul class="flex flex-col space-y-4 font-extrabold text-3xl items-center">
+                <ul class="flex flex-col space-y-4 font-extrabold text-xl items-center">
                     <li class="uppercase hover:text-koneng"><a href="/">home</a></li>
                     <li class="uppercase hover:text-koneng"><a href="#">tentang</a></li>
                     <li class="uppercase hover:text-koneng"><a href="#produkAtas">produk</a></li>
@@ -37,63 +37,49 @@
             </div>
 
             <!-- Button Login -->
-            <div class="w-full flex justify-center items-center absolute bottom-48">
+            {{-- <div class="w-full flex justify-center items-center absolute bottom-48">
                 <a href="/login">
                     <button
                         class="uppercase bg-beureum text-[#F1E7DA] rounded-full text-xl font-extrabold px-8 py-3 hover:opacity-90">
                         login
                     </button>
                 </a>
-            </div>
+            </div> --}}
         </div>
     </div>
 
-    <!-- Navbar Biasa -->
-    <nav id="navbarBiasa"
-        class="bg-beureum text-[#F1E8DB] uppercase flex justify-center items-center h-16 md:h-24 px-6 py-2 pb-3 fixed top-0 w-full font-sans transition ease-linear z-40">
-        <div class="flex justify-between items-center max-w-[1280px] w-full relative">
-            <ion-icon name="menu-outline" class="absolute right-2 top-1 text-4xl cursor-pointer block sm:hidden"
-                id="btnMenu"></ion-icon>
+    <nav id="navbarBiasa" class="bg-beureum text-[#F1E8DB] h-16 md:h-20 fixed top-0 w-full z-40 transition-transform duration-300">
+        <div class="mx-auto max-w-[1280px] h-full px-6 flex items-center justify-between">
+            <!-- Menu Icon Mobile -->
+            <ion-icon name="menu-outline" class="text-4xl cursor-pointer sm:hidden absolute right-6" id="btnMenu"></ion-icon>
 
-            <div class="flex items-center">
-                <a href="#" class="cursor-pointer">
-                    <img src="{{ asset('img/logo.webp') }}" alt="Logo Okir" class="w-16 md:w-28 lg:w-32 h-auto">
-                </a>
-            </div>
+            <!-- Logo -->
+            <a href="#" class="cursor-pointer">
+                <img src="{{ asset('img/logo.webp') }}" alt="Logo Okir" class="w-16 md:w-24 h-auto">
+            </a>
 
-            <div class="items-center justify-center flex-wrap font-black hidden sm:block text-lg">
-                <ul class="md:block">
-                    <a href="/">
-                        <li class="inline-block mx-2">home</li>
-                    </a>
-                    <a href="#">
-                        <li class="inline-block mx-2">tentang</li>
-                    </a>
-                    <a href="#produkAtas">
-                        <li class="inline-block mx-2">produk</li>
-                    </a>
-                    <a href="#lokasi">
-                        <li class="inline-block mx-2">lokasi</li>
-                    </a>
+            <!-- Navigation Links -->
+            <nav class="hidden sm:block flex-1 md:-ml-28">
+                <ul class="flex justify-center items-center gap-6 uppercase font-black text-lg">
+                    <li><a href="/" class="hover:opacity-80">home</a></li>
+                    <li><a href="#" class="hover:opacity-80">tentang</a></li>
+                    <li><a href="#produkAtas" class="hover:opacity-80">produk</a></li>
+                    <li><a href="#lokasi" class="hover:opacity-80">lokasi</a></li>
                 </ul>
-            </div>
+            </nav>
 
-            <div class="flex items-center">
+            {{-- <div class="flex items-center">
                 <a href="/login">
-                    <button
-                        class="hidden sm:block font-black text-beureum bg-white cursor-pointer text-sm rounded-full px-6 py-2 lg:px-8 lg:py-3 uppercase shadow-login hover:opacity-80 md:px-9 md:py-3 md:text-base lg:text-xl">
+                    <button class="hidden sm:block font-black text-beureum bg-white cursor-pointer text-sm rounded-full px-6 py-2 lg:px-8 lg:py-3 uppercase shadow-login hover:opacity-80 md:px-9 md:py-3 md:text-base lg:text-xl">
                         login
                     </button>
                 </a>
-            </div>
+            </div> --}}
         </div>
     </nav>
 
     {{-- main content wrapper --}}
-    <div class="overflow-x-hidden"
-        data-aos="fade"
-        data-aos-easing="ease-in-sine"
-        data-aos-duration="600">
+    <div class="overflow-x-hidden" data-aos="fade" data-aos-easing="ease-in-sine" data-aos-duration="600">
 
         <!-- Bagian Atas -->
         <div class="bg-beureum w-full">
@@ -112,29 +98,29 @@
         </div>
 
         <div class="w-full bg-[#F1E8DB] flex justify-center items-center" data-aos="fade-right" data-aos-offset="200"
-        data-aos-duration="1000" data-aos-once="true">
-        <div class="max-w-7xl w-full py-14 px-5 flex flex-col md:flex-row">
-            <div class="w-full flex justify-center md:w-1/2 md:justify-start">
-                <img src="{{ asset('img/singkong.webp') }}" alt="Foto Salah Satu Produk Kami"
-                    class="w-full max-w-[300px] h-auto object-contain md:max-w-[400px]">
-            </div>
-            <div class="w-full mt-8 md:mt-0 md:w-1/2 md:pl-10">
-                <h1 class="font-anton uppercase text-beureum text-4xl sm:text-5xl lg:text-6xl">
-                    "Sekali
-                    <span class="text-koneng">nyicip</span> ga bisa <span class="text-beureum">berhenti</span>"
-                </h1>
-                <p class="mt-4 font-notoSansJP text-base font-medium lg:text-lg">Temukan keunggulan produk
-                    kami yang dibuat dari bahan berkualitas tinggi dan proses produksi terjamin, memenuhi standar
-                    terbaik dengan rasa luar biasa.</p>
-                <a href="https://id.shp.ee/1cngaba" target="_blank" class="inline-block mt-6">
-                    <button
-                        class="px-7 py-4 rounded-full text-[#F1E7DA] bg-beureum capitalize font-notoSansJP text-lg shadow-login">
-                        Pesan Sekarang
-                    </button>
-                </a>
+            data-aos-duration="1000" data-aos-once="true">
+            <div class="max-w-7xl w-full py-14 px-5 flex flex-col md:flex-row">
+                <div class="w-full flex justify-center md:w-1/2 md:justify-start">
+                    <img src="{{ asset('img/singkong.webp') }}" alt="Foto Salah Satu Produk Kami"
+                        class="w-full max-w-[300px] h-auto object-contain md:max-w-[400px]">
+                </div>
+                <div class="w-full mt-8 md:mt-0 md:w-1/2 md:pl-10">
+                    <h1 class="font-anton uppercase text-beureum text-4xl sm:text-5xl lg:text-6xl">
+                        "Sekali
+                        <span class="text-koneng">nyicip</span> ga bisa <span class="text-beureum">berhenti</span>"
+                    </h1>
+                    <p class="mt-4 font-notoSansJP text-base font-medium lg:text-lg">Temukan keunggulan produk
+                        kami yang dibuat dari bahan berkualitas tinggi dan proses produksi terjamin, memenuhi standar
+                        terbaik dengan rasa luar biasa.</p>
+                    <a href="https://id.shp.ee/1cngaba" target="_blank" class="inline-block mt-6">
+                        <button
+                            class="px-7 py-4 rounded-full text-[#F1E7DA] bg-beureum capitalize font-notoSansJP text-lg shadow-login">
+                            Pesan Sekarang
+                        </button>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
 
         {{-- Why Choose Us --}}
 
@@ -285,7 +271,7 @@
         </div>
 
         <div data-aos="fade-left" data-aos-offset="200" data-aos-duration="1000" data-aos-once="true"
-            id="lokasi" class="pb-20">
+            id="lokasi" class="pb-20 mt-10">
             <h1 class="text-4xl font-bold pt-20 text-center underline decoration-[#EFCC37]">Lokasi</h1>
 
             <div class="w-full flex justify-center items-center mt-5 bg-white font-poppins">
@@ -329,8 +315,8 @@
             </div>
         </div>
 
-        <footer class="flex justify-center items-center w-full bg-beureum" data-aos="fade" data-aos-offset="200"
-            data-aos-duration="2000" data-aos-once="true">
+        <footer class="flex justify-center items-center w-full mt-20 bg-beureum" data-aos="fade"
+            data-aos-offset="200" data-aos-duration="2000" data-aos-once="true">
             <div class="w-full max-w-7xl px-8 pt-10 pb-24 font-poppins text-white sm:flex sm:justify-center">
                 <div class="sm:w-1/3 sm:p-2">
                     <a href="/">
@@ -398,7 +384,7 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-      AOS.init();
+        AOS.init();
     </script>
 </body>
 

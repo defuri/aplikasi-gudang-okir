@@ -14,7 +14,7 @@ return new class extends Migration
         // membuat tabel produk
         Schema::create('produk', function(Blueprint $table) {
             $table->id();
-            $table->string('nama', 40);
+            $table->string('nama', 40)->unique();
             $table->unsignedBigInteger('id_rasa');
             $table->unsignedBigInteger('id_kategori');
             $table->unsignedBigInteger('id_pack');

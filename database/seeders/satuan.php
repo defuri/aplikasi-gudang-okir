@@ -26,6 +26,21 @@ class satuan extends Seeder
                 'updated_at' => now(),
             ],
             [
+                'nama' => 'hg',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama' => 'dag',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama' => 'g',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
                 'nama' => 'pcs',
                 'created_at' => now(),
                 'updated_at' => now(),

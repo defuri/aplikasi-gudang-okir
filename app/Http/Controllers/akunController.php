@@ -156,7 +156,9 @@ class akunController extends Controller
                 ->useLog('Akun')
                 ->log('UPDATE ID: ' . $akun->id);
 
-            return redirect()->route('akun.index')->with('success', 'Data berhasil dirubah!');
+            Auth::logout();
+
+            return redirect()->route('login')->with('success', 'Data berhasil dirubah!');
         } catch (\Throwable $th) {
             return redirect()->route('akun.index')->with('error', 'Data gagal disimpan: ' . $th->getMessage());
         }

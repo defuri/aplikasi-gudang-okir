@@ -34,5 +34,32 @@ class DetailTransaksiBahanBakuSeeder extends Seeder
             'harga' => 10000,
             'total' => 100000,
         ]);
+
+        DetailTransaksiBahanBaku::create([
+            'transaksi_bahan_baku_id' => 3,
+            'bahan_baku_id' => 3,
+            'jumlah' => 50,
+            'satuan_id' => 2,
+            'harga' => 150000,
+            'total' => 750000,
+        ]);
+
+        DetailTransaksiBahanBaku::create([
+            'transaksi_bahan_baku_id' => 4,
+            'bahan_baku_id' => 4,
+            'jumlah' => 75,
+            'satuan_id' => 3,
+            'harga' => 200000,
+            'total' => 1500000,
+        ]);
+
+        DetailTransaksiBahanBaku::create([
+            'transaksi_bahan_baku_id' => 5,
+            'bahan_baku_id' => 5,
+            'jumlah' => 25,
+            'satuan_id' => 4,
+            'harga' => 120000,
+            'total' => 300000,
+        ]);
     }
 }

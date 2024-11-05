@@ -40,13 +40,13 @@ class gudangController extends Controller
         function format_uang($angka)
         {
             if ($angka >= 1000000000) {
-                return number_format($angka / 1000000000, 3) . ' M';
+                return number_format($angka / 1000000000, 3, ',', ' ') . ' M';
             } elseif ($angka >= 1000000) {
-                return number_format($angka / 1000000, 3) . ' jt';
+                return number_format($angka / 1000000, 3, ',', ' ') . ' jt';
             } elseif ($angka >= 1000) {
-                return number_format($angka / 1000, 1) . ' rb';
+                return number_format($angka / 1000, 1, ',', ' ') . ' rb';
             } else {
-                return number_format($angka);
+                return number_format($angka, 0, ',', ' ');
             }
         }
 

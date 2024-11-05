@@ -30,6 +30,21 @@ class rasa extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'nama' => 'manis',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama' => 'asem',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama' => 'pahit',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
 
         Schema::enableForeignKeyConstraints();

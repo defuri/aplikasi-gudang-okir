@@ -30,6 +30,21 @@ class kategori extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'nama' => 'brekele',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama' => 'cikruh',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama' => 'pisang',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
 
         Schema::enableForeignKeyConstraints();

@@ -14,7 +14,7 @@ return new class extends Migration
         // membuat tabel pack
         Schema::create('pack', function (Blueprint $table) {
             $table->id();
-            $table->string('nama', 40);
+            $table->string('nama', 40)->unique();
             $table->integer('ukuran');
             $table->unsignedBigInteger('id_satuan');
             $table->timestamps();

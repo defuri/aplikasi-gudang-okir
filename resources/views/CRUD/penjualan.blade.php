@@ -68,7 +68,8 @@
         </div>
 
         <div
-            class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+            class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-800 relative shadow-sm sm:rounded-lg overflow-hidden">
+
             <div class="flex flex-col lg:flex-row items-center justify-between space-y-3 lg:space-y-0 lg:space-x-4 p-4">
                 <div class="w-full lg:w-1/2">
                     <form class="flex items-center focus-within:ring-1 focus-within:ring-blue-700 rounded-lg"

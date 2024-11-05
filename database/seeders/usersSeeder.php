@@ -2,11 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Psy\CodeCleaner\PassableByReferencePass;
 
 class usersSeeder extends Seeder
 {
@@ -40,20 +37,6 @@ class usersSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            // [
-            //     'id_hak' => 4,
-            //     'username' => '4',
-            //     'password' => bcrypt(1),
-            //     'created_at' => now(),
-            //     'updated_at' => now(),
-            // ],
-            // [
-            //     'id_hak' => 5,
-            //     'username' => '5',
-            //     'password' => bcrypt(1),
-            //     'created_at' => now(),
-            //     'updated_at' => now(),
-            // ],
         ]);
     }
 }

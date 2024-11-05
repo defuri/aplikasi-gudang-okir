@@ -35,6 +35,24 @@ class bahan_baku extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'nama' => 'cabe',
+                'id_suplier' => 3,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama' => 'minyak goreng',
+                'id_suplier' => 4,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama' => 'MSG',
+                'id_suplier' => 5,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
 
         Schema::enableForeignKeyConstraints();

@@ -14,14 +14,15 @@ class CheckLoginMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
-    {
-        $user = Auth::user();
 
-        if(!$user) {
-            return redirect('/login')->with('error', 'Anda tidak mempunyai hak akses menuju halaman ini.');
-        }
+     public function handle(Request $request, Closure $next): Response
+     {
+         $user = Auth::user();
 
-        return $next($request);
-    }
+         if(!$user) {
+             abort(403, 'Anda tidak memiliki hak akses');
+         }
+
+         return $next($request);
+     }
 }

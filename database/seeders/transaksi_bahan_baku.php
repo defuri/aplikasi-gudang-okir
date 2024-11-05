@@ -22,7 +22,22 @@ class transaksi_bahan_baku extends Seeder
 
         DB::table('transaksi_bahan_baku')->insert([
             [
-                'tanggal' => Carbon::now(),
+                'tanggal' => fake()->dateTimeBetween('-1 year', 'now'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'tanggal' => fake()->dateTimeBetween('-1 year', 'now'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'tanggal' => fake()->dateTimeBetween('-1 year', 'now'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'tanggal' => fake()->dateTimeBetween('-1 year', 'now'),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
