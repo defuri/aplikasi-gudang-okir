@@ -36,7 +36,7 @@ use App\Http\Controllers\ProduksiController;
 // use App\Http\Controllers\RiwayatPengirimanController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\transaksiBahanBakuController;
-
+use App\Http\Middleware\ResetSessionTimeout;
 
 Route::get('/', function () {
     return view('index');
@@ -58,11 +58,11 @@ Route::group(['middleware' => CheckLoginMiddleware::class], function () {
 });
 
 // index
-Route::get('/owner', [OwnerController::class, 'index'])->middleware(CheckOwner::class)->name('ownerHome');
-Route::get('/produksi', [ProduksiController::class, 'index'])->middleware(CheckAdminProduksi::class)->name('produksiHome');
-Route::get('/gudang-home', [gudangController::class, 'dashboard'])->middleware(CheckAdminGudang::class)->name('gudangHome');
+Route::get('/owner', [OwnerController::class, 'index'])->middleware([ResetSessionTimeout::class, CheckOwner::class])->name('ownerHome');
+Route::get('/produksi', [ProduksiController::class, 'index'])->middleware([ResetSessionTimeout::class, CheckAdminProduksi::class])->name('produksiHome');
+Route::get('/gudang-home', [gudangController::class, 'dashboard'])->middleware([ResetSessionTimeout::class, CheckAdminGudang::class])->name('gudangHome');
 
-Route::middleware([CheckLoginMiddleware::class])->group(function () {
+Route::middleware([CheckLoginMiddleware::class, ResetSessionTimeout::class])->group(function () {
     Route::resource('/activity', ActivityController::class);
     Route::resource('/satuan', satuanController::class);
     Route::resource('/suplier', suplier::class);

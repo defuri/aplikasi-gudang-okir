@@ -17,12 +17,19 @@ class CheckLoginMiddleware
 
      public function handle(Request $request, Closure $next): Response
      {
-         $user = Auth::user();
+        $user = Auth::user();
 
-         if(!$user) {
-             abort(403, 'Anda tidak memiliki hak akses');
-         }
+        if (!$user) {
+            // Cek apakah ada timestamp aktivitas terakhir
+            if (session()->has('last_activity')) {
+                // Sesi mungkin habis
+                abort(403, 'Sesi Anda telah habis. Silakan login kembali.');
+            } else {
+                // Pengguna belum pernah login
+                abort(403, 'Anda tidak memiliki hak akses.');
+            }
+        }
 
-         return $next($request);
+        return $next($request);
      }
 }

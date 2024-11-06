@@ -151,7 +151,7 @@
                     </div>
                     <div class="mt-10 flex items-center flex-col md:max-w-80 lg:max-w-96 border-solid">
                         <ion-icon name="cash-outline" class="text-beureum text-5xl"></ion-icon>
-                        <h2 class="text-2xl text-[#050404] font-semibold text-center mt-6 sm:text-3xl xl:text-4xl">
+                        <h2 class="text-2xl text-[#474747] font-semibold text-center mt-6 sm:text-3xl xl:text-4xl">
                             Harga
                             Bersaing</h2>
                         <p class="text-[#303030] text-center text-lg leading-5 mt-2 sm:text-xl">Kami menyediakan produk

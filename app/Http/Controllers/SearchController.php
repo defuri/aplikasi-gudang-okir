@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ProdukKeluarModel;
 use Carbon\Carbon;
 use App\Models\Pesanan;
 use App\Models\suplier;
@@ -26,12 +25,13 @@ use App\Models\bahanBakuModel;
 use App\Models\penjualanModel;
 use App\Models\penggajianModel;
 use App\Models\ProdukMasukModel;
+use App\Models\ProdukKeluarModel;
 use App\Models\RiwayatPengiriman;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\Models\Activity;
 use App\Models\transaksiBahanBakuModel;
 use App\Models\DetailTransaksiBahanBaku;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Spatie\Activitylog\Models\Activity;
 
 class SearchController extends Controller
 {
@@ -57,15 +57,15 @@ class SearchController extends Controller
 
             switch ($request->tabel) {
                 case 'satuan':
-                    $dataSatuan = satuanModel::where('nama', 'LIKE', "%{$query}%")->orderBy('id')->paginate(10);
+                    $dataSatuan = satuanModel::where('nama', 'LIKE', "%{$query}%")->orderByDesc('id')->paginate(10);
                     return view('CRUD.satuan', compact('query', 'dataSatuan', 'user'));
 
                 case 'suplier':
-                    $suplier = suplier::where('nama', 'LIKE', "%{$query}%")->orderBy('id')->paginate(10);
+                    $suplier = suplier::where('nama', 'LIKE', "%{$query}%")->orderByDesc('id')->paginate(10);
                     return view('CRUD.suplier', compact('query', 'suplier', 'user'));
 
                 case 'bahanBaku':
-                    $bahanBaku = bahanBakuModel::where('nama', 'LIKE', "%{$query}%")->orderBy('id')->paginate(10);
+                    $bahanBaku = bahanBakuModel::where('nama', 'LIKE', "%{$query}%")->orderByDesc('id')->paginate(10);
                     $suppliers = suplier::get();
 
                     return view('CRUD.bahanBaku', compact('query', 'bahanBaku', 'suppliers', 'user'));
@@ -92,20 +92,20 @@ class SearchController extends Controller
                     return view('CRUD.transaksiBahanBaku', compact('transaksiBahanBaku', 'detailTransaksiBahanBaku', 'bahanBaku', 'satuan', 'user', 'dariTanggal', 'keTanggal'));
 
                 case 'rasa':
-                    $rasa = rasaModel::where('nama', 'LIKE', "%{$query}%")->orderBy('id')->paginate(10);
+                    $rasa = rasaModel::where('nama', 'LIKE', "%{$query}%")->orderByDesc('id')->paginate(10);
                     return view('CRUD.rasa', compact('query', 'rasa', 'user'));
 
                 case 'kategori':
-                    $kategori = kategoriModel::where('nama', 'LIKE', "%{$query}%")->orderBy('id')->paginate(10);
+                    $kategori = kategoriModel::where('nama', 'LIKE', "%{$query}%")->orderByDesc('id')->paginate(10);
                     return view('CRUD.kategori', compact('query', 'kategori', 'user'));
 
                 case 'pack':
-                    $pack = packModel::where('nama', 'LIKE', "%{$query}%")->orderBy('id')->paginate(10);
+                    $pack = packModel::where('nama', 'LIKE', "%{$query}%")->orderByDesc('id')->paginate(10);
 
                     return view('CRUD.pack', compact('query', 'pack', 'satuan', 'user'));
 
                 case 'produk':
-                    $produk = produkModel::where('nama', 'LIKE', "%{$query}%")->orderBy('id')->paginate(10);
+                    $produk = produkModel::where('nama', 'LIKE', "%{$query}%")->orderByDesc('id')->paginate(10);
                     $rasa = rasaModel::all();
                     $kategori = kategoriModel::all();
                     $total = $produk->total();
@@ -114,44 +114,46 @@ class SearchController extends Controller
 
                 case 'stok':
                     try {
-                        // Find the warehouse first
-                        $gudang = gudangModel::where('nama', 'LIKE', "%{$query}%")->first();
+                        if (!empty($query)) {
+                            // Jika ada input pencarian
+                            $gudang = gudangModel::where('nama', 'LIKE', "%{$query}%")->paginate(10);
 
-                        if ($gudang) {
-                            // Check if there are any products with zero stock in this warehouse
-                            $allResults = stokModel::where('id_gudang', $gudang->id)->get();
-                            $hasEmptyStock = $allResults->where('stok', 0)->count() > 0;
+                            if ($gudang->isNotEmpty()) {
+                                // Ambil stok untuk semua gudang yang ditemukan
+                                $allResults = stokModel::whereIn('id_gudang', $gudang->pluck('id'))->get();
+                                $hasEmptyStock = $allResults->where('stok', 0)->count() > 0;
 
-                            // Build the query
-                            $stokQuery = stokModel::where('id_gudang', $gudang->id);
+                                $stokQuery = stokModel::whereIn('id_gudang', $gudang->pluck('id'));
 
-                            // Show all results if empty stock exists and show_empty is set
+                                if (!request()->has('show_empty')) {
+                                    $stokQuery->where('stok', '>', 0);
+                                }
+
+                                $stok = $stokQuery->orderBy('id', 'desc')->paginate(10);
+                            } else {
+                                // Jika tidak ada gudang yang ditemukan
+                                $stok = collect([])->paginate(10);
+                            }
+                        } else {
+                            // Jika query kosong, tampilkan semua stok tanpa filter nama gudang
+                            $stokQuery = stokModel::query();
+
                             if (!request()->has('show_empty')) {
                                 $stokQuery->where('stok', '>', 0);
                             }
 
-                            $stok = $stokQuery->orderBy('id')->paginate(10);
-
-                            return view('CRUD.stok', [
-                                'query' => $query,
-                                'stok' => $stok,
-                                'satuan' => $satuan ?? null,
-                                'pack' => $pack ?? null,
-                                'user' => $user,
-                                'hasEmptyStock' => $hasEmptyStock
-                            ]);
-                        } else {
-                            // Handle case when no warehouse is found
-                            $stok = collect([])->paginate(10);
-                            return view('CRUD.stok', [
-                                'query' => $query,
-                                'stok' => $stok,
-                                'satuan' => $satuan ?? null,
-                                'pack' => $pack ?? null,
-                                'user' => $user,
-                                'hasEmptyStock' => false
-                            ]);
+                            $stok = $stokQuery->orderBy('id', 'desc')->paginate(10);
+                            $hasEmptyStock = $stok->where('stok', 0)->count() > 0;
                         }
+
+                        return view('CRUD.stok', [
+                            'query' => $query,
+                            'stok' => $stok,
+                            'satuan' => $satuan ?? null,
+                            'pack' => $pack ?? null,
+                            'user' => $user,
+                            'hasEmptyStock' => $hasEmptyStock ?? false
+                        ]);
                     } catch (\Exception $e) {
                         // Handle any errors
                         $stok = collect([])->paginate(10);
@@ -183,7 +185,7 @@ class SearchController extends Controller
                         ]);
                     }
 
-                    $ProdukMasuk = $query->orderBy('id', 'asc')->paginate(10);
+                    $ProdukMasuk = $query->orderBy('id', 'desc')->paginate(10);
 
                     return view('CRUD.ProdukMasuk', compact('ProdukMasuk', 'dariTanggal', 'keTanggal', 'user', 'gudang', 'produk'));
 
@@ -212,7 +214,7 @@ class SearchController extends Controller
 
 
                 case 'gudang':
-                    $gudang = gudangModel::where('nama', 'LIKE', "%{$query}%")->orderBy('id')->paginate(10);
+                    $gudang = gudangModel::where('nama', 'LIKE', "%{$query}%")->orderByDesc('id')->paginate(10);
 
                     return view('CRUD.gudang', compact('query', 'user', 'gudang'));
 
@@ -385,8 +387,17 @@ class SearchController extends Controller
                     return view('crud.hak', compact('hak', 'query'));
 
                 case 'activityOwner':
-                    $activity = Activity::where('log_name', 'LIKE', "%{$query}%")->orderByDesc('id')->paginate(10);
                     $user = Auth::user();
+
+                    if ($user->id_hak === 1) {
+                        $activity = Activity::with('causer')->where('log_name', 'LIKE', "%{$query}%")->orderByDesc('id')->paginate(10);
+                    } else if ($user->id_hak === 2) {
+                        $logNames = ['Satuan', 'Suplier', 'Bahan Baku', 'Transaksi Bahan Baku', 'Rasa', 'Kategori', 'Pack', 'Produk'];
+                        $activity = Activity::with('causer')->whereIn('log_name', $logNames)->where('log_name', 'LIKE', "%{$query}%")->orderByDesc('id')->paginate(10);
+                    } else {
+                        $logNames = ['Gudang', 'Produk masuk', 'Produk Keluar', 'Stok'];
+                        $activity = Activity::with('causer')->whereIn('log_name', $logNames)->where('log_name', 'LIKE', "%{$query}%")->orderByDesc('id')->paginate(10);
+                    }
 
                     return view('owner.activity', compact('activity', 'user'));
 

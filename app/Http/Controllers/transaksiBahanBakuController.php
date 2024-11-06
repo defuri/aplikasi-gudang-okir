@@ -295,7 +295,7 @@ class transaksiBahanBakuController extends Controller
                                 <td class="px-4 py-1">' . ($index + 1) . '</td>';
 
                 if ($dariTanggal != $keTanggal) {
-                    $html .= '<td class="px-4 py-1">' . $tanggalTransaksi . '</td>';
+                    $html .= '<td class="px-4 py-1">' . \Carbon\Carbon::parse($item->transaksiBahanBaku->tanggal)->format('d-m-Y') . '</td>';
                 }
 
                 $html .= '       <td class="px-4 py-1">' . $item->bahanBaku->nama . '</td>

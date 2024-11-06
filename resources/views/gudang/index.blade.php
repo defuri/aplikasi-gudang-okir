@@ -147,7 +147,7 @@
                                         {{ $description }}
                                     @endif
                                 </td>
-                                <td class="px-6 py-4">{{ $currentActivity->causer_id }}</td>
+                                <td>{{ $currentActivity->causer?->username ?? 'Unknown User' }}</td>
                                 <td class="px-6 py-4">
                                     {{ $currentActivity->created_at->setTimezone('Asia/Jakarta')->format('H:i d-m-Y') }}
                                 </td>

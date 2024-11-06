@@ -94,71 +94,42 @@ class akunController extends Controller
             ]);
 
             $akun = akunModel::findOrFail($id);
-
             $forceLogout = false;
 
-            // Cek apakah user sedang login mencoba mengubah password
-            if ($request->passwordBaru != null) {
+            // Cek jika password diubah
+            if ($request->filled('passwordBaru')) {
                 $request->validate([
                     'passwordBaru' => ['required', Password::min(1)],
-                    'konfirmasiPasswordBaru' => ['required', Password::min(1)],
+                    'konfirmasiPasswordBaru' => ['required', 'same:passwordBaru'],
                 ]);
 
-                if ($request->passwordBaru != $request->konfirmasiPasswordBaru) {
-                    return redirect()->back()->with('error', 'Password baru dengan konfirmasinya tidak sama');
-                }
-
-                $akun->update([
-                    'password' => bcrypt($request->passwordBaru),
-                ]);
-
-                if ($akun->id == Auth::id()) {
-                    $forceLogout = true;
-                }
+                $akun->password = bcrypt($request->passwordBaru);
+                $forceLogout = $akun->id === Auth::id();
             }
 
-            // Cek apakah id_hak diubah
+            // Cek jika `id_hak` diubah
             if ($akun->id_hak != $request->id_hak) {
-                // Jika id_hak == 1 (misalnya Admin), lakukan pengecekan
-                if ($akun->id_hak == 1) {
-                    // Hitung berapa akun yang memiliki id_hak == 1
-                    $countAdmin = akunModel::where('id_hak', 1)->count();
-
-                    // Jika hanya ada satu akun dengan id_hak == 1, cegah perubahan
-                    if ($countAdmin <= 1) {
-                        return redirect()->back()->with('error', 'Tidak bisa mengubah hak akun ini, karena ini adalah satu-satunya akun dengan hak super admin.');
-                    }
+                if ($akun->id_hak == 1 && akunModel::where('id_hak', 1)->count() <= 1) {
+                    return redirect()->back()->with('error', 'Tidak bisa mengubah hak akun ini karena ini adalah satu-satunya akun admin.');
                 }
 
-                // Update id_hak jika lolos dari pengecekan
-                $akun->update([
-                    'id_hak' => $request->id_hak,
-                ]);
-
-                if ($akun->id == Auth::id()) {
-                    $forceLogout = true;
-                }
+                $akun->id_hak = $request->id_hak;
+                $forceLogout = $akun->id === Auth::id();
             }
 
             // Update username dan updated_at
-            $akun->update([
-                'username' => $request->username,
-                'updated_at' => Carbon::now(),
-            ]);
+            $akun->username = $request->username;
+            $akun->updated_at = now();
+            $akun->save();
 
             // Logout jika user yang login terpengaruh
             if ($forceLogout) {
                 Auth::logout();
-                return redirect()->route('login')->with('success', 'Perubahan dilakukan. Silakan login kembali.');
+                return redirect()->route('login')->with('success', 'Perubahan berhasil. Silakan login kembali.');
             }
 
-            activity()
-                ->useLog('Akun')
-                ->log('UPDATE ID: ' . $akun->id);
-
-            Auth::logout();
-
-            return redirect()->route('login')->with('success', 'Data berhasil dirubah!');
+            activity()->useLog('Akun')->log('UPDATE ID: ' . $akun->id);
+            return redirect()->route('akun.index')->with('success', 'Data berhasil dirubah!');
         } catch (\Throwable $th) {
             return redirect()->route('akun.index')->with('error', 'Data gagal disimpan: ' . $th->getMessage());
         }

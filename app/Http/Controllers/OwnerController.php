@@ -15,14 +15,17 @@ class OwnerController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index()
     {
-        //
-        $totalProduk = count(produkModel::all());
-        $stokMenipis = stokModel::where('stok', '<', 1000)->select('id_produk', DB::raw('SUM(stok) as stok'))->groupBy('id_produk')->get();
-        $totalSuplier = count( suplier::all());
+        $totalProduk = produkModel::count();
+        $stokMenipis = stokModel::where('stok', '<', 1000)
+            ->select('id_produk', DB::raw('SUM(stok) as stok'))
+            ->groupBy('id_produk')
+            ->get();
+        $totalSuplier = suplier::count();
         $totalUser = User::count();
-        $activity = Activity::orderByDesc('id')->latest()->limit(10)->get();
+        $activity = Activity::with('causer')->orderByDesc('id')->limit(10)->get();
 
         return view('owner.index', compact('totalProduk', 'stokMenipis', 'totalSuplier', 'totalUser', 'activity'));
     }

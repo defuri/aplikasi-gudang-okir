@@ -41,11 +41,11 @@ class ProdukMasukModel extends Model
 
     public function getFormattedCreatedAtAttribute()
     {
-        return $this->created_at->timezone('Asia/Jakarta')->format('d-m-Y H:i');
+        return $this->created_at->timezone('Asia/Jakarta')->format('m-d-Y H:i');
     }
 
     public function getFormattedUpdatedAttribute()
     {
-        return $this->updated_at->timezone('Asia/Jakarta')->format('d-m-Y H:i');
+        return $this->updated_at->timezone('Asia/Jakarta')->format('m-d-Y H:i');
     }
 }

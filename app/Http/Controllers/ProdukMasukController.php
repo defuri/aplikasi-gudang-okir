@@ -144,27 +144,36 @@ class ProdukMasukController extends Controller
                 'jumlah' => ['required', 'integer'],
             ]);
 
-            // * cari data produk masuk yang mau diedit
+            // Cari data produk masuk yang mau diedit
             $data = ProdukMasukModel::findOrFail($id);
 
-            // * jika id_produk atau id_gudang berubah, kurangi stok lama
+            // Jika id_produk atau id_gudang berubah
             if ($data->id_gudang != $request->id_gudang || $data->id_produk != $request->id_produk) {
+                // Kurangi stok dari lokasi lama
                 StokModel::where('id_gudang', $data->id_gudang)
                     ->where('id_produk', $data->id_produk)
                     ->decrement('stok', $data->jumlah);
+
+                // Tambah stok ke lokasi baru
+                StokModel::where('id_gudang', $request->id_gudang)
+                    ->where('id_produk', $request->id_produk)
+                    ->increment('stok', $request->jumlah);
+            } else {
+                // Jika lokasi sama, hitung selisih jumlah
+                $selisih = $request->jumlah - $data->jumlah;
+
+                // Update stok berdasarkan selisih
+                StokModel::where('id_gudang', $request->id_gudang)
+                    ->where('id_produk', $request->id_produk)
+                    ->increment('stok', $selisih); // Akan otomatis mengurangi jika selisih negatif
             }
 
-            // * tambahkan stok baru sesuai dengan data yang diinputkan
-            StokModel::where('id_gudang', $request->id_gudang)
-                ->where('id_produk', $request->id_produk)
-                ->increment('stok', $request->jumlah);
-
-            // * update data updated_at di tabel stok
+            // Update timestamp
             StokModel::where('id_gudang', $request->id_gudang)
                 ->where('id_produk', $request->id_produk)
                 ->update(['updated_at' => now()]);
 
-            // * update semua data di ProdukMasukModel
+            // Update data produk masuk
             $data->update([
                 'id_gudang' => $request->id_gudang,
                 'id_produk' => $request->id_produk,
@@ -254,8 +263,8 @@ class ProdukMasukController extends Controller
                 $total += $currentProduk->jumlah;
             }
             $formattedTotal = number_format($total, 0, ',', '.');
-            $dariTanggalFormatted = Carbon::parse($dariTanggal)->format('Y-m-d');
-            $keTanggalFormatted = Carbon::parse($keTanggal)->format('Y-m-d');
+            $dariTanggalFormatted = Carbon::parse($dariTanggal)->format('d-m-Y');
+            $keTanggalFormatted = Carbon::parse($keTanggal)->format('d-m-Y');
             $user = Auth::user();
             $dompdf = new Dompdf();
             $tailwindCss = file_get_contents(public_path('css/tailwind-pdf.css'));
@@ -278,7 +287,7 @@ class ProdukMasukController extends Controller
 
             if ($dariTanggal == $keTanggal) {
                 $html .= '  <td>Tanggal:</td>
-                            <td>' . $request->dariTanggal . '</td>';
+                            <td>' . $dariTanggalFormatted . '</td>';
             } else {
                 $html .= '  <td>Periode:</td>
                             <td>' . $dariTanggalFormatted . ' hingga ' . $keTanggalFormatted . '</td>';

@@ -10,7 +10,7 @@
             <!-- Total Products -->
             <a href="{{ route('produk.index') }}">
                 <div
-                    class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-gray-500 dark:text-gray-400">Total Produk</h3>
                         <svg class="w-6 h-6 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -25,9 +25,9 @@
             </a>
 
             <!-- Low Stock Products -->
-            <a href="{{ route('produk.index') }}">
+            <a href="{{ route('stok.index') }}">
                 <div
-                    class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-gray-500 dark:text-gray-400">Peringatan Stok</h3>
                         <svg class="w-6 h-6 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -44,7 +44,7 @@
             <!-- Total Suppliers -->
             <a href="{{ route('suplier.index') }}">
                 <div
-                    class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-gray-500 dark:text-gray-400">Suplier</h3>
                         <svg class="w-6 h-6 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -61,7 +61,7 @@
             <!-- Total Users -->
             <a href="{{ route('akun.index') }}">
                 <div
-                    class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-gray-500 dark:text-gray-400">Sistem</h3>
                         <svg class="w-6 h-6 text-purple-500" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -81,7 +81,7 @@
             <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Menu Cepat</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <a href="{{ route('produk.index') }}"
-                    class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <div class="p-3 bg-blue-100 dark:bg-blue-900 rounded-full mr-4">
                         <svg class="w-6 h-6 text-blue-500 dark:text-blue-300" xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -96,7 +96,7 @@
                 </a>
 
                 <a href="/stok"
-                    class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <div class="p-3 bg-yellow-100 dark:bg-yellow-900 rounded-full mr-4">
                         <svg class="w-6 h-6 text-yellow-500 dark:text-yellow-300" xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -111,7 +111,7 @@
                 </a>
 
                 <a href="{{ route('suplier.index') }}"
-                    class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <div class="p-3 bg-green-100 dark:bg-green-900 rounded-full mr-4">
                         <svg class="w-6 h-6 text-green-500 dark:text-green-300" xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -126,7 +126,7 @@
                 </a>
 
                 <a href="{{ route('transaksi-bahan-baku.create') }}"
-                    class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <div class="p-3 bg-purple-100 dark:bg-purple-900 rounded-full mr-4">
                         <svg class="w-6 h-6 text-purple-500 dark:text-purple-300" xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -153,7 +153,7 @@
                                 <th scope="col" class="px-6 py-3">id</th>
                                 <th scope="col" class="px-6 py-3">log_name</th>
                                 <th scope="col" class="px-6 py-3">aktivitas</th>
-                                <th scope="col" class="px-6 py-3">causer_id</th>
+                                <th scope="col" class="px-6 py-3">Username</th>
                                 <th scope="col" class="px-6 py-3">created_at</th>
                             </tr>
                         </thead>
@@ -189,7 +189,7 @@
                                             {{ $description }}
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4">{{ $currentActivity->causer_id }}</td>
+                                    <td>{{ $currentActivity->causer?->username ?? 'Unknown User' }}</td>
                                     <td class="px-6 py-4">
                                         {{ $currentActivity->created_at->setTimezone('Asia/Jakarta')->format('H:i d-m-Y') }}
                                     </td>

@@ -15,21 +15,22 @@ class ActivityController extends Controller
     {
         //
         $user = Auth::user();
+        // $activity = Activity::with('causer')->orderByDesc('id')->limit(10)->get();
 
         switch ($user->id_hak) {
             case 1:
-                $activity = Activity::orderByDesc('id')->paginate(10);
+                $activity = Activity::with('causer')->orderByDesc('id')->paginate(10);
                 return view('owner.activity', compact('user', 'activity'));
 
             case 2:
                 $logNames = ['Satuan', 'Suplier', 'Bahan Baku', 'Transaksi Bahan Baku', 'Rasa', 'Kategori', 'Pack', 'Produk'];
-                $activity = Activity::whereIn('log_name', $logNames)->latest()->paginate(10);
+                $activity = Activity::with('causer')->whereIn('log_name', $logNames)->latest()->paginate(10);
 
                 return view('owner.activity', compact('user', 'activity'));
 
             case 3:
                 $logNames = ['Gudang', 'Produk masuk', 'Produk Keluar', 'Stok'];
-                $activity = Activity::whereIn('log_name', $logNames)->latest()->paginate(10);
+                $activity = Activity::with('causer')->whereIn('log_name', $logNames)->latest()->paginate(10);
 
                 return view('owner.activity', compact('user', 'activity'));
 

@@ -11,7 +11,7 @@ class satuanController extends Controller
 {
     public function index()
     {
-        $dataSatuan = satuanModel::orderBy('id', 'desc')->paginate(10);
+        $dataSatuan = satuanModel::orderByDesc('id')->paginate(10);
         $jumlahData = $dataSatuan->total();
 
         $user = Auth::user();

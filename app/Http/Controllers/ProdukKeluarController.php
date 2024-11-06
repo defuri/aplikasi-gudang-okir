@@ -179,17 +179,17 @@ class ProdukKeluarController extends Controller
 
             $data = ProdukKeluarModel::latest()->first()->id;
 
+            $latestId = ProdukKeluarModel::latest()->first()->id;
+
             activity()
                 ->useLog('Produk Keluar')
-                ->log('UPDATE ID: ' . $data->id);
+                ->log('UPDATE ID: ' . $latestId);
 
             return redirect()->route('produk-keluar.index')->with(['success' => 'Data berhasil dirubah!']);
         } catch (\Exception $e) {
             return redirect()->route('produk-keluar.index')->with('error', 'Data gagal dirubah: ' . $e->getMessage());
         }
     }
-
-
 
     /**
      * Remove the specified resource from storage.

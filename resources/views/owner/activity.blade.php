@@ -20,7 +20,7 @@
                         <th scope="col" class="px-4 py-3">ID</th>
                         <th scope="col" class="px-4 py-3">log name</th>
                         <th scope="col" class="px-4 py-3">description</th>
-                        <th scope="col" class="px-4 py-3">causer id</th>
+                        <th scope="col" class="px-4 py-3">username</th>
                         <th scope="col" class="px-4 py-3">waktu</th>
                     </tr>
                 </thead>
@@ -56,10 +56,9 @@
                                     {{ $description }}
                                 @endif
                             </td>
-                            <td class="px-6 py-4">{{ $currentActivity->causer_id }}</td>
+                            <td>{{ $currentActivity->causer?->username ?? 'Unknown User' }}</td>
                             <td class="px-6 py-4">
-                                {{ $currentActivity->created_at->setTimezone('Asia/Jakarta')->format('H:i d-m-Y') }}
-                            </td>
+                                {{ $currentActivity->created_at->setTimezone('Asia/Jakarta')->format('H:i d-m-Y') }}</td>
                         </tr>
                     @empty
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -87,5 +86,5 @@
         </nav>
     </div>
 
-<x-footer />
+    <x-footer />
 @endsection
