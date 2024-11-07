@@ -18,21 +18,21 @@ class usersSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'id_hak' => 1,
-                'username' => '1',
+                'username' => 'owner',
                 'password' => bcrypt(1),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'id_hak' => 2,
-                'username' => '2',
+                'username' => 'produksi',
                 'password' => bcrypt(1),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'id_hak' => 3,
-                'username' => '3',
+                'username' => 'gudang',
                 'password' => bcrypt(1),
                 'created_at' => now(),
                 'updated_at' => now(),

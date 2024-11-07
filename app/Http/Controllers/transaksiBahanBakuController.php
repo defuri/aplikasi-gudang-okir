@@ -18,7 +18,14 @@ class transaksiBahanBakuController extends Controller
      */
     public function index()
     {
-        //
+        // Hapus transaksi bahan baku yang tidak memiliki detail
+        $transaksiBahanBakuTanpaDetail = transaksiBahanBakuModel::doesntHave('detailTransaksiBahanBaku')->get();
+
+        foreach ($transaksiBahanBakuTanpaDetail as $transaksi) {
+            $transaksi->delete();
+        }
+
+        // Ambil data yang sudah bersih dari transaksi tanpa detail
         $user = Auth::user();
         $transaksiBahanBaku = transaksiBahanBakuModel::orderBy('id', 'desc')->paginate(10);
         $detailTransaksiBahanBaku = DetailTransaksiBahanBaku::all();
@@ -27,6 +34,7 @@ class transaksiBahanBakuController extends Controller
 
         return view('CRUD.transaksiBahanBaku', compact('transaksiBahanBaku', 'detailTransaksiBahanBaku', 'bahanBaku', 'satuan', 'user'));
     }
+
 
     /**
      * Show the form for creating a new resource.
